@@ -7,4 +7,4 @@ import kotlinx.coroutines.promise
 
 private val TestDispatcher by lazy { Dispatchers.Universal }
 actual val Dispatchers.Test get() = TestDispatcher
-actual fun runTest(dispatcher: CoroutineDispatcher, block: suspend CoroutineScope.() -> Unit): Unit = GlobalScope.promise(block = block).unsafeCast<dynamic>()
+actual fun runTest(dispatcher: CoroutineDispatcher, block: suspend CoroutineScope.() -> Any?): Unit = GlobalScope.promise(block = block).unsafeCast<dynamic>()

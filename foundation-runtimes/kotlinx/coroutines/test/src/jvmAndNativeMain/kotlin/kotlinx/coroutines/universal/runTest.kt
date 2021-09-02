@@ -7,6 +7,6 @@ import kotlinx.coroutines.withContext
 
 private val TestDispatcher by lazy { kotlinx.coroutines.Dispatchers.Default }
 actual val Dispatchers.Test get() = TestDispatcher
-actual fun runTest(dispatcher: CoroutineDispatcher, block: suspend CoroutineScope.() -> Unit): Unit = runBlocking {
+actual fun runTest(dispatcher: CoroutineDispatcher, block: suspend CoroutineScope.() -> Any?): Unit = runBlocking {
     withContext(dispatcher) { block() }
 }
