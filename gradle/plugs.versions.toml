@@ -1,0 +1,21 @@
+[versions]
+kotlin = "1.5.30"
+agp = "7.1.0-alpha05"
+nexus = "0.22.0"
+publish = "0.12.0"
+
+[libraries]
+kotlin-core = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+nexus-staging = { module = "io.codearte.gradle.nexus:gradle-nexus-staging-plugin", version.ref = "nexus" }
+
+[plugins]
+publish = { id = "com.gradle.plugin-publish", version.ref = "publish" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-js = { id = "org.jetbrains.kotlin.js", version.ref = "kotlin" }
+nexus-staging = { id = "io.codearte.nexus-staging", version.ref = "nexus" }
