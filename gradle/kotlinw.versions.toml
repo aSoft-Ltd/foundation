@@ -1,0 +1,8 @@
+[versions]
+extension = "1.0.1-pre.240-kotlin-1.5.30"
+css = "1.0.0-pre.240-kotlin-1.5.30"
+
+
+[libraries]
+extension = { module = "org.jetbrains.kotlin-wrappers:kotlin-extensions", version.ref = "extension" }
+css = { module = "org.jetbrains.kotlin-wrappers:kotlin-css", version.ref = "css" }

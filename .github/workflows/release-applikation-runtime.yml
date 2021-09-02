@@ -12,7 +12,7 @@ env:
 
 jobs:
   publish-applikation-runtime:
-    runs-on: macos-latestd
+    ruds-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 16
