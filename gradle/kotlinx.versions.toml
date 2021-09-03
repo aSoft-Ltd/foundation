@@ -1,5 +1,5 @@
 [versions]
-coroutines = "1.5.1-native-mt"
+coroutines = "1.5.2-native-mt"
 serialization = "1.2.2"
 atomicfu = "0.16.3"
 datetime = "0.2.1"

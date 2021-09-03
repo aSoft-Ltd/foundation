@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application") version "7.1.0-alpha03"
-    kotlin("multiplatform") version "1.5.10"
+    id("com.android.application")
+    kotlin("multiplatform")
     id("tz.co.asoft.applikation")
 }
 
@@ -63,22 +63,22 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("tz.co.asoft:applikation-runtime:1.3.30")
+                implementation(asoft.applikation.runtime)
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                implementation("org.jetbrains:kotlin-react:17.0.2-pre.154-kotlin-1.5.0")
-                implementation("org.jetbrains:kotlin-styled:5.2.3-pre.154-kotlin-1.5.0")
-                implementation("org.jetbrains:kotlin-react-dom:17.0.2-pre.154-kotlin-1.5.0")
+                implementation(kotlinx.coroutines.core)
+                implementation(kotlinw.react.core)
+                implementation(kotlinw.react.dom)
+                implementation(kotlinw.styled)
             }
         }
 
         val jsTest by getting {
             dependencies {
-                implementation("tz.co.asoft:test-coroutines:1.1.10")
+                implementation(asoft.expect.coroutines)
             }
         }
     }

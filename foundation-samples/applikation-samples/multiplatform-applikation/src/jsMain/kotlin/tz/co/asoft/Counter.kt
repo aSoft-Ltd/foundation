@@ -8,34 +8,28 @@ import react.dom.div
 import styled.css
 import styled.styledButton
 import styled.styledSpan
-import tz.co.asoft.ticker.JsView
 
-@JsExport
-class Counter(p: Props) : RComponent<Counter.Props, Counter.State>(p) {
-    class Props(val start: Int) : RProps
-    class State(var value: Int) : RState
+private class CounterProps(val start: Int) : Props
 
-    init {
-        state = State(p.start)
-    }
-
-    override fun RBuilder.render(): dynamic = div {
+private val Counter = fc<CounterProps> { props ->
+    var counter by useState(props.start)
+    div {
         styledButton {
             css { padding(horizontal = 4.px) }
-            attrs.onClickFunction = { setState { value-- } }
+            attrs.onClickFunction = { counter-- }
             +"-"
         }
         styledSpan {
             css { padding(horizontal = 4.px) }
-            +state.value.toString()
+            +counter.toString()
         }
         styledButton {
             css { padding(horizontal = 4.px) }
-            attrs.onClickFunction = { setState { value++ } }
+            attrs.onClickFunction = { counter++ }
             +"+"
         }
     }
 }
 
-@JsView
-fun RBuilder.Counter(startAt: Int = 0) = child(Counter::class.js, Counter.Props(startAt)) {}
+@ReactDsl
+fun RBuilder.Counter(startAt: Int = 0) = child(Counter, CounterProps(startAt))

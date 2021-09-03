@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application") version "7.1.0-alpha03"
-    kotlin("android") version "1.5.10"
+    id("com.android.application")
+    kotlin("android")
     id("tz.co.asoft.applikation")
 }
 
@@ -37,7 +37,7 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
-                implementation("tz.co.asoft:applikation-runtime:1.3.0")
+                implementation(asoft.applikation.runtime)
             }
         }
     }

@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm")
     id("tz.co.asoft.applikation")
+    application
 }
 
 group = "tz.co.asoft"
@@ -41,7 +42,7 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
-                implementation("tz.co.asoft:applikation-runtime:${versions.asoft.builders}")
+                implementation(asoft.applikation.runtime)
             }
         }
     }

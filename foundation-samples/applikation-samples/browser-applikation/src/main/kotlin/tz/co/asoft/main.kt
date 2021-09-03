@@ -4,7 +4,6 @@ import kotlinx.browser.document
 import react.RBuilder
 import react.dom.h3
 import react.dom.render
-import tz.co.asoft.ticker.Ticker
 import kotlin.js.json
 import applikation.konfig
 
@@ -20,8 +19,6 @@ fun main() {
         User("Peter")
         User("Andrew")
         Counter(startAt = 5)
-        Ticker(1, 0)
-        Ticker(-1, 10)
     }
 }
 

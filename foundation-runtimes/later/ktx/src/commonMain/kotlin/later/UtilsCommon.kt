@@ -8,7 +8,10 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.jvm.JvmField
+import kotlin.jvm.JvmStatic
 
+@JvmField
 expect val LATER_SCOPE: CoroutineScope
 
 fun <T> CoroutineScope.later(

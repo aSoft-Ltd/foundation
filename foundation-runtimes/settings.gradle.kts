@@ -17,17 +17,24 @@ pluginManagement {
 
     dependencyResolutionManagement {
         versionCatalogs {
-            create("asoft") {
+            val asoft by creating {
                 from(files("../gradle/asoft.versions.toml"))
             }
-            create("plugs") {
+
+            val plugs by creating {
                 from(files("../gradle/plugs.versions.toml"))
             }
-            create("kotlinx") {
+
+            val kotlinx by creating {
                 from(files("../gradle/kotlinx.versions.toml"))
             }
-            create("kotlinw") {
+
+            val kotlinw by creating {
                 from(files("../gradle/kotlinw.versions.toml"))
+            }
+
+            val npm by creating {
+                from(files("../gradle/npm.versions.toml"))
             }
         }
     }
@@ -52,9 +59,6 @@ project(":kotlinx-serialization-mapper").projectDir = File("kotlinx/serializatio
 
 include(":kotlinx-browser")
 project(":kotlinx-browser").projectDir = File("kotlinx/browser")
-
-include(":kotlinx-coroutines-universal")
-project(":kotlinx-coroutines-universal").projectDir = File("kotlinx/coroutines/universal")
 
 include(":kotlinx-coroutines-test")
 project(":kotlinx-coroutines-test").projectDir = File("kotlinx/coroutines/test")
@@ -84,3 +88,6 @@ project(":logging-file").projectDir = File("logging/file")
 
 include(":logging-test-android")
 project(":logging-test-android").projectDir = File("logging/test/android")
+
+include(":platform-core")
+project(":platform-core").projectDir = File("platform/core")

@@ -9,31 +9,28 @@ import styled.css
 import styled.styledButton
 import styled.styledSpan
 
-@JsExport
-class Counter private constructor(p: Props) : RComponent<Counter.Props, Counter.State>(p) {
-    class Props(val start: Int) : RProps
-    class State(var value: Int) : RState
+private class CounterProps(val start: Int) : Props
+private class CounterState(var value: Int) : State
 
-    init {
-        state = State(p.start)
-    }
-
-    override fun RBuilder.render(): dynamic = div {
+private val Counter = fc<CounterProps> { props ->
+    val counter by useState(CounterState(props.start))
+    div {
         styledButton {
             css { padding(horizontal = 4.px) }
-            attrs.onClickFunction = { setState { value-- } }
-            +"-"
+            attrs.onClickFunction = { counter.value-- }
         }
+        +"-"
         styledSpan {
             css { padding(horizontal = 4.px) }
-            +state.value.toString()
+            +counter.value.toString()
         }
         styledButton {
             css { padding(horizontal = 4.px) }
-            attrs.onClickFunction = { setState { value++ } }
+            attrs.onClickFunction = { counter.value++ }
             +"+"
         }
     }
 }
 
-fun RBuilder.Counter(startAt: Int = 0) = child(Counter::class.js, Counter.Props(startAt)) {}
+@ReactDsl
+fun RBuilder.Counter(startAt: Int = 0) = child(Counter, CounterProps(startAt))

@@ -22,6 +22,10 @@ internal fun JsonObject.toKMap(): Map<String, Any?> {
 internal fun Any?.toJsonElement(): JsonElement = when (this) {
     null -> JsonNull
     is Number -> JsonPrimitive(this)
+    is UInt -> JsonPrimitive(toInt())
+    is ULong -> JsonPrimitive(toLong())
+    is UShort -> JsonPrimitive(toLong())
+    is UByte -> JsonPrimitive(toByte())
     is Boolean -> JsonPrimitive(this)
     is String -> JsonPrimitive(this)
     is Collection<*> -> JsonArray(mapNotNull { it.toJsonElement() })

@@ -3,6 +3,8 @@ foundation = "1.4.0"
 
 [libraries]
 applikation-runtime = { module = "tz.co.asoft:applikation-runtime", version.ref = "foundation" }
+expect-core = { module = "tz.co.asoft:expect-core", version.ref = "foundation" }
+expect-coroutines = { module = "tz.co.asoft:expect-coroutines", version.ref = "foundation" }
 
 [plugins]
 applikation-plug = { id = "tz.co.asoft.applikation", version.ref = "foundation" }

@@ -5,8 +5,6 @@ import react.RBuilder
 import react.dom.h3
 import react.dom.render
 import styled.styledH1
-import tz.co.asoft.ticker.JsView
-import tz.co.asoft.ticker.Ticker
 import kotlin.js.json
 import applikation.konfig
 import kotlinx.serialization.mapper.Mapper
@@ -31,10 +29,7 @@ fun main() {
         User("Peter")
         User("Andrew")
         Counter(startAt = 5)
-        Ticker(1, 0)
-        Ticker(-1, 10)
     }
 }
 
-@JsView
 private fun RBuilder.User(name: String) = h3 { +"User: $name" }

@@ -14,7 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":later-core"))
-                api(project(":kotlinx-coroutines-universal"))
+                api(kotlinx.coroutines.core)
             }
         }
 

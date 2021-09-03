@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+
 plugins {
-    kotlin("js") version "1.5.10"
+    kotlin("js")
     id("tz.co.asoft.applikation")
 }
 
@@ -25,6 +28,10 @@ applikation {
     )
 }
 
+//rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
+//    rootProject.the<NodeJsRootExtension>().versions.webpackDevServer.version = "4.1.0"
+//}
+
 kotlin {
     js(IR) {
         browserApp(testTimeout = 10000)
@@ -33,17 +40,18 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
-                implementation("tz.co.asoft:applikation-runtime:0.0.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
-                implementation("org.jetbrains:kotlin-react:17.0.0-pre.129-kotlin-1.4.20")
-                implementation("org.jetbrains:kotlin-styled:5.2.0-pre.129-kotlin-1.4.20")
-                implementation("org.jetbrains:kotlin-react-dom:17.0.0-pre.129-kotlin-1.4.20")
+                implementation(asoft.applikation.runtime)
+                implementation(kotlinx.coroutines.core)
+                implementation(kotlinw.css)
+                implementation(kotlinw.styled)
+                implementation(kotlinw.react.core)
+                implementation(kotlinw.react.dom)
             }
         }
 
         val test by getting {
             dependencies {
-                implementation(asoft("expect-core", "0.0.40"))
+                implementation(asoft.expect.core)
             }
         }
     }
