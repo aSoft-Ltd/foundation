@@ -44,6 +44,8 @@ class ApplikationKonfigJs(val project: Project, val konfig: Konfig, val mppTarge
             it.mustRunAfter(konfig.generateKonfigFileTaskName(mppTarget))
         }
 
+        tasks.getByName("build").dependsOn(konfig.generateKonfigFileTaskName(mppTarget))
+
         from("build/distributions")
         if (mppTarget == null) {
             into("build/websites/${konfig.name}")

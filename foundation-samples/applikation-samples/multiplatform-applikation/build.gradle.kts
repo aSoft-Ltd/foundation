@@ -67,6 +67,12 @@ kotlin {
             }
         }
 
+        val commonTest by getting {
+            dependencies {
+                implementation(asoft.expect.core)
+            }
+        }
+
         val jsMain by getting {
             dependencies {
                 implementation(kotlinx.coroutines.core)
