@@ -1,10 +1,10 @@
 package platform.utils.npm
 
-import platform.utils.common.require
+@JsModule("platform")
+@JsNonModule
+internal external val platform: Platform
 
-internal val platform by lazy { require<Platform>("platform") }
-
-external interface Platform {
+internal external interface Platform {
     val ua: String?
     val name: String
     val description: String
@@ -14,7 +14,7 @@ external interface Platform {
     val product: String
 }
 
-external interface OS {
+internal external interface OS {
     val architecture: String
     val family: String
     val version: String?

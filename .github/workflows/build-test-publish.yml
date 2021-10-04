@@ -39,6 +39,12 @@ jobs:
           key: ${{ runner.os }}-konan-
           restore-keys: ${{ runner.os }}-konan-
 
+      - name: Cache Node Modules
+        uses: actions/cache@v2
+        with:
+          path: 'build/js'
+          key: node-modules
+
       - name: Building plugins
         run: |
           chmod +x ./gradlew
@@ -61,6 +67,12 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew publish
+        working-directory: ./foundation-runtimes
+
+      - name: Release runtimes
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :applikation-runtime:closeAndReleaseRepository
         working-directory: ./foundation-runtimes
 
       - name: Publishing plugins

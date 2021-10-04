@@ -8,33 +8,6 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 
-/**
- * @param testTimeout (in milliseconds) if null the test wont be configure
- */
-fun KotlinMultiplatformExtension.multiplatformApplication(
-    forAndroid: Boolean = true,
-    forJvm: Boolean = true,
-    withJava: Boolean = false,
-    forBrowser: Boolean = true,
-    forNodeJs: Boolean = false,
-    testTimeout: Int? = null
-) {
-    if (forAndroid && withJava) throw Exception("You can't have forAndroid=true and withJava=true")
-
-    if (forAndroid) android {
-        targetJava("1.8")
-    }
-
-    if (forJvm) jvm {
-        targetJava("1.8")
-        if (withJava) withJava()
-    }
-
-    if (forBrowser || forNodeJs) js(IR) {
-        application(testTimeout, forNodeJs)
-    }
-}
-
 fun KotlinAndroidTarget.library(java: String = "1.8") {
     targetJava(java)
     publishLibraryVariants("release")
@@ -65,7 +38,9 @@ fun KotlinJvmTarget.application(java: String = "1.8") {
  */
 fun KotlinJsTargetDsl.browserLib(testTimeout: Int? = 10000, config: (KotlinJsBrowserDsl.() -> Unit)? = null) {
     if (testTimeout != null) project.createKarmaTimeoutFile(testTimeout)
+    compilations.all { kotlinOptions { sourceMap = true } }
     browser {
+        commonWebpackConfig { sourceMaps = true }
         if (testTimeout == null) testTask { enabled = false }
         if (config != null) config()
     }

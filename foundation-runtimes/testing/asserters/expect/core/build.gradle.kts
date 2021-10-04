@@ -25,21 +25,21 @@ kotlin {
         }
 
         val jsAndNativeMain by creating {
-            dependencies {
-                dependsOn(commonMain)
-            }
+            dependsOn(commonMain)
+        }
+
+        val nativeMain by creating {
+            dependsOn(jsAndNativeMain)
         }
 
         val jsMain by getting {
-            dependencies {
-                dependsOn(jsAndNativeMain)
-            }
+            dependsOn(jsAndNativeMain)
         }
 
         nativeTargets.forEach {
             val main by it.compilations.getting {}
             main.defaultSourceSet {
-                dependsOn(jsAndNativeMain)
+                dependsOn(nativeMain)
             }
         }
     }
