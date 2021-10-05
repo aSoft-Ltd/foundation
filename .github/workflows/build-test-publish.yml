@@ -63,24 +63,6 @@ jobs:
           ./gradlew build
         working-directory: ./foundation-samples
 
-      - name: Publish runtimes
-        run: |
-          chmod +x ./gradlew
-          ./gradlew publish
-        working-directory: ./foundation-runtimes
-
-      - name: Release runtimes
-        run: |
-          chmod +x ./gradlew
-          ./gradlew :applikation-runtime:closeAndReleaseRepository
-        working-directory: ./foundation-runtimes
-
-      - name: Publishing plugins
-        run: |
-          chmod +x ./gradlew
-          ./gradlew :publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
-        working-directory: ./foundation-plugins
-
   publish-runtimes:
     runs-on: macos-latest
     needs: build-project
