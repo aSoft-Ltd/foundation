@@ -70,3 +70,5 @@ includeSubs("logging", "logging", "core", "console", "file")
 includeRoot("logging-test-android", "logging/test/android")
 
 includeSubs("platform", "platform", "core")
+
+includeSubs("terminal", "terminal", "api", "console")
