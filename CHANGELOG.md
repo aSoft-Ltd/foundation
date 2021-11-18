@@ -1,3 +1,8 @@
+# 1.4.12
+
+- Bumped kotlin from 1.5.31 to 1.6.0
+- Updated main readme
+
 # 1.4.11
 
 - Added missing artifacts
