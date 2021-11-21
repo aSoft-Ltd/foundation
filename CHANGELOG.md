@@ -6,6 +6,12 @@
 
 - [FP05](https://github.com/aSoft-Ltd/foundation/issues/5) Use A Single DevServer Configuration
 
+## Foundation Runtimes
+
+### Enhancements
+
+- Added terminal applications
+
 ## Dependencies
 
 - Bumped kotlin from 1.5.31 to 1.6.0
