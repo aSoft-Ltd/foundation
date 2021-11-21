@@ -1,14 +1,11 @@
-import expect.expect
 import terminal.ConsoleTerminalOutput
 import terminal.TerminalHistoryConfig
 import terminal.TerminalOutput
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class ConsoleTerminalOutputTest {
-    val config = TerminalHistoryConfig()
-    val output: TerminalOutput = ConsoleTerminalOutput(config)
+    val output: TerminalOutput = ConsoleTerminalOutput()
 
     @Test
     fun should_print_out_any_thing() {

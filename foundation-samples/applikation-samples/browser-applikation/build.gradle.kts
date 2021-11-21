@@ -8,7 +8,6 @@ plugins {
 
 repositories {
     google()
-    jcenter()
 }
 
 group = "tz.co.asoft"
@@ -28,9 +27,12 @@ applikation {
     )
 }
 
-//rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
-//    rootProject.the<NodeJsRootExtension>().versions.webpackDevServer.version = "4.1.0"
-//}
+rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
+    rootProject.the<NodeJsRootExtension>().versions.apply {
+        webpackDevServer.version = "4.1.0"
+        webpackCli.version = "4.9.0"
+    }
+}
 
 kotlin {
     js(IR) {
@@ -46,6 +48,7 @@ kotlin {
                 implementation(kotlinw.styled)
                 implementation(kotlinw.react.core)
                 implementation(kotlinw.react.dom)
+                implementation(asoft.terminal.console)
             }
         }
 

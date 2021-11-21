@@ -54,10 +54,7 @@ fun KotlinJsTargetDsl.browserApp(testTimeout: Int? = null, config: (KotlinJsBrow
         commonWebpackConfig {
             cssSupport.enabled = true
             outputFileName = "main.bundle.js"
-            devServer = KotlinWebpackConfig.DevServer(
-                open = false,
-                contentBase = mutableListOf(project.file("build/processedResources/js/main").absolutePath)
-            )
+            devServer = project.DEFAULT_DEV_SERVER
         }
         if (config != null) config()
     }
@@ -89,29 +86,4 @@ fun KotlinJsTargetDsl.library(testTimeout: Int? = 10000, config: (KotlinJsTarget
     nodejs()
     if (testTimeout != null) enableTesting(testTimeout, forBrowser = true, forNodeJs = true)
     if (config != null) config()
-}
-
-/**
- * @param testTimeout if set to 0, testing will not be enabled
- */
-fun KotlinMultiplatformExtension.multiplatformLib(
-    forAndroid: Boolean = false,
-    forJvm: Boolean = true,
-    withJava: Boolean = false,
-    forBrowser: Boolean = true,
-    forNodeJs: Boolean = true,
-    testTimeout: Int = 10000
-) {
-    if (forAndroid && withJava) throw Exception("You can not use withJava=true and forAndroid=true")
-
-    if (forAndroid) android { targetJava() }
-    if (forJvm) jvm {
-        targetJava("1.8")
-        if (withJava) withJava()
-    }
-    if (forBrowser || forNodeJs) js(IR) {
-        if (forBrowser) browser()
-        if (forNodeJs) nodejs()
-        if (testTimeout >= 0) enableTesting(testTimeout, forBrowser = forBrowser, forNodeJs = forNodeJs)
-    }
 }

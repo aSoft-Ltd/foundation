@@ -4,7 +4,7 @@ package terminal
 
 import kotlin.js.JsExport
 
-open class TerminalHistory(val config: TerminalHistoryConfig = TerminalHistoryConfig()) {
+open class TerminalHistory(private val config: TerminalHistoryConfig = TerminalHistoryConfig()) : List<String> by config.list {
     fun push(any: Any?) {
         config.list.add(0, any.toString())
         if (config.list.size > config.size) {

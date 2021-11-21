@@ -1,2 +1,3 @@
 [versions]
 platform = "1.3.6"
+prompt = "4.2.0"

@@ -1,4 +1,5 @@
 @file:JsExport
+@file:Suppress("WRONG_EXPORTED_DECLARATION")
 
 package terminal
 

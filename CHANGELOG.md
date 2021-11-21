@@ -1,6 +1,17 @@
 # 1.4.12
 
+## Foundation Plugins
+
+### Fixes
+
+- [FP05](https://github.com/aSoft-Ltd/foundation/issues/5) Use A Single DevServer Configuration
+
+## Dependencies
+
 - Bumped kotlin from 1.5.31 to 1.6.0
+
+## Documentation
+
 - Updated main readme
 
 # 1.4.11

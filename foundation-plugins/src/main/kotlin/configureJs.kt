@@ -3,6 +3,12 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import java.io.File
 
+internal val Project.DEFAULT_DEV_SERVER
+    get() = KotlinWebpackConfig.DevServer(
+        open = false,
+        static = mutableListOf(file("build/processedResources/js/main").absolutePath)
+    )
+
 /**
  * @param testTimeout in milliseconds
  */
@@ -48,10 +54,7 @@ fun KotlinJsTargetDsl.application(testTimeout: Int? = null, withNodeJs: Boolean 
         commonWebpackConfig {
             cssSupport.enabled = true
             outputFileName = "main.bundle.js"
-            devServer = KotlinWebpackConfig.DevServer(
-                open = false,
-                static = mutableListOf(project.file("build/processedResources/js/main").absolutePath)
-            )
+            devServer = project.DEFAULT_DEV_SERVER
         }
     }
     binaries.executable()
