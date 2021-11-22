@@ -40,54 +40,34 @@ pluginManagement {
     }
 }
 
+fun includeRoot(name: String, path: String) {
+    include(":$name")
+    project(":$name").projectDir = File(path)
+}
+
+fun includeSubs(base: String, path: String = base, vararg subs: String) {
+    subs.forEach {
+        include(":$base-$it")
+        project(":$base-$it").projectDir = File("$path/$it")
+    }
+}
+
 rootProject.name = "foundation-runtimes"
 
 includeBuild("../foundation-plugins")
 
-include(":expect-core")
-project(":expect-core").projectDir = File("testing/asserters/expect/core")
+includeSubs("expect", "testing/asserters/expect", "core", "coroutines")
+includeRoot("applikation-runtime", "applikation")
+includeSubs("cache", "cache", "api", "browser", "react-native", "mock")
+includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
+includeRoot("kotlinx-browser", "kotlinx/browser")
+includeRoot("kotlinx-coroutines-test", "kotlinx/coroutines/test")
+includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
 
-include(":expect-coroutines")
-project(":expect-coroutines").projectDir = File("testing/asserters/expect/coroutines")
+includeSubs("later", "later", "core", "ktx")
+includeRoot("later-test-expect", "later/test/expect")
 
-include(":applikation-runtime")
-project(":applikation-runtime").projectDir = File("applikation")
+includeSubs("logging", "logging", "core", "console", "file")
+includeRoot("logging-test-android", "logging/test/android")
 
-// kotlinx
-include(":kotlinx-serialization-mapper")
-project(":kotlinx-serialization-mapper").projectDir = File("kotlinx/serialization/mapper")
-
-include(":kotlinx-browser")
-project(":kotlinx-browser").projectDir = File("kotlinx/browser")
-
-include(":kotlinx-coroutines-test")
-project(":kotlinx-coroutines-test").projectDir = File("kotlinx/coroutines/test")
-
-include(":kotlinx-collections-atomic")
-project(":kotlinx-collections-atomic").projectDir = File("kotlinx/collections/atomic")
-
-// later
-include(":later-core")
-project(":later-core").projectDir = File("later/core")
-
-include(":later-ktx")
-project(":later-ktx").projectDir = File("later/ktx")
-
-include(":later-test-expect")
-project(":later-test-expect").projectDir = File("later/test/expect")
-
-// logging
-include(":logging-core")
-project(":logging-core").projectDir = File("logging/core")
-
-include(":logging-console")
-project(":logging-console").projectDir = File("logging/console")
-
-include(":logging-file")
-project(":logging-file").projectDir = File("logging/file")
-
-include(":logging-test-android")
-project(":logging-test-android").projectDir = File("logging/test/android")
-
-include(":platform-core")
-project(":platform-core").projectDir = File("platform/core")
+includeSubs("platform", "platform", "core")
