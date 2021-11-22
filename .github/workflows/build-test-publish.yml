@@ -1,7 +1,7 @@
 name: Build & Test
 
 on:
-  push:
+  pull_request:
     branches: [ master ]
 
 env:
@@ -65,7 +65,7 @@ jobs:
 
   publish-runtimes:
     runs-on: macos-11
-#    needs: build-project
+    #    needs: build-project
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 17
