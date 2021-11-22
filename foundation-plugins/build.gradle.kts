@@ -6,6 +6,7 @@ plugins {
 
 repositories {
     google()
+    gradlePluginPortal()
     mavenCentral()
 }
 
@@ -65,4 +66,5 @@ dependencies {
     implementation(plugs.kotlin.core)
     implementation(plugs.kotlin.serialization)
     implementation(plugs.nexus.staging)
+    implementation(plugs.nexus.publish)
 }
