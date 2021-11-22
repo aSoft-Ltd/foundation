@@ -12,7 +12,7 @@ env:
 
 jobs:
   build-project:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 16
@@ -64,7 +64,7 @@ jobs:
         working-directory: ./foundation-samples
 
   publish-runtimes:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: build-project
     steps:
       - uses: actions/checkout@v2
@@ -111,7 +111,7 @@ jobs:
         working-directory: ./foundation-runtimes
 
   publish-plugins:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: build-project
     steps:
       - uses: actions/checkout@v2
