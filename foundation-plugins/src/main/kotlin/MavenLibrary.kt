@@ -38,9 +38,5 @@ fun Project.MavenLibrary(
     val pgpPassword = System.getenv("ASOFT_MAVEN_PGP_PASSWORD") ?: ""
     configureSigning(privateKey = pgpPrivateKey, password = pgpPassword)
 
-//    configurePublishing {
-//        repositories {
-//            configureMavenCentralRepos(username = nexusUsername, password = nexusPassword)
-//        }
-//    }
+    configurePublishing {}
 }

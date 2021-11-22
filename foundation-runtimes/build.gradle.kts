@@ -9,7 +9,7 @@ plugins {
 
 afterEvaluate {
     group = "tz.co.asoft"
-    version = asoft.versions.foundation
+    version = asoft.versions.foundation.get()
 }
 
 nexusPublishing {
