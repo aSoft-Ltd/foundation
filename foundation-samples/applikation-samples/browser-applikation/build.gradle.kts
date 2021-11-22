@@ -48,7 +48,6 @@ kotlin {
                 implementation(kotlinw.styled)
                 implementation(kotlinw.react.core)
                 implementation(kotlinw.react.dom)
-                implementation(asoft.terminal.console)
             }
         }
 

@@ -13,6 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(project(":kotlinx-collections-interoperable"))
                 api(kotlinx.atomicfu)
             }
         }

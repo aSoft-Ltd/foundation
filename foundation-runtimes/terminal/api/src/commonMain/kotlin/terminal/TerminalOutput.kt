@@ -9,12 +9,12 @@ interface TerminalOutput {
 
     val history: TerminalHistory
 
-    fun <T> executePrint(any: T)
+    fun executePrint(any: Any?)
 
-    fun <T> print(any: T) {
+    fun print(any: Any?) {
         history.push(any)
         executePrint(any)
     }
 
-    fun <T> println(any: T) = print("$any\n")
+    fun println(any: Any?) = print("$any\n")
 }

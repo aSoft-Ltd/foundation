@@ -6,6 +6,8 @@ import react.dom.h3
 import react.dom.render
 import kotlin.js.json
 import applikation.konfig
+import terminal.ConsoleTerminal
+import terminal.ConsoleTerminalOutput
 
 fun main() {
     console.log("Works")

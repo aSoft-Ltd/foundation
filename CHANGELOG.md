@@ -10,7 +10,7 @@
 
 ### Enhancements
 
-- Added terminal applications
+- Added terminal library
 
 ## Dependencies
 

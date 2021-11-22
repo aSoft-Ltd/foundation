@@ -3,7 +3,6 @@ foundation = "1.4.11"
 
 [libraries]
 applikation-runtime = { module = "tz.co.asoft:applikation-runtime", version.ref = "foundation" }
-terminal-console = { module = "tz.co.asoft:terminal-console", version.ref = "foundation" }
 expect-core = { module = "tz.co.asoft:expect-core", version.ref = "foundation" }
 expect-coroutines = { module = "tz.co.asoft:expect-coroutines", version.ref = "foundation" }
 

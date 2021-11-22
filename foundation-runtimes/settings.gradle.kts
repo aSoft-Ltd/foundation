@@ -58,10 +58,11 @@ includeBuild("../foundation-plugins")
 
 includeSubs("expect", "testing/asserters/expect", "core", "coroutines")
 includeRoot("applikation-runtime", "applikation")
+includeSubs("cache", "cache", "api", "browser", "react-native", "mock")
 includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
 includeRoot("kotlinx-browser", "kotlinx/browser")
 includeRoot("kotlinx-coroutines-test", "kotlinx/coroutines/test")
-includeSubs("kotlinx-collections", "kotlinx/collections", "atomic")
+includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
 
 includeSubs("later", "later", "core", "ktx")
 includeRoot("later-test-expect", "later/test/expect")
@@ -70,5 +71,3 @@ includeSubs("logging", "logging", "core", "console", "file")
 includeRoot("logging-test-android", "logging/test/android")
 
 includeSubs("platform", "platform", "core")
-
-includeSubs("terminal", "terminal", "api", "console")
