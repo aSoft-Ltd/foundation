@@ -4,19 +4,9 @@ plugins {
     alias(plugs.plugins.kotlin.serialization) apply false
     alias(plugs.plugins.nexus.staging) apply false
     alias(plugs.plugins.nexus.publish)
+    alias(asoft.plugins.deploy)
 }
 
-
-afterEvaluate {
-    group = "tz.co.asoft"
+deployToSonatype {
     version = asoft.versions.foundation.get()
-}
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            username.set(System.getenv("ASOFT_NEXUS_USERNAME"))
-            password.set(System.getenv("ASOFT_NEXUS_PASSWORD"))
-        }
-    }
 }

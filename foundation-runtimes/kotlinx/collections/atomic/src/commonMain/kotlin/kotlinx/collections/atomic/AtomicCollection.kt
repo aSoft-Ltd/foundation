@@ -1,6 +1,7 @@
 package kotlinx.collections.atomic
 
 import kotlinx.atomicfu.AtomicRef
+import kotlinx.collections.interoperable.Collection
 
 interface AtomicCollection<E, C : Collection<E>> : Collection<E> {
     val atomic: AtomicRef<C>
@@ -9,8 +10,6 @@ interface AtomicCollection<E, C : Collection<E>> : Collection<E> {
         get() = atomic.value.size
 
     override fun contains(element: E): Boolean
-
-    override fun containsAll(elements: Collection<E>): Boolean
 
     override fun isEmpty(): Boolean
 

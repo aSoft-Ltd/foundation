@@ -1,5 +1,9 @@
-package builders
+package plugins
 
+import builders.ApplikationExtension
+import builders.ApplikationKonfigAndroid
+import builders.ApplikationKonfigJs
+import builders.ApplikationKonfigJvm
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create

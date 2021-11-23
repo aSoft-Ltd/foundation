@@ -1,6 +1,7 @@
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
+    `maven-publish`
     alias(plugs.plugins.publish)
 }
 
@@ -10,17 +11,28 @@ repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 gradlePlugin {
     plugins {
         val applikation by creating {
             id = "tz.co.asoft.applikation"
-            implementationClass = "builders.ApplikationGradlePlugin"
+            implementationClass = "plugins.ApplikationGradlePlugin"
+        }
+
+        val deploy by creating {
+            id = "tz.co.asoft.deploy"
+            description = "A gradle extension to deploy to sonatype"
+            implementationClass = "plugins.DeployToSonatypePlugin"
         }
 
         val library by creating {
             id = "tz.co.asoft.library"
             description = "A kotlin library plugin"
-            implementationClass = "builders.LibraryPlugin"
+            implementationClass = "plugins.LibraryPlugin"
         }
     }
 }
@@ -36,8 +48,13 @@ pluginBundle {
             tags = listOf("kotlin", "application", "frontend")
         }
 
+        val deploy by getting {
+            displayName = "Deploy Plugin"
+            tags = listOf("asoft", "nexus", "deploy")
+        }
+
         val library by getting {
-            displayName = "A Kotlin Library Plugin"
+            displayName = "Library Plugin"
             tags = listOf("kotlin", "library")
         }
     }

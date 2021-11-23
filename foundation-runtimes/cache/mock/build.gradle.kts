@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":cache-api"))
+                api(project(":kotlinx-collections-atomic"))
             }
         }
 

@@ -1,4 +1,4 @@
-package builders
+package plugins
 
 import com.android.build.gradle.LibraryExtension
 import configureAndroid
