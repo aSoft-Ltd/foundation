@@ -72,5 +72,5 @@ jobs:
       - name: Publishing plugins
         run: |
           chmod +x ./gradlew
-          ./gradlew :publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }} --warning-mode all --stacktrace
+          ./gradlew :publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
         working-directory: ./foundation-plugins
