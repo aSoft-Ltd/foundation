@@ -11,12 +11,17 @@ repositories {
     mavenCentral()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 gradlePlugin {
     plugins {
-        val applikation by creating {
-            id = "tz.co.asoft.applikation"
-            implementationClass = "plugins.ApplikationGradlePlugin"
-        }
+//        val applikation by creating {
+//            id = "tz.co.asoft.applikation"
+//            implementationClass = "plugins.ApplikationGradlePlugin"
+//        }
 
         val deploy by creating {
             id = "tz.co.asoft.deploy"
@@ -24,11 +29,11 @@ gradlePlugin {
             implementationClass = "plugins.DeployToSonatypePlugin"
         }
 
-        val library by creating {
-            id = "tz.co.asoft.library"
-            description = "A kotlin library plugin"
-            implementationClass = "plugins.LibraryPlugin"
-        }
+//        val library by creating {
+//            id = "tz.co.asoft.library"
+//            description = "A kotlin library plugin"
+//            implementationClass = "plugins.LibraryPlugin"
+//        }
     }
 }
 
@@ -38,20 +43,20 @@ pluginBundle {
     description = "Simple Plugins to Ease Library Development"
 
     plugins {
-        val applikation by getting {
-            displayName = "Applikation Plugin"
-            tags = listOf("kotlin", "application", "frontend")
-        }
-
-        val library by getting {
-            displayName = "Library Plugin"
-            tags = listOf("kotlin", "library")
-        }
+//        val applikation by getting {
+//            displayName = "Applikation Plugin"
+//            tags = listOf("kotlin", "application", "frontend")
+//        }
 
         val deploy by getting {
             displayName = "Deploy Plugin"
             tags = listOf("asoft", "nexus", "deploy")
         }
+
+//        val library by getting {
+//            displayName = "Library Plugin"
+//            tags = listOf("kotlin", "library")
+//        }
     }
 }
 
