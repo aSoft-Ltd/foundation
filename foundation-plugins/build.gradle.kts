@@ -15,19 +15,19 @@ gradlePlugin {
     plugins {
         val applikation by creating {
             id = "tz.co.asoft.applikation"
-            implementationClass = "builders.ApplikationGradlePlugin"
+            implementationClass = "plugins.ApplikationGradlePlugin"
         }
 
         val deploy by creating {
             id = "tz.co.asoft.deploy"
             description = "A gradle extension to deploy to sonatype"
-            implementationClass = "deployers.DeployToSonatypePlugin"
+            implementationClass = "plugins.DeployToSonatypePlugin"
         }
 
         val library by creating {
             id = "tz.co.asoft.library"
             description = "A kotlin library plugin"
-            implementationClass = "builders.LibraryPlugin"
+            implementationClass = "plugins.LibraryPlugin"
         }
     }
 }
@@ -44,12 +44,12 @@ pluginBundle {
         }
 
         val library by getting {
-            displayName = "A Kotlin Library Plugin"
+            displayName = "Library Plugin"
             tags = listOf("kotlin", "library")
         }
 
         val deploy by getting {
-            displayName = "A gradle plugin to ease deploying libs to sonatype"
+            displayName = "Deploy Plugin"
             tags = listOf("asoft", "nexus", "deploy")
         }
     }

@@ -4,7 +4,7 @@ plugins {
     alias(plugs.plugins.kotlin.serialization) apply false
     alias(plugs.plugins.nexus.staging) apply false
     alias(plugs.plugins.nexus.publish)
-    alias(asoft.plugins.publish)
+    alias(asoft.plugins.deploy)
 }
 
 deployToSonatype {

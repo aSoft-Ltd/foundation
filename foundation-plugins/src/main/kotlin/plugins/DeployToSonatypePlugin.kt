@@ -1,8 +1,9 @@
-package deployers
+package plugins
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import deployToSonatype
+import deployers.DeployToSonatypeExtension
 
 open class DeployToSonatypePlugin : Plugin<Project> {
     override fun apply(target: Project) {

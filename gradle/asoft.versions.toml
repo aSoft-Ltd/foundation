@@ -1,5 +1,5 @@
 [versions]
-foundation = "1.4.15"
+foundation = "1.4.16"
 
 [libraries]
 applikation-runtime = { module = "tz.co.asoft:applikation-runtime", version.ref = "foundation" }
@@ -8,4 +8,4 @@ expect-coroutines = { module = "tz.co.asoft:expect-coroutines", version.ref = "f
 
 [plugins]
 applikation-plug = { id = "tz.co.asoft.applikation", version.ref = "foundation" }
-publish = { id = "tz.co.asoft.publish", version.ref = "foundation" }
+deploy = { id = "tz.co.asoft.deploy", version.ref = "foundation" }
