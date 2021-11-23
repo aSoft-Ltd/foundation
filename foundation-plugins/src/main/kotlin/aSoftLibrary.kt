@@ -9,7 +9,7 @@ fun Project.aSoftCSSLibrary(
     config: PublishingExtension.() -> Unit = {}
 ) = KotlinLibrary("tz.co.asoft", version, config)
 
-fun Project.publishToSonatype(
+fun Project.deployToSonatype(
     version: String? = null,
     group: String? = null,
 ) {

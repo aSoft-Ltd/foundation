@@ -7,6 +7,6 @@ plugins {
     alias(asoft.plugins.publish)
 }
 
-publishToSonatype {
+deployToSonatype {
     version = asoft.versions.foundation.get()
 }
