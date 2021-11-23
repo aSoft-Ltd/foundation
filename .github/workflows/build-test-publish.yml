@@ -45,29 +45,29 @@ jobs:
           path: 'build/js'
           key: node-modules
 
-      - name: Building plugins
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build
-        working-directory: ./foundation-plugins
-
-      - name: Building runtimes
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build
-        working-directory: ./foundation-runtimes
-
-      - name: Building samples
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build
-        working-directory: ./foundation-samples
-
-      - name: Publish & Release Runtimes
-        run: |
-          chmod +x ./gradlew
-          ./gradlew publishToSonatype closeAndReleaseStagingRepository
-        working-directory: ./foundation-runtimes
+      #      - name: Building plugins
+      #        run: |
+      #          chmod +x ./gradlew
+      #          ./gradlew build
+      #        working-directory: ./foundation-plugins
+      #
+      #      - name: Building runtimes
+      #        run: |
+      #          chmod +x ./gradlew
+      #          ./gradlew build
+      #        working-directory: ./foundation-runtimes
+      #
+      #      - name: Building samples
+      #        run: |
+      #          chmod +x ./gradlew
+      #          ./gradlew build
+      #        working-directory: ./foundation-samples
+      #
+      #      - name: Publish & Release Runtimes
+      #        run: |
+      #          chmod +x ./gradlew
+      #          ./gradlew publishToSonatype closeAndReleaseStagingRepository
+      #        working-directory: ./foundation-runtimes
 
       - name: Publishing plugins
         run: |

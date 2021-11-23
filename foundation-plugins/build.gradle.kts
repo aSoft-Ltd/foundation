@@ -1,6 +1,7 @@
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
+//    `maven-publish`
     alias(plugs.plugins.publish)
 }
 
@@ -71,6 +72,15 @@ val javadocJar by tasks.creating(org.gradle.jvm.tasks.Jar::class) {
 artifacts {
     archives(sourcesJar)
 }
+
+//publishing {
+//    repositories {
+//        maven {
+//            name = "buildDir"
+//            url = buildDir.resolve("maven").toURI()
+//        }
+//    }
+//}
 
 dependencies {
     implementation(plugs.android)
