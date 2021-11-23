@@ -22,6 +22,12 @@ gradlePlugin {
             description = "A kotlin library plugin"
             implementationClass = "builders.LibraryPlugin"
         }
+
+        val publish by creating {
+            id = "tz.co.asoft.publish"
+            description = "A gradle extension to publish to sonatype"
+            implementationClass = "publisher.PublishToSonatypePlugin"
+        }
     }
 }
 
@@ -39,6 +45,11 @@ pluginBundle {
         val library by getting {
             displayName = "A Kotlin Library Plugin"
             tags = listOf("kotlin", "library")
+        }
+
+        val publish by getting {
+            displayName = "A gradle plugin to ease publishing libs to sonatype"
+            tags = listOf("asoft", "nexus", "publish")
         }
     }
 }
