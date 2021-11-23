@@ -1,5 +1,5 @@
 [versions]
-foundation = "1.4.17"
+foundation = "1.4.18"
 
 [libraries]
 applikation-runtime = { module = "tz.co.asoft:applikation-runtime", version.ref = "foundation" }

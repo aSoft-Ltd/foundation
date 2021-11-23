@@ -37,10 +37,19 @@ gradlePlugin {
     }
 }
 
+group = "tz.co.asoft"
+version = asoft.versions.foundation.get()
+
 pluginBundle {
-    website = "https://github.com/aSoft-Ltd/builders"
+    website = "https://github.com/aSoft-Ltd/foundation/tree/master/foundation-plugins"
     vcsUrl = website
     description = "Simple Plugins to Ease Library Development"
+
+    mavenCoordinates {
+        groupId = project.group.toString()
+        artifactId = project.name
+        version = project.version.toString()
+    }
 
     plugins {
         val applikation by getting {
@@ -59,9 +68,6 @@ pluginBundle {
         }
     }
 }
-
-group = "tz.co.asoft"
-version = asoft.versions.foundation.get()
 
 defaultTasks("jar")
 
