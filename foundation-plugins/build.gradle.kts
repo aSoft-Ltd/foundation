@@ -1,7 +1,9 @@
 plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
-//    `maven-publish`
+    `maven-publish`
+    signing
+    alias(plugs.plugins.nexus.publish)
     alias(plugs.plugins.publish)
 }
 
@@ -65,6 +67,33 @@ pluginBundle {
         val library by getting {
             displayName = "Library Plugin"
             tags = listOf("kotlin", "library")
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username.set(System.getenv("ASOFT_NEXUS_USERNAME"))
+            password.set(System.getenv("ASOFT_NEXUS_PASSWORD"))
+        }
+    }
+}
+
+val pgpPrivateKey = System.getenv("ASOFT_MAVEN_PGP_PRIVATE_KEY") ?: ""
+val pgpPassword = System.getenv("ASOFT_MAVEN_PGP_PASSWORD") ?: ""
+
+signing {
+    useInMemoryPgpKeys(pgpPrivateKey, pgpPassword)
+    val publicationsContainer = (extensions["publishing"] as PublishingExtension).publications
+    sign(publicationsContainer)
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "buildDir"
+            url = buildDir.resolve("maven").toURI()
         }
     }
 }

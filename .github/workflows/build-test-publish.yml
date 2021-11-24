@@ -69,7 +69,13 @@ jobs:
 #          ./gradlew publishToSonatype closeAndReleaseStagingRepository
 #        working-directory: ./foundation-runtimes
 
-      - name: Publishing plugins
+      - name: Publishing plugins to sonatype
+        run: |
+          chmod +x ./gradlew
+          ./gradlew publishToSonatype closeAndReleaseStagingRepository
+        working-directory: ./foundation-plugins
+
+      - name: Publishing plugins to gradle plugin portal
         run: |
           chmod +x ./gradlew
           ./gradlew :publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
