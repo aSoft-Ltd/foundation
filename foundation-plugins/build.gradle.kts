@@ -110,32 +110,34 @@ publishing {
     }
 
     publications {
-        withType<MavenPublication> {
-            artifact(sourcesJar)
-            artifact(javadocJar)
-            pom {
-                name.set("Foundation Plugins - ${this@withType.name}")
-                (findProperty("POM_PACKAGING") as String?)?.let {
-                    // Do not overwrite packaging if set by the multiplatform plugin
-                    packaging = it
-                }
-                description.set("A collection of gradle plugins to ease library development")
-                url.set("https://github.com/aSoft-Ltd/foundation/tree/master/foundation-plugins")
-                scm {
-                    url.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
-                    connection.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
-                    developerConnection.set("scm:git:https://github.com/aSoft-Ltd/foundation-plugins.git")
-                }
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://github.com/aSoft-Ltd/foundation-plugins/blob/master/LICENSE")
+        afterEvaluate {
+            withType<MavenPublication> {
+                artifact(sourcesJar)
+                artifact(javadocJar)
+                pom {
+                    name.set("Foundation Plugins - ${this@withType.name}")
+                    (findProperty("POM_PACKAGING") as String?)?.let {
+                        // Do not overwrite packaging if set by the multiplatform plugin
+                        packaging = it
                     }
-                }
-                developers {
-                    developer {
-                        id.set("andylamax")
-                        name.set("Anderson Lameck")
+                    description.set("A collection of gradle plugins to ease library development")
+                    url.set("https://github.com/aSoft-Ltd/foundation/tree/master/foundation-plugins")
+                    scm {
+                        url.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
+                        connection.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
+                        developerConnection.set("scm:git:https://github.com/aSoft-Ltd/foundation-plugins.git")
+                    }
+                    licenses {
+                        license {
+                            name.set("MIT License")
+                            url.set("https://github.com/aSoft-Ltd/foundation-plugins/blob/master/LICENSE")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("andylamax")
+                            name.set("Anderson Lameck")
+                        }
                     }
                 }
             }
