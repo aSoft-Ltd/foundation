@@ -89,14 +89,6 @@ signing {
     sign(publicationsContainer)
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "buildDir"
-            url = buildDir.resolve("maven").toURI()
-        }
-    }
-}
 
 defaultTasks("jar")
 
@@ -107,6 +99,43 @@ val sourcesJar by tasks.creating(org.gradle.jvm.tasks.Jar::class) {
 
 val javadocJar by tasks.creating(org.gradle.jvm.tasks.Jar::class) {
     archiveClassifier.value("javadoc")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "buildDir"
+            url = buildDir.resolve("maven").toURI()
+        }
+    }
+
+    publications {
+        withType<MavenPublication> {
+            artifact(sourcesJar)
+            artifact(javadocJar)
+            pom {
+                name.set("Foundation Plugins")
+                description.set("A collection of gradle plugins to ease library development")
+                url.set("https://github.com/aSoft-Ltd/foundation/tree/master/foundation-plugins")
+                scm {
+                    connection.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
+                    developerConnection.set("scm:git:https://github.com/aSoft-Ltd/foundation-plugins.git")
+                }
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://github.com/aSoft-Ltd/foundation-plugins/blob/master/LICENSE")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("andylamax")
+                        name.set("Anderson Lameck")
+                    }
+                }
+            }
+        }
+    }
 }
 
 artifacts {
