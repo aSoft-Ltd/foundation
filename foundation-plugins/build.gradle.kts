@@ -123,7 +123,7 @@ publishing {
                     description.set("A collection of gradle plugins to ease library development")
                     url.set("https://github.com/aSoft-Ltd/foundation/tree/master/foundation-plugins")
                     scm {
-                        url.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
+                        url.set("https://github.com/aSoft-Ltd/foundation/tree/master/foundation-plugins")
                         connection.set("scm:git:git://github.com/aSoft-Ltd/foundation-plugins.git")
                         developerConnection.set("scm:git:https://github.com/aSoft-Ltd/foundation-plugins.git")
                     }
