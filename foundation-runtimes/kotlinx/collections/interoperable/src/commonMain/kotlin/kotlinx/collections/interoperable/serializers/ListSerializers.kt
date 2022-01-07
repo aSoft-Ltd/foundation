@@ -6,7 +6,9 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encoding.Decoder
 
-internal class ListSerializer<E>(elementSerializer: KSerializer<E>) : CollectionSerializer<E, List<E>>(elementSerializer) {
+class ListSerializer<E>(
+    elementSerializer: KSerializer<E>
+) : CollectionSerializer<E, List<E>>(elementSerializer), KSerializer<List<E>> {
     override fun deserialize(decoder: Decoder): List<E> = ListWrapper(decoder.decodeSerializableValue(ListSerializer(elementSerializer)))
 }
 

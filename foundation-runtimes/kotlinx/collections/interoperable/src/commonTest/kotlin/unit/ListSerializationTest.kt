@@ -1,12 +1,15 @@
 package unit
 
 import expect.expect
+import kotlinx.collections.interoperable.List
 import kotlinx.collections.interoperable.MutableList
 import kotlinx.collections.interoperable.mutableListOf
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import kotlin.test.Test
 
 class ListSerializationTest {
@@ -16,7 +19,10 @@ class ListSerializationTest {
         val friends: MutableList<Person>
     )
 
-    val person = Person("Anderson", mutableListOf(Person("Lameck", mutableListOf())))
+    val person = Person(
+        name = "Anderson",
+        friends = mutableListOf(Person("Lameck", mutableListOf()))
+    )
 
     @Test
     fun should_obey_to_string_literals() {
@@ -33,5 +39,11 @@ class ListSerializationTest {
         val p = Json.decodeFromString<Person>("""{"name":"Anderson","friends":[{"name":"Lameck","friends":[]}]}""")
         println(p)
         expect(p.name).toBe("Anderson")
+    }
+
+    @Test
+    fun serializing_things_is_tight() {
+        val zer = serializer<List<Int>>()
+        println(zer)
     }
 }

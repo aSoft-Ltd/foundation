@@ -4,9 +4,16 @@
 package kotlinx.collections.interoperable
 
 import kotlinx.collections.interoperable.serializers.ListSerializer
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlin.js.JsExport
 import kotlin.collections.List as KList
 
 @Serializable(with = ListSerializer::class)
-interface List<out E> : Collection<E>, KList<E>
+interface List<out E> : Collection<E>, KList<E> {
+    companion object {
+        fun <E> serializer(
+            elementSerializer: KSerializer<E>
+        ) = ListSerializer(elementSerializer)
+    }
+}

@@ -14,6 +14,8 @@ class BrowserCache(
 
     private val json = config.json
 
+    private val namespace = config.namespace
+
     override fun size() = scope.later { storage.length }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -24,12 +26,12 @@ class BrowserCache(
     }
 
     override fun <T> save(key: String, obj: T, serializer: KSerializer<T>) = scope.later {
-        storage.setItem(key, json.encodeToString(serializer, obj))
+        storage.setItem("${namespace}:${key}", json.encodeToString(serializer, obj))
         obj
     }
 
     override fun <T> load(key: String, serializer: KSerializer<T>): Later<T> = scope.later {
-        val js = storage.getItem(key) ?: throw CacheMissException(key)
+        val js = storage.getItem("${namespace}:${key}") ?: throw CacheMissException(key)
         json.decodeFromString(serializer, js)
     }
 }

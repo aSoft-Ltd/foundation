@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(kotlinx.coroutines.core)
+                api(kotlinx.coroutines.test)
             }
         }
 

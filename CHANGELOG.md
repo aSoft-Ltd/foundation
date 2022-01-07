@@ -1,3 +1,9 @@
+# 1.4.50
+
+- Updated gradle from 7.3 to 7.3.3
+- Updated kotlin from 1.5.30 to 1.6.10
+- Added browser cache namespace
+
 # 1.4.13
 
 # 1.4.12
