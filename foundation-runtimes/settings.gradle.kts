@@ -61,7 +61,6 @@ includeRoot("applikation-runtime", "applikation")
 includeSubs("cache", "cache", "api", "browser", "react-native", "mock")
 includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
 includeRoot("kotlinx-browser", "kotlinx/browser")
-includeRoot("kotlinx-coroutines-test", "kotlinx/coroutines/test")
 includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
 
 includeSubs("later", "later", "core", "ktx")

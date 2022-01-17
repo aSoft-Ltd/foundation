@@ -1,4 +1,4 @@
-import kotlinx.coroutines.runTest
+import kotlinx.coroutines.test.runTest
 import later.BaseLater
 import later.loadToNextEventLoop
 import later.then

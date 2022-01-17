@@ -5,7 +5,6 @@ import kotlinx.collections.interoperable.List
 import kotlinx.collections.interoperable.MutableList
 import kotlinx.collections.interoperable.mutableListOf
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -16,13 +15,11 @@ import kotlin.test.Test
 class ListSerializationTest {
     @Serializable
     data class Person(
-        val name: String,
-        val friends: MutableList<Person>
+        val name: String, val friends: MutableList<Person>
     )
 
     val person = Person(
-        name = "Anderson",
-        friends = mutableListOf(Person("Lameck", mutableListOf()))
+        name = "Anderson", friends = mutableListOf(Person("Lameck", mutableListOf()))
     )
 
     @Test
