@@ -1,5 +1,5 @@
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runTest
+import kotlinx.coroutines.test.runTest
 import later.later
 import later.then
 import kotlin.test.Test

@@ -1,13 +1,17 @@
 [versions]
-react = "17.0.2-pre.240-kotlin-1.5.30"
-extension = "1.0.1-pre.240-kotlin-1.5.30"
-css = "1.0.0-pre.240-kotlin-1.5.30"
-styled = "5.3.1-pre.240-kotlin-1.5.30"
-
+react = "17.0.2-pre.290-kotlin-1.6.10"
+router = "6.2.1-pre.290-kotlin-1.6.10"
+css = "1.0.0-pre.290-kotlin-1.6.10"
+extension = "1.0.1-pre.290-kotlin-1.6.10"
+styled = "5.3.3-pre.290-kotlin-1.6.10"
 
 [libraries]
-react-core = { module = "org.jetbrains.kotlin-wrappers:kotlin-react", version.ref = "react" }
-react-dom = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-dom", version.ref = "react" }
-styled = { module = "org.jetbrains.kotlin-wrappers:kotlin-styled", version.ref = "styled" }
 extension = { module = "org.jetbrains.kotlin-wrappers:kotlin-extensions", version.ref = "extension" }
+react-core = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-core", version.ref = "react" }
+react-old = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-legacy", version.ref = "react" }
+react-new = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-core", version.ref = "react" }
+react-dom-new = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-dom", version.ref = "react" }
+react-dom-old = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-dom-legacy", version.ref = "react" }
+router-dom = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-router-dom", version.ref = "router" }
 css = { module = "org.jetbrains.kotlin-wrappers:kotlin-css", version.ref = "css" }
+styled = { module = "org.jetbrains.kotlin-wrappers:kotlin-styled", version.ref = "styled" }

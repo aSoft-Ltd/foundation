@@ -14,7 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":expect-core"))
-                api(project(":kotlinx-coroutines-test"))
+                api(kotlinx.coroutines.test)
             }
         }
     }

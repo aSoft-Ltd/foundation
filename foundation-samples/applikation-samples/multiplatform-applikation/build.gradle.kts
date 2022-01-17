@@ -77,7 +77,7 @@ kotlin {
             dependencies {
                 implementation(kotlinx.coroutines.core)
                 implementation(kotlinw.react.core)
-                implementation(kotlinw.react.dom)
+                implementation(kotlinw.react.dom.old)
                 implementation(kotlinw.styled)
             }
         }

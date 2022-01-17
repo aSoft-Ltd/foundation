@@ -6,7 +6,7 @@ import expect.expect
 import expect.expectFailure
 import expect.toBe
 import kotlinx.browser.sessionStorage
-import kotlinx.coroutines.runTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import later.await
 import kotlin.test.Test

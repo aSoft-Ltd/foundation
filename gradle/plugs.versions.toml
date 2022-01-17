@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.6.0"
-agp = "7.1.0-alpha11"
+kotlin = "1.6.10"
+agp = "7.0.1"
 nexus = "0.22.0"
 publish = "0.16.0"
 nexus-publish = "1.1.0"

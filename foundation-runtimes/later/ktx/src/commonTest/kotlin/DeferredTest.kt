@@ -3,7 +3,7 @@ import later.asDeferred
 import later.await
 import later.later
 import expect.*
-import kotlinx.coroutines.runTest
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class DeferredTest {

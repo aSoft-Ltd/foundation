@@ -1,7 +1,7 @@
 import expect.*
 import kotlinx.collections.atomic.mutableAtomicListOf
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlin.test.Test
 
