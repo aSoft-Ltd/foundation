@@ -14,7 +14,7 @@ fun main() {
     val link: String by kfg
     println("It works with reload: Link found was ${link.capitalize()}")
 
-    render(document.getElementById("root")) {
+    render(document.getElementById("root")!!) {
         User("Juma")
         User("Peter")
         User("Andrew")

@@ -31,5 +31,4 @@ private val Counter = fc<CounterProps> { props ->
     }
 }
 
-@ReactDsl
 fun RBuilder.Counter(startAt: Int = 0) = child(Counter, CounterProps(startAt))

@@ -47,7 +47,7 @@ kotlin {
                 implementation(kotlinw.css)
                 implementation(kotlinw.styled)
                 implementation(kotlinw.react.core)
-                implementation(kotlinw.react.dom)
+                implementation(kotlinw.react.dom.old)
             }
         }
 
