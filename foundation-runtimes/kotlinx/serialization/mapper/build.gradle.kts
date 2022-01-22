@@ -18,7 +18,7 @@ kotlin {
 
         val commonTest by getting {
             dependencies {
-                implementation(project(":expect-core"))
+                implementation(projects.expectCore)
             }
         }
     }

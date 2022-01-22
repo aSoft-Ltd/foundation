@@ -1,3 +1,9 @@
+# 1.4.61
+## Cache API
+- Added remove(key: String) method to cache
+- Added clear() method to cache
+- Added namespace to CacheConfiguration
+
 # 1.4.50
 
 - Updated gradle from 7.3 to 7.3.3
