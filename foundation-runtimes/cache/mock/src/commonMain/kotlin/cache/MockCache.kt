@@ -25,13 +25,22 @@ class MockCache(
 
     override fun <T> save(key: String, obj: T, serializer: KSerializer<T>) = scop.later {
         delay(config.simulationTime)
-        cache[key] = obj
+        cache["$namespace:$key"] = obj
         obj
     }
 
     override fun <T> load(key: String, serializer: KSerializer<T>): Later<T> = scop.later {
         delay(config.simulationTime)
-        val obj = cache[key] ?: throw CacheMissException(key)
+        val obj = cache["$namespace:$key"] ?: throw CacheMissException(key)
         obj as T
+    }
+
+    override fun remove(key: String): Later<Unit?> = scop.later {
+        val removed = cache.remove("$namespace:$key")
+        if (removed != null) Unit else null
+    }
+
+    override fun clear(): Later<Unit> = scop.later {
+        cache.clear()
     }
 }

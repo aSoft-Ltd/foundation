@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("tz.co.asoft.library")
     id("io.codearte.nexus-staging")
     signing
@@ -18,7 +19,7 @@ kotlin {
 
         val commonTest by getting {
             dependencies {
-                implementation(project(":expect-core"))
+                implementation(projects.expectCore)
             }
         }
     }

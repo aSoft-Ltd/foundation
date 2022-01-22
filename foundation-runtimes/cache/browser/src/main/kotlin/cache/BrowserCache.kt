@@ -4,6 +4,7 @@ import cache.exceptions.CacheMissException
 import kotlinx.serialization.KSerializer
 import later.Later
 import later.later
+import org.w3c.dom.get
 
 class BrowserCache(
     override val config: BrowserCacheConfig = BrowserCacheConfig()
@@ -13,8 +14,6 @@ class BrowserCache(
     private val scope = config.scope
 
     private val json = config.json
-
-    private val namespace = config.namespace
 
     override fun size() = scope.later { storage.length }
 
@@ -33,5 +32,15 @@ class BrowserCache(
     override fun <T> load(key: String, serializer: KSerializer<T>): Later<T> = scope.later {
         val js = storage.getItem("${namespace}:${key}") ?: throw CacheMissException(key)
         json.decodeFromString(serializer, js)
+    }
+
+    override fun remove(key: String): Later<Unit?> = scope.later {
+        val item = storage.getItem("${namespace}:${key}")
+        storage.removeItem(key)
+        if (item != null) Unit else null
+    }
+
+    override fun clear(): Later<Unit> = scope.later {
+        storage.clear()
     }
 }

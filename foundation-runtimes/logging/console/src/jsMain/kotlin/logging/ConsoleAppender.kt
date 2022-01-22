@@ -17,10 +17,8 @@ actual class ConsoleAppender actual constructor(
             }
 
             if (options.verbose) {
-                val args = mutableListOf<Any?>("${level.name}: $msg")
-                data.forEach {
-                    args += "\n${it.first}"
-                    args += it.second
+                val args = mutableListOf<Any?>("${level.name}: $msg") + data.map {
+                    "\n${it.first}: ${it.second}"
                 }
                 printer(args.toTypedArray())
             } else {

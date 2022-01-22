@@ -7,7 +7,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 
 class AsyncStorageCacheConfig(
+    override val namespace: String = DEFAULT_NAMESPACE,
     val storage: AsyncStorageStatic = AsyncStorage,
     val json: Json = Json { },
-    override val scope: CoroutineScope = CoroutineScope(SupervisorJob())
-) : CacheConfiguration(scope)
+    override val scope: CoroutineScope = DEFAULT_SCOPE
+) : CacheConfiguration(namespace, scope)

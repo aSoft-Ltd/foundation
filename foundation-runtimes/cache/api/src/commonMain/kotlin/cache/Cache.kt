@@ -21,10 +21,23 @@ abstract class Cache(open val config: CacheConfiguration) {
     internal open val scope
         get() = config.scope
 
+    protected val namespace get() = config.namespace
+
     /**
      * Should return the size of the [Cache] which should ideally equal the number of [keys]
      */
     abstract fun size(): Later<Int>
+
+    /**
+     * Clears the entire [Cache]
+     */
+    abstract fun clear(): Later<Unit>
+
+    /**
+     * Removes a [key] from the [Cache]
+     * @return the removed object or null if nothing was removed
+     */
+    abstract fun remove(key: String): Later<Unit?>
 
     /**
      * Save object [T] on to the [Cache] with a [key] and its serializer [serializer]

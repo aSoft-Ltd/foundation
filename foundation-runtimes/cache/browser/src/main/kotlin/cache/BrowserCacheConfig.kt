@@ -7,8 +7,8 @@ import kotlinx.serialization.json.Json
 import org.w3c.dom.Storage
 
 open class BrowserCacheConfig(
-    val namespace: String = "app",
+    override val namespace: String = DEFAULT_NAMESPACE,
     val storage: Storage = localStorage,
     val json: Json = Json {},
-    override val scope: CoroutineScope = CoroutineScope(SupervisorJob())
-) : CacheConfiguration(scope)
+    override val scope: CoroutineScope = DEFAULT_SCOPE
+) : CacheConfiguration(namespace, scope)

@@ -1,6 +1,5 @@
 package expect
 
-import kotlin.contracts.contract
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull

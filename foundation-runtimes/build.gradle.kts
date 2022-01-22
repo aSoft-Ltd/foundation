@@ -1,3 +1,8 @@
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.0.1")
+    }
+}
 plugins {
     alias(plugs.plugins.android.library) apply false
     alias(plugs.plugins.kotlin.multiplatform) apply false
