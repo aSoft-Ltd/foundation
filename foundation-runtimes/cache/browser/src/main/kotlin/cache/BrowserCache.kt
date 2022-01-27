@@ -36,7 +36,7 @@ class BrowserCache(
 
     override fun remove(key: String): Later<Unit?> = scope.later {
         val item = storage.getItem("${namespace}:${key}")
-        storage.removeItem(key)
+        storage.removeItem("${namespace}:${key}")
         if (item != null) Unit else null
     }
 
