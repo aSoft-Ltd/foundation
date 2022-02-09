@@ -1,6 +1,6 @@
 package later
 
-expect open class Later<T>(
+expect open class Later<out T>(
     executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null
 ) : BaseLater<T> {
     companion object {

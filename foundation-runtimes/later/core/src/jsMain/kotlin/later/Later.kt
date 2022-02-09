@@ -5,7 +5,7 @@ package later
 
 import kotlin.js.Promise
 
-actual open class Later<T> actual constructor(
+actual open class Later<out T> actual constructor(
     executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)?
 ) : BaseLater<T>(executor) {
     actual companion object {
