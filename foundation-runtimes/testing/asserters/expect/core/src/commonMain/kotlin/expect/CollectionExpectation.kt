@@ -9,7 +9,6 @@ import kotlin.test.assertTrue
  *
  */
 interface CollectionExpectation<E> : BasicExpectation<Collection<E>> {
-
     fun toContain(vararg elements: E) = assertTrue(
         """
             

@@ -28,6 +28,7 @@ internal fun Any?.toJsonElement(): JsonElement = when (this) {
     is UByte -> JsonPrimitive(toByte())
     is Boolean -> JsonPrimitive(this)
     is String -> JsonPrimitive(this)
+    is Iterable<*> -> JsonArray(mapNotNull { it.toJsonElement() })
     is Collection<*> -> JsonArray(mapNotNull { it.toJsonElement() })
     is Array<*> -> JsonArray(mapNotNull { it.toJsonElement() })
     is Map<*, *> -> JsonObject(map { (k, v) -> k.toString() to v.toJsonElement() }.toMap())
