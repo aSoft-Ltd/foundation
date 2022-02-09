@@ -9,11 +9,11 @@ import org.w3c.dom.get
 class BrowserCache(
     override val config: BrowserCacheConfig = BrowserCacheConfig()
 ) : Cache(config) {
-    private val storage = config.storage
+    private val storage get() = config.storage
 
-    private val scope = config.scope
+    private val scope get() = config.scope
 
-    private val json = config.json
+    private val json get() = config.json
 
     override fun size() = scope.later { storage.length }
 
@@ -36,7 +36,7 @@ class BrowserCache(
 
     override fun remove(key: String): Later<Unit?> = scope.later {
         val item = storage.getItem("${namespace}:${key}")
-        storage.removeItem(key)
+        storage.removeItem("${namespace}:${key}")
         if (item != null) Unit else null
     }
 

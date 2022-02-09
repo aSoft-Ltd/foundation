@@ -27,7 +27,7 @@ private inline fun <reified S : LaterState<*>> BasicExpectation<out BaseLater<*>
 
 fun BasicExpectation<out BaseLater<*>>.toBeSettled() = stateToBe<Settled<*>>()
 
-fun BasicExpectation<out BaseLater<*>>.toBePending() = stateToBe<PENDING<*>>()
+fun BasicExpectation<out BaseLater<*>>.toBePending() = stateToBe<PENDING>()
 
 fun <T> BasicExpectation<out BaseLater<T>>.toBeFulfilled() = stateToBe<FULFILLED<T>>()
 
@@ -37,7 +37,7 @@ fun <T> BasicExpectation<out BaseLater<T>>.toBeFulfilledWith(value: T) {
     assertEquals(value, state.value)
 }
 
-fun BasicExpectation<out BaseLater<*>>.toBeRejected() = stateToBe<REJECTED<*>>()
+fun BasicExpectation<out BaseLater<*>>.toBeRejected() = stateToBe<REJECTED>()
 
 fun BasicExpectation<out BaseLater<*>>.toBeRejectedWith(cause: Throwable) {
     val error = AssertionError("Expected state to be rejected but was ${this.value.state::class.simpleName}")

@@ -8,7 +8,7 @@ import kotlin.js.Promise
 /*
 Types can be found here: https://github.com/react-native-async-storage/async-storage/blob/master/types/index.d.ts
  */
-external interface AsyncStorageStatic {
+external interface ReactNativeAsyncStorage {
     fun getAllKeys(): Promise<Array<String>>
     fun setItem(key: String, value: String): Promise<Unit>
     fun getItem(key: String): Promise<String?>
@@ -17,4 +17,4 @@ external interface AsyncStorageStatic {
 }
 
 @JsName("default")
-external val AsyncStorage: AsyncStorageStatic
+external val AsyncStorage: ReactNativeAsyncStorage

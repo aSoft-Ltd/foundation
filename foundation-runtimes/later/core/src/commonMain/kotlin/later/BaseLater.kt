@@ -2,18 +2,18 @@
 
 package later
 
-import kotlinx.collections.atomic.mutableAtomicListOf
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
-import later.LaterState.PENDING
-import later.LaterState.Settled
+import kotlinx.collections.atomic.mutableAtomicListOf
 import later.LaterState.Settled.FULFILLED
 import later.LaterState.Settled.REJECTED
+import later.LaterState.Settled
+import later.LaterState.PENDING
 import kotlin.js.JsExport
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
-open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
+open class BaseLater<out T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
     private val thenQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
     private val finallyQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
 
@@ -97,7 +97,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     @JvmSynthetic
     fun finally(cleanUp: (state: Settled<T>) -> Any?) = cleanUp(cleanUp)
 
-    fun resolveWith(value: T) {
+    fun resolveWith(value: @UnsafeVariance T) {
         if (state is PENDING) {
             try {
                 innerState.lazySet(FULFILLED(value as T))

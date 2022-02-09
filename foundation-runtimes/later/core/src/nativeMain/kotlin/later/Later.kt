@@ -5,7 +5,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-actual open class Later<T> actual constructor(
+actual open class Later<out T> actual constructor(
     executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)?
 ) : BaseLater<T>(executor) {
 

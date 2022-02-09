@@ -2,13 +2,13 @@ package later
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import later.LaterState.Settled
 import java.util.concurrent.CompletableFuture
 import kotlin.coroutines.resume
+import later.LaterState.Settled
 import java.util.function.Function
 import kotlin.coroutines.resumeWithException
 
-actual open class Later<T> actual constructor(
+actual open class Later<out T> actual constructor(
     executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)?
 ) : BaseLater<T>(executor) {
     constructor(executor: LaterExecutor<T>) : this({ resolve, reject -> executor.execute(resolve, reject) })
@@ -22,19 +22,19 @@ actual open class Later<T> actual constructor(
         }
 
         @JvmStatic
-        actual fun reject(error: Throwable) : Later<Nothing> {
+        actual fun reject(error: Throwable): Later<Nothing> {
             val l = Later<Nothing>()
             l.rejectWith(error)
             return l
         }
     }
 
-    fun <S> then(onResolve: Function<T, S>): Later<S> = then(
+    fun <S> then(onResolve: Function<@UnsafeVariance T, S>): Later<S> = then(
         onResolved = { value -> onResolve.apply(value) },
         onRejected = null
     )
 
-    fun <S> then(onResolve: Function<T, S>, onReject: Function<Throwable, S>): Later<S> = then(
+    fun <S> then(onResolve: Function<@UnsafeVariance T, S>, onReject: Function<Throwable, S>): Later<S> = then(
         onResolved = { value -> onResolve.apply(value) },
         onRejected = { error -> onReject.apply(error) }
     )
@@ -50,7 +50,7 @@ actual open class Later<T> actual constructor(
     /**
      * Same as calling finally on javascript or kotlin
      */
-    fun complete(handler: Fun<Settled<T>>) = complete { state -> handler.invoke(state) }
+    fun complete(handler: Fun<Settled<@UnsafeVariance T>>) = complete { state -> handler.invoke(state) }
 
     /**
      * Warning: This method blocks the [LATER_DISPATCHER_JVM] and just waits for the result
@@ -68,7 +68,7 @@ actual open class Later<T> actual constructor(
         }
     }
 
-    fun asCompletableFuture(): CompletableFuture<T> {
+    fun asCompletableFuture(): CompletableFuture<@UnsafeVariance T> {
         val future = CompletableFuture<T>()
         then(
             onResolved = { future.complete(it) },

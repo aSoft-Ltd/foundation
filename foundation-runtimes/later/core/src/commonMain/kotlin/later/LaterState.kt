@@ -1,8 +1,7 @@
-@file:JsExport
-
 package later
 
-import kotlin.js.JsExport
+import later.LaterState.PENDING
+import later.LaterState.Settled
 import later.LaterState.Settled.FULFILLED
 import later.LaterState.Settled.REJECTED
 
@@ -15,12 +14,12 @@ import later.LaterState.Settled.REJECTED
  * When it runs, and finishes off it's work it gets [Settled]
  * in either a [FULFILLED] or [REJECTED] state
  */
-sealed class LaterState<T> {
+sealed class LaterState<out T> {
 
     /**
      * Initial [LaterState]. Every later begins at this state
      */
-    class PENDING<T> : LaterState<T>() {
+    class PENDING : LaterState<Nothing>() {
         override fun toString() = "PENDING"
     }
 
@@ -29,17 +28,17 @@ sealed class LaterState<T> {
      *
      * This may be either [FULFILLED] or [REJECTED]
      */
-    sealed class Settled<T> : LaterState<T>() {
+    sealed class Settled<out T> : LaterState<T>() {
         /**
          * A state representing a successful completion of a [Later]
          * @param value The value that this [Later] completed with
          */
-        data class FULFILLED<T>(val value: T) : Settled<T>()
+        data class FULFILLED<out T>(val value: T) : Settled<T>()
 
         /**
          * A state representing a failed completion of a [Later]
          * @param cause The [Throwable] that caused the failure
          */
-        data class REJECTED<T>(val cause: Throwable) : Settled<T>()
+        data class REJECTED(val cause: Throwable) : Settled<Nothing>()
     }
 }
