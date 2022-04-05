@@ -75,6 +75,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
+                implementation(project.dependencies.platform(kotlinw.bom))
                 implementation(kotlinx.coroutines.core)
                 implementation(kotlinw.react.core)
                 implementation(kotlinw.react.dom.old)

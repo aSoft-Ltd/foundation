@@ -27,12 +27,12 @@ applikation {
     )
 }
 
-rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
-    rootProject.the<NodeJsRootExtension>().versions.apply {
-        webpackDevServer.version = "4.1.0"
-        webpackCli.version = "4.9.0"
-    }
-}
+//rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
+//    rootProject.the<NodeJsRootExtension>().versions.apply {
+//        webpackDevServer.version = "4.1.0"
+//        webpackCli.version = "4.9.0"
+//    }
+//}
 
 kotlin {
     js(IR) {
@@ -43,6 +43,7 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation(asoft.applikation.runtime)
+                implementation(project.dependencies.platform(kotlinw.bom))
                 implementation(kotlinx.coroutines.core)
                 implementation(kotlinw.css)
                 implementation(kotlinw.styled)

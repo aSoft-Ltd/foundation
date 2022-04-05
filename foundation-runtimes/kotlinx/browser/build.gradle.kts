@@ -12,6 +12,7 @@ kotlin {
             dependencies {
                 api(kotlinx.coroutines.core)
                 api(kotlinx.html)
+                api(project.dependencies.platform(kotlinw.bom))
                 api(kotlinw.extension)
                 api(kotlinw.css)
             }
