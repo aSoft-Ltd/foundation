@@ -11,31 +11,14 @@ pluginManagement {
 
     repositories {
         google()
-        jcenter()
         gradlePluginPortal()
         mavenCentral()
     }
 
     dependencyResolutionManagement {
         versionCatalogs {
-            val asoft by creating {
-                from(files("../gradle/asoft.versions.toml"))
-            }
-
-            val plugs by creating {
-                from(files("../gradle/plugs.versions.toml"))
-            }
-
-            val kotlinx by creating {
-                from(files("../gradle/kotlinx.versions.toml"))
-            }
-
-            val kotlinw by creating {
-                from(files("../gradle/kotlinw.versions.toml"))
-            }
-
-            val npm by creating {
-                from(files("../gradle/npm.versions.toml"))
+            file("../gradle/versions").listFiles().map { it.nameWithoutExtension }.forEach {
+                create(it) { from(files("../gradle/versions/$it.toml")) }
             }
         }
     }

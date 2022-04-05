@@ -11,13 +11,13 @@ actual open class Later<out T> actual constructor(
 
     actual companion object {
         actual fun <T> resolve(value: T): Later<T> {
-            val l = Later<T>()
+            val l = Later<T>(null)
             l.resolveWith(value)
             return l
         }
 
         actual fun reject(error: Throwable): Later<Nothing> {
-            val l = Later<Nothing>()
+            val l = Later<Nothing>(null)
             l.rejectWith(error)
             return l
         }

@@ -10,11 +10,8 @@ pluginManagement {
 
     dependencyResolutionManagement {
         versionCatalogs {
-            create("asoft") {
-                from(files("../gradle/asoft.versions.toml"))
-            }
-            create("plugs") {
-                from(files("../gradle/plugs.versions.toml"))
+            file("../gradle/versions").listFiles().map { it.nameWithoutExtension }.forEach {
+                create(it) { from(files("../gradle/versions/$it.toml")) }
             }
         }
     }

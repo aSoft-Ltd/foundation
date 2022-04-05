@@ -16,17 +16,8 @@ pluginManagement {
 
     dependencyResolutionManagement {
         versionCatalogs {
-            create("asoft") {
-                from(files("../gradle/asoft.versions.toml"))
-            }
-            create("plugs") {
-                from(files("../gradle/plugs.versions.toml"))
-            }
-            create("kotlinx") {
-                from(files("../gradle/kotlinx.versions.toml"))
-            }
-            create("kotlinw") {
-                from(files("../gradle/kotlinw.versions.toml"))
+            file("../gradle/versions").listFiles().map { it.nameWithoutExtension }.forEach {
+                create(it) { from(files("../gradle/versions/$it.toml")) }
             }
         }
     }
