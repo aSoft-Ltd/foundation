@@ -35,8 +35,6 @@ kotlin {
             tvosX64()
         ),
         "linux" to listOf(
-            linuxArm64(),
-            linuxArm32Hfp(),
             linuxX64()
         )
     )

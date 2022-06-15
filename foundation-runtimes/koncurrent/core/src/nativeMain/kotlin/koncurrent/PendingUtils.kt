@@ -1,13 +1,8 @@
 package koncurrent
 
-actual fun <T, R> Pending<T>.then(
-    executor: Executor,
-    onResolved: ((T) -> R), onRejected: ((Throwable) -> R)?
-) = then(onResolved = onResolved, onRejected = onRejected)
+actual fun <T, R> Pending<T>.then(executor: Executor, onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
 
-actual fun <T, R> Pending<T>.then(
-    onResolved: ((T) -> R), onRejected: ((Throwable) -> R)?
-) = then(onResolved = onResolved, onRejected = onRejected)
+actual fun <T, R> Pending<T>.then(onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
 
 actual fun <T> Pending<T>.catch(executor: Executor, onRejected: (Throwable) -> T): Pending<T> = error(executor, onRejected)
 

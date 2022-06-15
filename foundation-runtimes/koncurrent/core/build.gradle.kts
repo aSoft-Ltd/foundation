@@ -24,13 +24,14 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(projects.expectCoroutines)
+                implementation(projects.koncurrentCoroutines)
             }
         }
 
         val nativeMain by creating {
             dependsOn(commonMain)
             dependencies {
-                implementation(project.kotlinx.coroutines.core)
+                implementation(kotlinx.coroutines.core)
             }
         }
 

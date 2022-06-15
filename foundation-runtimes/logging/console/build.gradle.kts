@@ -17,7 +17,7 @@ kotlin {
     android { library() }
     jvm { library() }
     js(IR) { library() }
-    val nativeTargets = nativeTargets(false)
+    val nativeTargets = nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {

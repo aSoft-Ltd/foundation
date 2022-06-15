@@ -2,6 +2,8 @@ package koncurrent
 
 import java.util.concurrent.CompletableFuture
 
-actual fun <T> pending(executor: Executor, block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block, executor)
+@JvmSynthetic
+actual fun <T> Executor.pending(block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block, this)
 
+@JvmSynthetic
 actual fun <T> pending(block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block)

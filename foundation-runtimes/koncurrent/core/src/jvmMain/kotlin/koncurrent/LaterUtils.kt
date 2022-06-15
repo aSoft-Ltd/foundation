@@ -18,6 +18,7 @@ fun <T> CompletableFuture<T>.asLater(): Later<T> = Later { resolve, reject ->
 internal actual fun <T> Later<T>.toNativeImplementation(): Pending<T> {
     val future = CompletableFuture<T>()
     then(
+        executor = executor,
         onResolved = { future.complete(it) },
         onRejected = { future.completeExceptionally(it) }
     )

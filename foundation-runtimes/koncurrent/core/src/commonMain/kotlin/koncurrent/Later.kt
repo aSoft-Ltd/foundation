@@ -53,7 +53,8 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     }
 
     @JvmSynthetic
-    fun <S> then(executor: Executor = this.executor, onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)? = null): Later<S> {
+    @JsName("thenWithExecutor")
+    fun <S> then(executor: Executor, onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)? = null): Later<S> {
         val controlledLater = Later<S>(executor)
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> S, onRejected))
         when (val s = this.state) {
@@ -63,11 +64,13 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
         return controlledLater
     }
 
+    fun <S> then(onResolved: (T) -> S): Later<S> = then(executor, onResolved, null)
+
     @JvmSynthetic
     fun error(executor: Executor = this.executor, handler: (Throwable) -> T) = then(executor, null, handler)
 
     @JvmSynthetic
-    fun catch(executor: Executor = this.executor, handler: (Throwable) -> T) = error(executor, handler)
+    fun catch(executor: Executor = this.executor, handler: (Throwable) -> T) = then(executor, null, handler)
 
     @JvmOverloads
     @JsName("_ignore_then")
@@ -134,6 +137,10 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     @JvmName("toCompletableFuture")
     @JsName("toPromise")
     fun toPending(): Pending<T> = toNativeImplementation()
+
+    @JvmName("toCompletableFuture")
+    @JsName("_ignore_toPromise")
+    fun toPending(executor: Executor): Pending<T> = toNativeImplementation(executor)
 
     fun resolveWith(value: @UnsafeVariance T) {
         if (this.state is PENDING) {

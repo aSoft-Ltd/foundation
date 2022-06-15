@@ -17,7 +17,7 @@ fun <T, S> Later<Later<T>>.later(
 }
 
 fun <T> Later<T>.asPromise(): Promise<T> = asDynamic().promise ?: Promise<T> { resolve, reject ->
-    then(onResolved = { resolve(it) }, onRejected = { reject(it) })
+    then(executor, onResolved = { resolve(it) }, onRejected = { reject(it) })
 }.apply { asDynamic().promise = this }
 
 fun <T> Later<T>.asPromise(executor: Executor): Promise<T> = asDynamic().promise ?: Promise<T> { resolve, reject ->
@@ -31,6 +31,7 @@ fun <T> Promise<T>.asLater(executor: Executor): Later<T> = asDynamic().later ?: 
 fun <T> Promise<T>.asLater(): Later<T> = asDynamic().later ?: Later<T> { resolve, reject ->
     then(onFulfilled = { resolve(it) }, onRejected = { reject(it) })
 }.apply { asDynamic().later = this }
+
 external fun setTimeout(handler: dynamic, timeout: Int = definedExternally, vararg arguments: Any?): Int
 
 internal actual fun <T> Later<T>.toNativeImplementation(): Pending<T> = asPromise()

@@ -14,15 +14,13 @@ class CanConstructAFunctioningPending {
     @Test
     fun should_be_able_to_recover_on_a_failure() = runTest {
         val p: Pending<Int> = pending { throw RuntimeException("Wooozaaaaa") }
-        p.catch {
+        val increamented = p.catch {
             println("Recovering from ${it.message}")
             43
         }.then {
             println("Adding the pending object")
             it + 1
-        }.finally {
-            println("completed")
         }
-        p
+        println("Increamented value is $increamented")
     }
 }

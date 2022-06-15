@@ -3,15 +3,10 @@
 package koncurrent
 
 actual fun <T, R> Pending<T>.then(
-    executor: Executor,
-    onResolved: ((T) -> R), onRejected: ((Throwable) -> R)?
-): Pending<R> = handleAsync({ obj, err ->
-    if (err != null) onRejected?.invoke(err) else onResolved(obj)
-}, executor)
+    executor: Executor, onResolved: ((T) -> R)
+): Pending<R> = thenApplyAsync(onResolved, executor)
 
-actual fun <T, R> Pending<T>.then(
-    onResolved: ((T) -> R), onRejected: ((Throwable) -> R)?
-): Pending<R> = handle { obj, err -> if (err != null) onRejected?.invoke(err) else onResolved(obj) }
+actual fun <T, R> Pending<T>.then(onResolved: ((T) -> R)): Pending<R> = thenApplyAsync(onResolved)
 
 actual fun <T> Pending<T>.catch(executor: Executor, onRejected: (Throwable) -> T): Pending<T> = exceptionallyAsync(onRejected, executor)
 

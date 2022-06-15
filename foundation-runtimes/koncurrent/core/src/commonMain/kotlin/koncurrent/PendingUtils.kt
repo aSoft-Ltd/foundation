@@ -4,11 +4,9 @@ package koncurrent
 
 import kotlin.jvm.JvmName
 
-expect fun <T, R> Pending<T>.then(executor: Executor, onResolved: ((T) -> R), onRejected: ((Throwable) -> R)? = null): Pending<R>
+expect fun <T, R> Pending<T>.then(executor: Executor, onResolved: ((T) -> R)): Pending<R>
 
-expect fun <T, R> Pending<T>.then(onResolved: ((T) -> R), onRejected: ((Throwable) -> R)? = null): Pending<R>
-
-fun <T, R> Pending<T>.then(onResolved: (T) -> R): Pending<R> = then(onResolved, null)
+expect fun <T, R> Pending<T>.then(onResolved: (T) -> R): Pending<R>
 
 expect fun <T> Pending<T>.catch(onRejected: (Throwable) -> T): Pending<T>
 
