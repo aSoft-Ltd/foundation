@@ -31,9 +31,9 @@ fun <T> CoroutineScope.later(
 }
 
 /**
- * Converts and instance of this [BaseLater] into a [Deferred]
+ * Converts and instance of this [Later] into a [Deferred]
  */
-fun <T> BaseLater<T>.asDeferred(): Deferred<T> = LATER_SCOPE.async(start = CoroutineStart.LAZY) { await() }
+fun <T> Later<T>.asDeferred(): Deferred<T> = LATER_SCOPE.async(start = CoroutineStart.LAZY) { await() }
 
 /**
  * Suspends this [Later] and resumes with the result, or exception
@@ -41,7 +41,7 @@ fun <T> BaseLater<T>.asDeferred(): Deferred<T> = LATER_SCOPE.async(start = Corou
  * If this [Later] is already in a [Settled] state,
  * it returns the [FULFILLED.value] immediately or throws the [REJECTED.cause]
  */
-suspend fun <T> BaseLater<T>.await(): T = when (val s = state) {
+suspend fun <T> Later<T>.await(): T = when (val s = state) {
     is Settled -> when (s) {
         is FULFILLED -> s.value
         is REJECTED -> throw s.cause

@@ -1,18 +1,18 @@
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
-import later.BaseLater
+import later.Later
 import later.loadToNextEventLoop
-import later.then
 import kotlin.test.Test
 
 class LaterTestCommon {
-    fun later(value: Int) = BaseLater<Int> { resolve, reject ->
+    fun later(value: Int) = Later<Int> { resolve, reject ->
         loadToNextEventLoop {
             if (value < 5) reject(Exception("Number($value) is less than 5"))
             else resolve(value)
         }
     }
 
-    fun BaseLater<Int>.process() = error {
+    fun Later<Int>.process() = error {
         println("Error: ${it.message}")
         5
     }.then {
@@ -28,6 +28,8 @@ class LaterTestCommon {
         val later2 = later(4)
 
         later2.process()
+
+        delay(1000)
     }
 
     @Test
@@ -39,5 +41,6 @@ class LaterTestCommon {
             println("I am certain that this is settled now")
             println(it)
         }
+        delay(10)
     }
 }

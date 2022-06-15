@@ -1,5 +1,5 @@
 package later;
 
-public interface Fun<T> {
+public interface Invokable<T> {
     void invoke(T obj);
 }

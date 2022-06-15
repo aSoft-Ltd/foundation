@@ -1,6 +1,5 @@
 pluginManagement {
     enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-    enableFeaturePreview("VERSION_CATALOGS")
     resolutionStrategy {
         eachPlugin {
             if (requested.id.namespace == "com.android") {
@@ -17,8 +16,10 @@ pluginManagement {
 
     dependencyResolutionManagement {
         versionCatalogs {
-            file("../gradle/versions").listFiles().map { it.nameWithoutExtension }.forEach {
-                create(it) { from(files("../gradle/versions/$it.toml")) }
+            file("../gradle/versions").listFiles().map {
+                it.nameWithoutExtension to it.absolutePath
+            }.forEach { (name, path) ->
+                create(name) { from(files(path)) }
             }
         }
     }
@@ -46,6 +47,8 @@ includeSubs("cache", "cache", "api", "browser", "react-native", "mock")
 includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
 includeRoot("kotlinx-browser", "kotlinx/browser")
 includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
+
+includeSubs("koncurrent", "koncurrent", "core")
 
 includeSubs("later", "later", "core", "ktx")
 includeRoot("later-test-expect", "later/test/expect")
