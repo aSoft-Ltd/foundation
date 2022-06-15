@@ -1,7 +1,9 @@
+@file:JvmName("LaterUtilsCommon")
 package koncurrent
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
+import kotlin.jvm.JvmName
 
 @OptIn(ExperimentalContracts::class)
 internal fun Any?.isThenable(): Boolean {

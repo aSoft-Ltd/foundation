@@ -17,7 +17,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-
+                api(projects.koncurrentCore)
+                api(kotlinx.coroutines.core)
             }
         }
 
@@ -30,7 +31,7 @@ kotlin {
         val nativeMain by creating {
             dependsOn(commonMain)
             dependencies {
-                implementation(project.kotlinx.coroutines.core)
+
             }
         }
 

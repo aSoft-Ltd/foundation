@@ -1,12 +1,9 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
-
 package koncurrent
 
 external class Promise<T>(executor: (resolve: (T) -> Unit, reject: (Throwable) -> Unit) -> Unit) {
     fun <S> then(onFulfilled: ((T) -> S)?, onRejected: ((Throwable) -> S)? = definedExternally): Promise<S>
 
-    fun <S> catch(onRejected: (Throwable) -> S): Promise<S>
+    fun catch(onRejected: (Throwable) -> T): Promise<T>
 
     fun finally(onFinally: () -> Unit): Promise<T>
 

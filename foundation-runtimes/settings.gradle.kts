@@ -48,7 +48,7 @@ includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
 includeRoot("kotlinx-browser", "kotlinx/browser")
 includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
 
-includeSubs("koncurrent", "koncurrent", "core")
+includeSubs("koncurrent", "koncurrent", "core", "coroutines")
 
 includeSubs("later", "later", "core", "ktx")
 includeRoot("later-test-expect", "later/test/expect")

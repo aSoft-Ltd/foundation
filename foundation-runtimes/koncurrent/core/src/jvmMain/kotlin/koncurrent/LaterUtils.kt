@@ -1,4 +1,4 @@
-@file:JvmName("LaterUtils")
+@file:JvmName("LaterUtilsJvm")
 
 package koncurrent
 

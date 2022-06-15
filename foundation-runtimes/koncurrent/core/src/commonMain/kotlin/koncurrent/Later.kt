@@ -16,7 +16,7 @@ import kotlin.jvm.JvmSynthetic
 
 class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
 
-    @JsName("fromExecutor")
+    @JsName("_ignore_fromHandler")
     constructor(executor: Executor = Executors.default(), handler: LaterHandler<T>) : this(executor, { resolve, reject -> handler.execute(resolve, reject) })
 
     private val thenQueue = mutableListOf<LaterQueueComponent<*>>()
@@ -64,10 +64,10 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     }
 
     @JvmSynthetic
-    fun <S> error(executor: Executor = this.executor, handler: (Throwable) -> S) = then(executor, null, handler)
+    fun error(executor: Executor = this.executor, handler: (Throwable) -> T) = then(executor, null, handler)
 
     @JvmSynthetic
-    fun <S> catch(executor: Executor = this.executor, handler: (Throwable) -> S) = error(executor, handler)
+    fun catch(executor: Executor = this.executor, handler: (Throwable) -> T) = error(executor, handler)
 
     @JvmOverloads
     @JsName("_ignore_then")
@@ -90,7 +90,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
      */
     @JsName("_ignore_error")
     @JvmOverloads
-    fun <S> error(handler: Function<Throwable, S>, executor: Executor = this.executor): Later<S> = then(
+    fun <T> error(handler: Function<Throwable, T>, executor: Executor = this.executor): Later<T> = then(
         executor = executor,
         onResolved = null,
         onRejected = { err -> handler.apply(err) }
