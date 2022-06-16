@@ -1,4 +1,5 @@
 import koncurrent.*
+import koncurrent.coroutines.await
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest

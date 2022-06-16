@@ -1,6 +1,6 @@
 import expect.expect
 import koncurrent.ControlledPending
-import koncurrent.await
+import koncurrent.coroutines.await
 import koncurrent.pending
 import koncurrent.resolveWith
 import kotlinx.coroutines.test.runTest

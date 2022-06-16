@@ -27,4 +27,18 @@ suspend fun <T, R> Later<T>.map(transform: suspend (T) -> R): Later<R> {
     return later
 }
 
+suspend fun <T> Later<T>.catch(transform: suspend (Throwable) -> T): Later<T> {
+    val later = Later<T>()
+    try {
+        later.resolveWith(await())
+    } catch (err: Throwable) {
+        try {
+            later.resolveWith(transform(err))
+        } catch (err: Throwable) {
+            later.rejectWith(err)
+        }
+    }
+    return later
+}
+
 suspend fun <T> Later<T>.collect(collector: suspend (T) -> Unit) = collector(await())

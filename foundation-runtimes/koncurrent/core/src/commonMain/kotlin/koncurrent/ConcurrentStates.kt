@@ -1,4 +1,8 @@
+@file:JsExport
+
 package koncurrent
+
+import kotlin.js.JsExport
 
 /**
  * ### State of a [Later]

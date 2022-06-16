@@ -54,7 +54,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     }
 
     @JvmSynthetic
-    @JsName("thenWithExecutor")
+    @JsName("_ignore_thenWithExecutor")
     fun <S> then(executor: Executor, onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)? = null): Later<S> {
         val controlledLater = Later<S>(executor)
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> S, onRejected))
@@ -67,10 +67,14 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
 
     fun <S> then(onResolved: (T) -> S): Later<S> = then(executor, onResolved, null)
 
+    @JsName("_ignore_errorWithExecutor")
     @JvmSynthetic
-    fun error(executor: Executor = this.executor, handler: (Throwable) -> T) = then(executor, null, handler)
+    fun error(executor: Executor, handler: (Throwable) -> T) = then(executor, null, handler)
+
+    fun error(handler: (Throwable) -> T): Later<T> = then(executor, null, handler)
 
     @JvmSynthetic
+    @JsName("_ignore_catchWithExecutor")
     fun catch(executor: Executor = this.executor, handler: (Throwable) -> T) = then(executor, null, handler)
 
     @JvmOverloads
@@ -131,9 +135,14 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     }
 
     @JvmSynthetic
-    fun complete(executor: Executor = this.executor, cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
+    @JsName("_ignore_completeWithExecutor")
+    fun complete(executor: Executor, cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
 
     @JvmSynthetic
+    fun complete(cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
+
+    @JvmSynthetic
+    @JsName("_ignore_finally")
     fun finally(executor: Executor = this.executor, cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
 
     @JvmName("toCompletableFuture")
