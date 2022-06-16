@@ -61,6 +61,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
         when (val s = state) {
             is Fulfilled -> propagateFulfilled(s.value)
             is Rejected -> propagateRejected(s.cause)
+            else -> {}
         }
         return controlledLater
     }

@@ -1,21 +1,5 @@
 package koncurrent
 
-
-fun <T, S> Later<Later<T>>.later(
-    executor: Executor = this.executor,
-    onFulfilled: ((T) -> S)
-): Later<S> {
-    return this.unsafeCast<Later<T>>().then(executor, onFulfilled)
-}
-
-fun <T, S> Later<Later<T>>.later(
-    executor: Executor = this.executor,
-    onFulfilled: ((T) -> S)?,
-    onRejected: ((Throwable) -> S)?
-): Later<S> {
-    return this.unsafeCast<Later<T>>().then(executor, onFulfilled, onRejected)
-}
-
 fun <T> Later<T>.asPromise(): Promise<T> = asDynamic().promise ?: Promise<T> { resolve, reject ->
     then(executor, onResolved = { resolve(it) }, onRejected = { reject(it) })
 }.apply { asDynamic().promise = this }

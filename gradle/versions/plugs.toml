@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.6.21"
+kotlin = "1.7.0"
 agp = "7.0.4"
 nexus = "0.22.0"
 publish = "0.16.0"

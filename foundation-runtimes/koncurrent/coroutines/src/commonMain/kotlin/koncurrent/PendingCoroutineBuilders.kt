@@ -1,5 +1,11 @@
-package koncurrent
+@file:Suppress("PackageDirectoryMismatch")
 
+package koncurrent.coroutines
+
+import koncurrent.ControlledPending
+import koncurrent.Pending
+import koncurrent.rejectWith
+import koncurrent.resolveWith
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.launch

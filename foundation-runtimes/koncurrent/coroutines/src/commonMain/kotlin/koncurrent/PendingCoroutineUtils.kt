@@ -8,7 +8,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-suspend fun <T> Pending<T>.await() = suspendCancellableCoroutine { cont: Continuation<T> ->
+suspend fun <T> Pending<T>.await(): T = suspendCancellableCoroutine { cont: Continuation<T> ->
     complete { state ->
         when (state) {
             is Fulfilled -> cont.resume(state.value)
@@ -41,4 +41,6 @@ suspend fun <T> Pending<T>.exception(transform: suspend (Throwable) -> T): Pendi
     return pending
 }
 
-suspend fun <T> Pending<T>.collect(collector: suspend (T) -> Unit) = collector(await())
+suspend inline fun <T> Pending<T>.collect(collector: (T) -> Unit) = collector(await())
+
+suspend inline fun <T, R> Pending<T>.collectTo(collector: (T) -> R): R = collector(await())
