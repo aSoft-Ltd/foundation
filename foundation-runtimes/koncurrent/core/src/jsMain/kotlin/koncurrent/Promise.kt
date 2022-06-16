@@ -18,7 +18,3 @@ external class Promise<T>(executor: (resolve: (T) -> Unit, reject: (Throwable) -
         fun <S> resolve(e: Promise<S>): Promise<S>
     }
 }
-
-fun koncurrent() {
-
-}
