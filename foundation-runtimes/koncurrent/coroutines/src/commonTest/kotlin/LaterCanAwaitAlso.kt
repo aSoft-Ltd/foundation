@@ -1,12 +1,13 @@
 import koncurrent.*
 import koncurrent.later.await
+import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LaterCanAwaitAlso {
     @Test
-    fun should_be_able_to_recover_on_a_failure() = runTest {
+    fun should_be_able_to_recover_on_a_failure() : TestResult {
         var zero = -1
         val result = Later<Int> { res, _ ->
             zero = 0
@@ -19,7 +20,9 @@ class LaterCanAwaitAlso {
             zero
         }.then {
             it + 1
-        }.await()
-        assertEquals(1, result)
+        }
+        return runTest {
+            assertEquals(1, result.await())
+        }
     }
 }

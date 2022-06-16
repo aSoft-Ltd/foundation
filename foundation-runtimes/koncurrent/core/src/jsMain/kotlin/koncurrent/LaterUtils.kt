@@ -32,8 +32,6 @@ fun <T> Promise<T>.asLater(): Later<T> = asDynamic().later ?: Later<T> { resolve
     then(onFulfilled = { resolve(it) }, onRejected = { reject(it) })
 }.apply { asDynamic().later = this }
 
-external fun setTimeout(handler: dynamic, timeout: Int = definedExternally, vararg arguments: Any?): Int
-
 internal actual fun <T> Later<T>.toNativeImplementation(): Pending<T> = asPromise()
 
 internal actual fun <T> Later<T>.toNativeImplementation(executor: Executor): Pending<T> = asPromise()

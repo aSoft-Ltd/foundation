@@ -16,3 +16,15 @@ suspend fun <T> Later<T>.await() = suspendCancellableCoroutine { cont: Continuat
         }
     }
 }
+
+suspend fun <T, R> Later<T>.map(transform: suspend (T) -> R): Later<R> {
+    val later = Later<R>()
+    try {
+        later.resolveWith(transform(await()))
+    } catch (err: Throwable) {
+        later.rejectWith(err)
+    }
+    return later
+}
+
+suspend fun <T> Later<T>.collect(collector: suspend (T) -> Unit) = collector(await())

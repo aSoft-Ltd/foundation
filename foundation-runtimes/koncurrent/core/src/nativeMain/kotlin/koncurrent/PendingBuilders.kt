@@ -1,6 +1,6 @@
 package koncurrent
 
-actual fun <T> Executor.pending(block: () -> T): Pending<T> = Later(this) { resolve, reject ->
+actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = Later(this) { resolve, reject ->
     try {
         resolve(block())
     } catch (err: Throwable) {
@@ -8,10 +8,12 @@ actual fun <T> Executor.pending(block: () -> T): Pending<T> = Later(this) { reso
     }
 }
 
-actual fun <T> pending(block: () -> T): Pending<T> = Later { resolve, reject ->
+actual inline fun <T> pending(noinline block: () -> T): Pending<T> = Later { resolve, reject ->
     try {
         resolve(block())
     } catch (err: Throwable) {
         reject(err)
     }
 }
+
+actual inline fun <T> ControlledPending(): Pending<T> = Later()

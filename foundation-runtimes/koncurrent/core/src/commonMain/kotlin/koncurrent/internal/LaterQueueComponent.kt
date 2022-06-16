@@ -1,4 +1,6 @@
-package koncurrent
+package koncurrent.internal
+
+import koncurrent.Later
 
 internal class LaterQueueComponent<T>(
     var controlledLater: Later<T>,

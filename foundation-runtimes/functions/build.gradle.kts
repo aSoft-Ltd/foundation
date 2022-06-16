@@ -12,7 +12,7 @@ kotlin {
     }
     js(IR) { library() }
 
-    val nativeTargets = nativeTargets(true)
+    val nativeTargets = nativeTargets(false)
 
     sourceSets {
         val commonMain by getting

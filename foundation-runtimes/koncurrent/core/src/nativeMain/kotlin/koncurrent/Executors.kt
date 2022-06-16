@@ -1,5 +1,5 @@
 package koncurrent
 
 actual object Executors {
-    actual fun default(): Executor = CoroutineExecutor.commonPool()
+    actual fun default(): Executor = WorkerExecutor.default()
 }

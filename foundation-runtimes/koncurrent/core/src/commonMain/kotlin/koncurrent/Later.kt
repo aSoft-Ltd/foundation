@@ -5,6 +5,8 @@ package koncurrent
 
 import functions.Consumer
 import functions.Function
+import koncurrent.internal.LaterHandler
+import koncurrent.internal.LaterQueueComponent
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmName
@@ -142,7 +144,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     @JsName("_ignore_toPromise")
     fun toPending(executor: Executor): Pending<T> = toNativeImplementation(executor)
 
-    fun resolveWith(value: @UnsafeVariance T) {
+    fun resolveWith(value: @UnsafeVariance T): Boolean {
         if (this.state is PendingState) {
             try {
                 this.state = Fulfilled(value as T)
@@ -150,14 +152,18 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
             } catch (err: Throwable) {
                 rejectWith(err)
             }
+            return true
         }
+        return false
     }
 
-    fun rejectWith(error: Throwable) {
+    fun rejectWith(error: Throwable): Boolean {
         if (this.state is PendingState) {
             this.state = Rejected(error)
             propagateRejected(error)
+            return true
         }
+        return false
     }
 
     private fun propagateFulfilled(value: Any?) {

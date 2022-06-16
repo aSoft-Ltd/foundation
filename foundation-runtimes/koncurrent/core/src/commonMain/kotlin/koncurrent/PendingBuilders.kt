@@ -1,8 +1,7 @@
 package koncurrent
 
-import kotlin.jvm.JvmSynthetic
+expect inline fun <T> Executor.pending(noinline block: () -> T): Pending<T>
 
-expect fun <T> Executor.pending(block: () -> T): Pending<T>
+expect inline fun <T> pending(noinline block: () -> T): Pending<T>
 
-@JvmSynthetic
-expect fun <T> pending(block: () -> T): Pending<T>
+expect inline fun <T> ControlledPending(): Pending<T>

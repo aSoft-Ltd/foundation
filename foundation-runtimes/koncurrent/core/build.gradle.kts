@@ -38,9 +38,6 @@ kotlin {
 
         val nativeMain by creating {
             dependsOn(nonJvmMain)
-            dependencies {
-                api(kotlinx.coroutines.core)
-            }
         }
 
         (nativeTargets).forEach {

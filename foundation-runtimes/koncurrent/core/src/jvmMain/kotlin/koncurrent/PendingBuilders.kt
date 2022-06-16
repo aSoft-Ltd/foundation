@@ -1,9 +1,11 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package koncurrent
 
 import java.util.concurrent.CompletableFuture
 
-@JvmSynthetic
-actual fun <T> Executor.pending(block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block, this)
+actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block, this)
 
-@JvmSynthetic
-actual fun <T> pending(block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block)
+actual inline fun <T> pending(noinline block: () -> T): Pending<T> = CompletableFuture.supplyAsync(block)
+
+actual inline fun <T> ControlledPending(): Pending<T> = CompletableFuture()

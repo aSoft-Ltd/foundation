@@ -1,19 +1,23 @@
 package koncurrent
 
-actual fun <T, R> Pending<T>.then(executor: Executor, onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
+actual inline fun <T, R> Pending<T>.then(executor: Executor, noinline onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
 
-actual fun <T, R> Pending<T>.then(onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
+actual inline fun <T, R> Pending<T>.then(noinline onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
 
-actual fun <T> Pending<T>.catch(executor: Executor, onRejected: (Throwable) -> T): Pending<T> = error(executor, onRejected)
+actual inline fun <T> Pending<T>.catch(executor: Executor, noinline onRejected: (Throwable) -> T): Pending<T> = error(executor, onRejected)
 
-actual fun <T> Pending<T>.catch(onRejected: (Throwable) -> T): Pending<T> = error(onRejected)
+actual inline fun <T> Pending<T>.catch(noinline onRejected: (Throwable) -> T): Pending<T> = error(onRejected)
 
-actual fun <T> Pending<T>.complete(executor: Executor, finalizer: (Settled<T>) -> Unit): Pending<T> = complete(executor) {
+actual inline fun <T> Pending<T>.complete(executor: Executor, noinline finalizer: (Settled<T>) -> Unit): Pending<T> = complete(executor) {
     finalizer(it)
 }
 
-actual fun <T> Pending<T>.complete(finalizer: (Settled<T>) -> Unit) = complete { finalizer(it) }
+actual inline fun <T> Pending<T>.complete(noinline finalizer: (Settled<T>) -> Unit) = complete { finalizer(it) }
 
-actual fun <T> Pending<T>.finally(executor: Executor, finalizer: () -> Unit): Pending<T> = complete(executor) { finalizer() }
+actual inline fun <T> Pending<T>.finally(executor: Executor, noinline finalizer: () -> Unit): Pending<T> = complete(executor) { finalizer() }
 
-actual fun <T> Pending<T>.finally(finalizer: () -> Unit): Pending<T> = complete { finalizer() }
+actual inline fun <T> Pending<T>.finally(noinline finalizer: () -> Unit): Pending<T> = complete { finalizer() }
+
+actual inline fun <T> Pending<T>.resolveWith(value: T) = resolveWith(value)
+
+actual inline fun <T> Pending<T>.rejectWith(exception: Throwable) = rejectWith(exception)

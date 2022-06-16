@@ -13,3 +13,15 @@ suspend fun <T> Pending<T>.await() = suspendCancellableCoroutine { cont: Continu
         }
     }
 }
+
+suspend fun <T, R> Pending<T>.map(transform: suspend (T) -> R): Pending<R> {
+    val pending = ControlledPending<R>()
+    try {
+        pending.resolveWith(transform(await()))
+    } catch (err: Throwable) {
+        pending.rejectWith(err)
+    }
+    return pending
+}
+
+suspend fun <T> Pending<T>.collect(collector: suspend (T) -> Unit) = collector(await())

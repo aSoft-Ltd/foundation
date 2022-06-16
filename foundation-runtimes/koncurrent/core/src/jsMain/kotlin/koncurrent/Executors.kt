@@ -1,5 +1,5 @@
 package koncurrent
 
 actual object Executors {
-    actual fun default(): Executor = SetTimeoutExecutor.commonPool()
+    actual fun default(): Executor = SetTimeoutExecutor
 }

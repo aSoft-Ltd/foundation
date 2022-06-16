@@ -1,4 +1,4 @@
-package koncurrent
+package koncurrent.internal
 
 import functions.Consumer
 

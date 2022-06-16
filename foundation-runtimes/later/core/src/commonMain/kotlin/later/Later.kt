@@ -17,7 +17,7 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
-class Later<out T> internal constructor(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
+class Later<out T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
 
     @JsName("fromExecutor")
     constructor(executor: LaterExecutor<T>) : this({ resolve, reject -> executor.execute(resolve, reject) })
