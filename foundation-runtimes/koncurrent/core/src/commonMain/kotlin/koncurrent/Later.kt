@@ -3,10 +3,8 @@
 
 package koncurrent
 
-import koncurrent.LaterState.PENDING
-import koncurrent.LaterState.Settled
-import koncurrent.LaterState.Settled.FULFILLED
-import koncurrent.LaterState.Settled.REJECTED
+import functions.Consumer
+import functions.Function
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmName
@@ -17,12 +15,13 @@ import kotlin.jvm.JvmSynthetic
 class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
 
     @JsName("_ignore_fromHandler")
-    constructor(executor: Executor = Executors.default(), handler: LaterHandler<T>) : this(executor, { resolve, reject -> handler.execute(resolve, reject) })
+    @JvmOverloads
+    constructor(handler: LaterHandler<T>, executor: Executor = Executors.default()) : this(executor, { resolve, reject -> handler.execute(resolve, reject) })
 
     private val thenQueue = mutableListOf<LaterQueueComponent<*>>()
     private val finallyQueue = mutableListOf<LaterQueueComponent<*>>()
 
-    private var state: LaterState<T> = PENDING()
+    private var state: ConcurrentState<T> = PendingState
 
     init {
         executor.execute {
@@ -37,7 +36,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     companion object {
         @JvmStatic
         @JvmOverloads
-        fun <T> resolve(value: T, executor: Executor = Executors.default()): Later<T> {
+        fun <T> resolve(value: T, executor: Executor = Executors.default()): Later<out T> {
             val l = Later<T>(executor)
             l.resolveWith(value)
             return l
@@ -45,7 +44,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
 
         @JvmStatic
         @JvmOverloads
-        fun reject(error: Throwable, executor: Executor = Executors.default()): Later<Nothing> {
+        fun reject(error: Throwable, executor: Executor = Executors.default()): Later<out Nothing> {
             val l = Later<Nothing>(executor)
             l.rejectWith(error)
             return l
@@ -57,9 +56,9 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     fun <S> then(executor: Executor, onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)? = null): Later<S> {
         val controlledLater = Later<S>(executor)
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> S, onRejected))
-        when (val s = this.state) {
-            is FULFILLED -> propagateFulfilled(s.value)
-            is REJECTED -> propagateRejected(s.cause)
+        when (val s = state) {
+            is Fulfilled -> propagateFulfilled(s.value)
+            is Rejected -> propagateRejected(s.cause)
         }
         return controlledLater
     }
@@ -74,18 +73,18 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
 
     @JvmOverloads
     @JsName("_ignore_then")
-    fun <S> then(onResolve: Function<@UnsafeVariance T, S>, executor: Executor = this.executor): Later<S> = then(
+    fun <S> then(onResolve: Function<T, S>, executor: Executor = this.executor): Later<S> = then(
         executor = executor,
-        onResolved = { value -> onResolve.apply(value) },
+        onResolved = { value -> onResolve.invoke(value) },
         onRejected = null
     )
 
     @JvmOverloads
     @JsName("_ignore_thenResolveOrReject")
-    fun <S> then(onResolve: Function<@UnsafeVariance T, S>, onReject: Function<Throwable, S>, executor: Executor = this.executor): Later<S> = then(
+    fun <S> then(onResolve: Function<T, S>, onReject: Function<Throwable, S>, executor: Executor = this.executor): Later<S> = then(
         executor = executor,
-        onResolved = { value -> onResolve.apply(value) },
-        onRejected = { error -> onReject.apply(error) }
+        onResolved = { value -> onResolve.invoke(value) },
+        onRejected = { error -> onReject.invoke(error) }
     )
 
     /**
@@ -96,32 +95,33 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     fun <T> error(handler: Function<Throwable, T>, executor: Executor = this.executor): Later<T> = then(
         executor = executor,
         onResolved = null,
-        onRejected = { err -> handler.apply(err) }
+        onRejected = { err -> handler.invoke(err) }
     )
 
     /**
      * Same as calling finally on javascript or kotlin
      */
     @JsName("_ignore_complete")
-    fun complete(handler: Fun<Settled<@UnsafeVariance T>>, executor: Executor = this.executor) = complete(executor, cleanUp = { state -> handler.invoke(state) })
+    @JvmOverloads
+    fun complete(handler: Consumer<Settled<T>>, executor: Executor = this.executor) = complete(executor, cleanUp = { state -> handler.accept(state) })
 
     private fun cleanUp(executor: Executor, cleanUp: (state: Settled<T>) -> Any?): Later<T> {
         val s = this.state
         if (s is Settled) {
             cleanUp(s)
             return when (s) {
-                is FULFILLED -> Later.resolve(s.value, executor)
-                is REJECTED -> Later.reject(s.cause, executor) as Later<T>
+                is Fulfilled -> Later.resolve(s.value, executor) as Later<T>
+                is Rejected -> Later.reject(s.cause, executor) as Later<T>
             }
         }
 
         val controlledLater = Later<T>(executor)
         val resolve = { value: T ->
-            cleanUp(FULFILLED(value))
+            cleanUp(Fulfilled(value))
             value
         }
         val rejected = { err: Throwable ->
-            cleanUp(REJECTED(err))
+            cleanUp(Rejected(err))
             err as T
         }
         finallyQueue.add(LaterQueueComponent(controlledLater, resolve as? (Any?) -> T, rejected))
@@ -143,9 +143,9 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     fun toPending(executor: Executor): Pending<T> = toNativeImplementation(executor)
 
     fun resolveWith(value: @UnsafeVariance T) {
-        if (this.state is PENDING) {
+        if (this.state is PendingState) {
             try {
-                this.state = FULFILLED(value as T)
+                this.state = Fulfilled(value as T)
                 propagateFulfilled(value)
             } catch (err: Throwable) {
                 rejectWith(err)
@@ -154,8 +154,8 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     }
 
     fun rejectWith(error: Throwable) {
-        if (this.state is PENDING) {
-            this.state = REJECTED(error)
+        if (this.state is PendingState) {
+            this.state = Rejected(error)
             propagateRejected(error)
         }
     }
@@ -176,7 +176,8 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
                     else -> controlledLater.resolveWith(valueOrLater)
                 }
             } catch (err: Throwable) {
-                controlledLater.resolveWith(value)
+//                controlledLater.resolveWith(value)
+                propagateRejected(err)
             }
         }
 
@@ -218,4 +219,6 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
         thenQueue.clear()
         finallyQueue.clear()
     }
+
+    override fun toString(): String = "Later($state)"
 }

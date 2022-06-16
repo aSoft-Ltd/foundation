@@ -1,5 +1,7 @@
 package koncurrent
 
+import functions.Consumer
+
 fun interface LaterHandler<T> {
-    fun execute(resolve: Fun<T>, reject: Fun<Throwable>)
+    fun execute(resolve: Consumer<T>, reject: Consumer<Throwable>)
 }

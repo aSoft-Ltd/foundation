@@ -12,6 +12,10 @@ expect fun <T> Pending<T>.catch(onRejected: (Throwable) -> T): Pending<T>
 
 expect fun <T> Pending<T>.catch(executor: Executor, onRejected: (Throwable) -> T): Pending<T>
 
+expect fun <T> Pending<T>.complete(executor: Executor, finalizer: (Settled<T>) -> Unit): Pending<T>
+
+expect fun <T> Pending<T>.complete(finalizer: (Settled<T>) -> Unit): Pending<T>
+
 expect fun <T> Pending<T>.finally(executor: Executor, finalizer: () -> Unit): Pending<T>
 
 expect fun <T> Pending<T>.finally(finalizer: () -> Unit): Pending<T>

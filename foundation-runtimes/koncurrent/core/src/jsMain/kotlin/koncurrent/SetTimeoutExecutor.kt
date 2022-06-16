@@ -1,5 +1,7 @@
 package koncurrent
 
+import functions.Runnable
+
 class SetTimeoutExecutor private constructor() : Executor {
     override fun execute(runnable: Runnable) {
         setTimeout({ runnable.run() })

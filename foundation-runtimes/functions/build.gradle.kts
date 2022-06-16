@@ -15,18 +15,7 @@ kotlin {
     val nativeTargets = nativeTargets(true)
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(projects.functions)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(projects.expectCoroutines)
-                implementation(projects.koncurrentCoroutines)
-            }
-        }
+        val commonMain by getting
 
         val nonJvmMain by creating {
             dependsOn(commonMain)
@@ -38,9 +27,6 @@ kotlin {
 
         val nativeMain by creating {
             dependsOn(nonJvmMain)
-            dependencies {
-                api(kotlinx.coroutines.core)
-            }
         }
 
         (nativeTargets).forEach {

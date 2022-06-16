@@ -1,5 +1,6 @@
 package koncurrent
 
+import functions.Runnable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
