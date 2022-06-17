@@ -16,7 +16,16 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
         }.flatMap {
             it
         }
-        expect(body.await()).toBe("")
+        expect(body.await()).toBe(
+            """
+            {
+              "userId": 1,
+              "id": 1,
+              "title": "delectus aut autem",
+              "completed": false
+            }
+        """.trimIndent()
+        )
     }
 
     @Test
@@ -25,6 +34,15 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
         val body = res.then {
             it.text()
         }.await()
-        expect(body.await()).toBe("")
+        expect(body.await()).toBe(
+            """
+            {
+              "userId": 1,
+              "id": 1,
+              "title": "delectus aut autem",
+              "completed": false
+            }
+        """.trimIndent()
+        )
     }
 }

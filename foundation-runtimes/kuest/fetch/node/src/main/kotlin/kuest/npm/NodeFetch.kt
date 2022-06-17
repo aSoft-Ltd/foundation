@@ -1,7 +1,11 @@
+@file:JsModule("node-fetch")
+@file:JsNonModule
+
 package kuest.npm
 
-import kuest.internal.Fetcher
+import koncurrent.Promise
+import kuest.HttpResponse
+import org.w3c.fetch.RequestInit
 
-@JsModule("node-fetch")
-@JsNonModule
-external val NodeFetch: Fetcher
+@JsName("default")
+external fun nodeFetch(input: dynamic, init: RequestInit = definedExternally): Promise<HttpResponse>

@@ -1,4 +1,4 @@
 [versions]
 platform = "1.3.6"
-fetch = "3.2.6"
+fetch = "2.6.1"
 asyncStorage = "1.15.9"

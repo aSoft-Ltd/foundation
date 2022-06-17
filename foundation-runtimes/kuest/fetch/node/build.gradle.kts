@@ -8,7 +8,6 @@ plugins {
 kotlin {
     js(IR) {
         library()
-        useCommonJs()
     }
 
     sourceSets {

@@ -1,8 +1,10 @@
 package kuest
 
-import kuest.internal.Fetcher
+import koncurrent.Promise
+import org.w3c.fetch.RequestInit
 
-abstract class HttpClientFetch(val fetcher: Fetcher) : HttpClient {
-    override fun get(url: String) = fetcher.fetch(url)
+abstract class HttpClientFetch : HttpClient {
+    abstract fun fetch(input: dynamic, init: RequestInit? = null): Promise<HttpResponse>
+    override fun get(url: String) = fetch(url)
     override fun toString(): String = "HttpClientBrowserFetch"
 }

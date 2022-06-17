@@ -1,7 +1,13 @@
 package kuest
 
-import kuest.internal.globalThis
+import koncurrent.Promise
+import kuest.internal.window
+import org.w3c.fetch.RequestInit
 
-class HttpClientFetchBrowser : HttpClientFetch(globalThis) {
+class HttpClientFetchBrowser : HttpClientFetch() {
+    override fun fetch(input: dynamic, init: RequestInit?): Promise<HttpResponse> {
+        return if (init != null && init != undefined) window.fetch(input, init) else window.fetch(init)
+    }
+
     override fun toString(): String = "HttpClientFetchBrowser"
 }

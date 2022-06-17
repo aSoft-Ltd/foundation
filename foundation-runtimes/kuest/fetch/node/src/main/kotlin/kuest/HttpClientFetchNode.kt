@@ -1,7 +1,16 @@
 package kuest
 
-import kuest.npm.NodeFetch
+import koncurrent.Promise
+import kuest.npm.nodeFetch
+import org.w3c.fetch.RequestInit
 
-class HttpClientFetchNode : HttpClientFetch(NodeFetch) {
+class HttpClientFetchNode : HttpClientFetch() {
+
+    override fun fetch(input: dynamic, init: RequestInit?): Promise<HttpResponse> {
+        return if (init != null && init != undefined) {
+            nodeFetch(input, init)
+        } else nodeFetch(input)
+    }
+
     override fun toString(): String = "HttpClientFetchNode"
 }
