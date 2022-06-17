@@ -24,16 +24,4 @@ expect inline fun <T> Pending<T>.resolveWith(value: T): Boolean
 
 expect inline fun <T> Pending<T>.rejectWith(exception: Throwable): Boolean
 
-inline fun <T, R> Pending<Pending<T>>.flatMap(noinline onFulfilled: (T) -> R): Pending<R> {
-    val pending = ControlledPending<R>()
-    then(onResolved = { p ->
-        p.then {
-            try {
-                pending.resolveWith(onFulfilled(it))
-            } catch (err: Throwable) {
-                pending.rejectWith(err)
-            }
-        }
-    })
-    return pending
-}
+expect inline fun <T, R> Pending<Pending<T>>.flatMap(noinline onFulfilled: (T) -> R): Pending<R>

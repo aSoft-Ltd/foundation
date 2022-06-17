@@ -1,9 +1,5 @@
-import koncurrent.catch
-import koncurrent.finally
 import koncurrent.pending
 import koncurrent.then
-import koncurrent.Pending
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class PendingsCanRunToTheEnd {

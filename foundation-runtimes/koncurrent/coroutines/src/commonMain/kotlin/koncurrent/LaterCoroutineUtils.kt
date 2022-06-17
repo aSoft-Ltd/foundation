@@ -8,8 +8,8 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-suspend fun <T> Later<T>.await() = suspendCancellableCoroutine { cont: Continuation<T> ->
-    complete { state ->
+suspend inline fun <reified T> Later<T>.await() = suspendCancellableCoroutine { cont: Continuation<T> ->
+    if (this is T) cont.resume(this) else complete { state ->
         when (state) {
             is Fulfilled -> cont.resume(state.value)
             is Rejected -> cont.resumeWithException(state.cause)
@@ -17,7 +17,7 @@ suspend fun <T> Later<T>.await() = suspendCancellableCoroutine { cont: Continuat
     }
 }
 
-suspend fun <T, R> Later<T>.map(transform: suspend (T) -> R): Later<R> {
+suspend inline fun <reified T, R> Later<T>.map(transform: (T) -> R): Later<R> {
     val later = Later<R>()
     try {
         later.resolveWith(transform(await()))
@@ -27,7 +27,7 @@ suspend fun <T, R> Later<T>.map(transform: suspend (T) -> R): Later<R> {
     return later
 }
 
-suspend fun <T> Later<T>.catch(transform: suspend (Throwable) -> T): Later<T> {
+suspend inline fun <reified T> Later<T>.catch(transform: (Throwable) -> T): Later<T> {
     val later = Later<T>()
     try {
         later.resolveWith(await())
@@ -41,4 +41,4 @@ suspend fun <T> Later<T>.catch(transform: suspend (Throwable) -> T): Later<T> {
     return later
 }
 
-suspend fun <T> Later<T>.collect(collector: suspend (T) -> Unit) = collector(await())
+suspend inline fun <reified T> Later<T>.collect(collector: (T) -> Unit) = collector(await())

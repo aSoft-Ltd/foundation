@@ -49,3 +49,5 @@ actual inline fun <T> Pending<T>.rejectWith(exception: Throwable): Boolean {
     }
     return false
 }
+
+actual inline fun <T, R> Pending<Pending<T>>.flatMap(noinline onFulfilled: (T) -> R): Pending<R> = unsafeCast<Pending<T>>().then(onFulfilled)

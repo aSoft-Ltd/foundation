@@ -21,3 +21,17 @@ actual inline fun <T> Pending<T>.finally(noinline finalizer: () -> Unit): Pendin
 actual inline fun <T> Pending<T>.resolveWith(value: T) = resolveWith(value)
 
 actual inline fun <T> Pending<T>.rejectWith(exception: Throwable) = rejectWith(exception)
+
+actual inline fun <T, R> Pending<Pending<T>>.flatMap(noinline onFulfilled: (T) -> R): Pending<R> {
+    val pending = ControlledPending<R>()
+    then(onResolved = { p ->
+        p.then {
+            try {
+                pending.resolveWith(onFulfilled(it))
+            } catch (err: Throwable) {
+                pending.rejectWith(err)
+            }
+        }
+    })
+    return pending
+}
