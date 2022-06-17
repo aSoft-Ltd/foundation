@@ -6,7 +6,7 @@ import org.w3c.fetch.RequestInit
 
 class HttpClientFetchBrowser : HttpClientFetch() {
     override fun fetch(input: dynamic, init: RequestInit?): Promise<HttpResponse> {
-        return if (init != null && init != undefined) window.fetch(input, init) else window.fetch(init)
+        return if (init != null && init != undefined) window.fetch(input, init) else window.fetch(input)
     }
 
     override fun toString(): String = "HttpClientFetchBrowser"
