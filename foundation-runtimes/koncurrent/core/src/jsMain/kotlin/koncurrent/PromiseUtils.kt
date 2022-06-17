@@ -13,3 +13,5 @@ inline fun <T, S> Promise<Promise<T>>.then(
 ): Promise<S> {
     return this.unsafeCast<Promise<T>>().then(onFulfilled, onRejected)
 }
+
+inline fun <T> kotlin.js.Promise<T>.asPending(): Pending<T> = unsafeCast<Pending<T>>()
