@@ -8,14 +8,45 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-suspend inline fun <reified T> Pending<T>.await(): T = suspendCancellableCoroutine { cont: Continuation<T> ->
+
+//@PublishedApi
+//internal suspend inline fun <reified T> Pending<T>.awaitCompletion(): T = suspendCancellableCoroutine { cont: Continuation<T> ->
+//    if (this is T) cont.resume(this) else complete { state ->
+//        when (state) {
+//            is Fulfilled -> cont.resume(state.value)
+//            is Rejected -> cont.resumeWithException(state.cause)
+//        }
+//    }
+//}
+
+@PublishedApi
+internal suspend inline fun <reified T> Pending<T>.awaitCompletion(): T = suspendCancellableCoroutine { cont: Continuation<T> ->
     if (this is T) cont.resume(this) else complete { state ->
         when (state) {
-            is Fulfilled -> cont.resume(state.value)
+            is Fulfilled -> when (val value = state.value) {
+                is Pending<*> -> complete { state2 ->
+                    when (state2) {
+                        is Fulfilled -> cont.resume(state2.value)
+                        is Rejected -> cont.resumeWithException(state2.cause)
+                    }
+                }
+                else -> cont.resume(value)
+            }
             is Rejected -> cont.resumeWithException(state.cause)
         }
     }
 }
+
+suspend inline fun <reified T> Pending<T>.await(): T = awaitCompletion()
+
+//suspend inline fun <reified T> Pending<T>.await(): T {
+//    var res = awaitCompletion()
+//    while (res is Pending<*>) {
+//        val r = (res as Pending<T>)
+//        res = r.awaitCompletion()
+//    }
+//    return res
+//}
 
 suspend inline fun <reified T, R> Pending<T>.map(transform: (T) -> R): Pending<R> {
     val pending = ControlledPending<R>()

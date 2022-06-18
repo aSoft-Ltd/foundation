@@ -21,17 +21,20 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(projects.expectCoroutines)
-            }
+        val nonJsMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val jvmMain by getting {
+            dependsOn(nonJsMain)
+        }
+
+        val jsMain by getting {
+
         }
 
         val nativeMain by creating {
-            dependsOn(commonMain)
-            dependencies {
-
-            }
+            dependsOn(nonJsMain)
         }
 
         (nativeTargets).forEach {

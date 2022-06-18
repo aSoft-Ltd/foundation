@@ -25,3 +25,5 @@ expect inline fun <T> Pending<T>.resolveWith(value: T): Boolean
 expect inline fun <T> Pending<T>.rejectWith(exception: Throwable): Boolean
 
 expect inline fun <T, R> Pending<Pending<T>>.flatMap(noinline onFulfilled: (T) -> R): Pending<R>
+
+inline fun <T> Pending<Pending<T>>.flatten(): Pending<T> = flatMap { it }
