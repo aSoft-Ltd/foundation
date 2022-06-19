@@ -49,7 +49,6 @@ includeRoot("kotlinx-browser", "kotlinx/browser")
 includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
 
 includeRoot("functions", "functions")
-includeSubs("koncurrent", "koncurrent", "core", "coroutines")
 
 includeSubs("koncurrent-primitives", "koncurrent/primitives", "core", "coroutines")
 includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines")

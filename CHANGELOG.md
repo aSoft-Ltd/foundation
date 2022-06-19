@@ -6,7 +6,6 @@
 
 ## Koncurrent
 
-- Remove the old koncurrent core & coroutines modules
 - Test cascaded Pending object and make sure that the behaviour is predictable on all platform
 - [ ] Clean up build.gradle.kts for koncurrent-pending core & coroutines modules
 - [ ] clean up commented out dependencies on all new koncurrent modules
