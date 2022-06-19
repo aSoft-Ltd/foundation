@@ -1,3 +1,5 @@
+@file:JvmName("PendingCoroutineUtilsJvm")
+
 package koncurrent.pending
 
 import koncurrent.Fulfilled
@@ -7,6 +9,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.jvm.JvmName
 
 
 @PublishedApi

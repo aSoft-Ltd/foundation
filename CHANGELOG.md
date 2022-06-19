@@ -1,9 +1,5 @@
 # Roadmap
 
-## Koncurrent
-
-- [ ] Test cascaded Pending object and make sure that the behaviour is predictable on all platform
-
 ## Kuest
 
 - [ ] Fix failing mock tests
@@ -40,6 +36,7 @@
 
 ## Koncurrent
 
+- [x] Test cascaded Pending object and make sure that the behaviour is predictable on all platform
 - Added a koncurrent module family
 - [x] Split up concurrent-core into multi modules
     - [x] koncurrent primitives (containing Executors & Executor)
