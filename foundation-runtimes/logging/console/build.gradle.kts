@@ -22,13 +22,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":logging-core"))
+                api(projects.loggingCore)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(project(":expect-core"))
+                implementation(projects.expectCore)
             }
         }
 

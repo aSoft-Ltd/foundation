@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":expect-core"))
+                api(projects.expectCore)
                 api(kotlinx.coroutines.test)
             }
         }

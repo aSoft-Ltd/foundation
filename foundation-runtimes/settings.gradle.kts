@@ -50,6 +50,11 @@ includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperab
 
 includeRoot("functions", "functions")
 includeSubs("koncurrent", "koncurrent", "core", "coroutines")
+
+includeSubs("koncurrent-primitives", "koncurrent/primitives", "core", "coroutines")
+includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines")
+includeSubs("koncurrent-pending", "koncurrent/pending", "core", "coroutines")
+
 includeSubs("kuest", "kuest", "core", "coroutines", "mock", "test")
 includeSubs("kuest-fetch", "kuest/fetch", "core", "browser", "node")
 

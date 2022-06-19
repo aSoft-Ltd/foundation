@@ -12,8 +12,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":later-core"))
-                api(project(":expect-core"))
+                api(projects.laterCore)
+                api(projects.expectCore)
             }
         }
     }

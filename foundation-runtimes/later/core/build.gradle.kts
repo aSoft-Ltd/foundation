@@ -17,14 +17,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":kotlinx-collections-atomic"))
+                api(projects.kotlinxCollectionsAtomic)
                 api(kotlinx.coroutines.core)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(project(":expect-coroutines"))
+                implementation(projects.expectCoroutines)
             }
         }
 

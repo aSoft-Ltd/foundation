@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
-                api(project(":logging-core"))
+                api(projects.loggingCore)
                 api(kotlinx.datetime)
             }
         }

@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":kotlinx-serialization-mapper"))
+                api(projects.kotlinxSerializationMapper)
             }
         }
     }
