@@ -2,7 +2,8 @@
 
 ## Kuest
 
-- [ ] Migrate away from old koncurrent dependencies into new ones
+- [x] Migrate away from old koncurrent dependencies into new ones
+    - [x] change import coordinates from old packages into new ones
 
 ## Koncurrent
 
@@ -31,6 +32,8 @@
 # 1.5.1
 
 ## Kuest
+- [x] Migrate away from old koncurrent dependencies into new ones
+    - [x] change import coordinates from old packages into new ones
 
 ## Koncurrent
 

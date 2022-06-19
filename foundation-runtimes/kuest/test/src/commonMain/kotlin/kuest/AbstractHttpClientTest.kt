@@ -1,9 +1,9 @@
 package kuest
 
 import expect.expect
-import koncurrent.coroutines.await
-import koncurrent.then
-import koncurrent.flatMap
+import koncurrent.pending.await
+import koncurrent.pending.then
+import koncurrent.pending.flatMap
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -23,6 +23,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
         """.trimIndent()
         )
     }
+
     @Test
     fun should_easily_send_a_get_request() = runTest {
         val res = client.get("https://jsonplaceholder.typicode.com/todos/1")
@@ -31,6 +32,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
         }.flatMap {
             it
         }
+
         expect(body.await()).toBe(
             """
             {
