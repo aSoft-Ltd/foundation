@@ -1,5 +1,9 @@
 # Roadmap
 
+## Kuest
+
+- [ ] Migrate away from old koncurrent dependencies into new ones
+
 ## Koncurrent
 
 - Remove the old koncurrent core & coroutines modules
@@ -26,6 +30,8 @@
 ```
 
 # 1.5.1
+
+## Kuest
 
 ## Koncurrent
 

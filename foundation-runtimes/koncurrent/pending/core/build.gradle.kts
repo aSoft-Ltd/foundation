@@ -14,7 +14,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentLaterCore)
+                api(projects.koncurrentPrimitivesCore)
             }
         }
 
@@ -27,6 +27,9 @@ kotlin {
 
         val nativeMain by creating {
             dependsOn(commonMain)
+            dependencies {
+                api(projects.koncurrentLaterCore)
+            }
         }
 
         (nativeTargets).forEach {

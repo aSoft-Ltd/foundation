@@ -23,8 +23,7 @@ kotlin {
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
-                implementation(projects.koncurrentCoroutines)
+                implementation(projects.kuestTest)
             }
         }
     }

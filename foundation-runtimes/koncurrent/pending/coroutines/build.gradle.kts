@@ -17,7 +17,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentPendingCore)
-                api(projects.koncurrentLaterCoroutines)
                 api(kotlinx.coroutines.core)
             }
         }
@@ -42,6 +41,9 @@ kotlin {
 
         val nativeMain by creating {
             dependsOn(nonJsMain)
+            dependencies {
+                api(projects.koncurrentLaterCoroutines)
+            }
         }
 
         (nativeTargets).forEach {
@@ -54,6 +56,5 @@ kotlin {
 }
 
 aSoftOSSLibrary(
-    version = asoft.versions.foundation.get(),
-    description = "An multiplatform representation of a Promised based api"
+    version = asoft.versions.foundation.get(), description = "An multiplatform representation of a Promised based api"
 )

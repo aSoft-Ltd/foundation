@@ -17,14 +17,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentCore)
+                api(projects.koncurrentPendingCore)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
-                implementation(projects.koncurrentCoroutines)
+                implementation(projects.kuestTest)
             }
         }
 

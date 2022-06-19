@@ -17,7 +17,7 @@ kotlin {
             dependencies {
                 api(projects.kuestCore)
                 api(projects.expectCoroutines)
-                api(projects.koncurrentCoroutines)
+                api(projects.koncurrentPendingCoroutines)
             }
         }
     }

@@ -18,13 +18,13 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.kuestCore)
-                api(projects.koncurrentCoroutines)
+                api(projects.koncurrentPendingCoroutines)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
+                implementation(projects.kuestTest)
             }
         }
 
