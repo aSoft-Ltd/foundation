@@ -1,4 +1,5 @@
 import koncurrent.pending
+import koncurrent.pending.then
 import kotlin.test.Test
 
 class PendingsCanRunToTheEnd {

@@ -2,16 +2,12 @@
 
 ## Koncurrent
 
-- [ ] Split up concurrent-core into multi modules
-    - [x] koncurrent primitives (containing Executors & Executor)
-    - [x] koncurrent later      (containing Later implementation) { depends on koncurrent-primitives }
-        - [x] Move all later extension functions into package koncurrent.later
-    - [x] koncurrent pending    (containing the pending abstraction) { depends on koncurrent-later }
-        - [x] Move all pending extension function into package koncurrent.pending
-    - [ ] clean up commented out dependencies on those new modules
+- Remove the old koncurrent core & coroutines modules
 - Test cascaded Pending object and make sure that the behaviour is predictable on all platform
+- [ ] Clean up build.gradle.kts for koncurrent-pending core & coroutines modules
+- [ ] clean up commented out dependencies on all new koncurrent modules
 - Create a reliable bodyAsText method after a get request
-- Add `ExecutorService` in koncurrent-primitives-core to support shutdown and termination
+- Add `ExecutorService` in koncurrent-primitives-core to support ExecutorService shutdown and termination
 
 ```
       _ _ _ _ _ _   _ _ _ _ _ _ _ 
@@ -31,7 +27,16 @@
 
 # 1.5.1
 
+## Koncurrent
+
 - Added a koncurrent module family
+- [x] Split up concurrent-core into multi modules
+    - [x] koncurrent primitives (containing Executors & Executor)
+    - [x] koncurrent later      (containing Later implementation) { depends on koncurrent-primitives }
+        - [x] Move all later extension functions into package koncurrent.later
+    - [x] koncurrent pending    (containing the pending abstraction) { depends on koncurrent-later }
+        - [x] Move all pending extension function into package koncurrent.pending
+        - [x] Fix failing tests after module split
 
 # 1.4.61
 
