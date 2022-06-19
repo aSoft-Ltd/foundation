@@ -38,9 +38,9 @@ actual inline fun <T> Pending<T>.resolveWith(value: T) = complete(value)
 
 actual inline fun <T> Pending<T>.rejectWith(exception: Throwable) = completeExceptionally(exception)
 
-actual inline fun <T, R> Pending<Pending<T>>.flatMap(noinline onFulfilled: (T) -> R): Pending<R> {
+actual inline fun <T, R> Pending<Pending<T>>.unwrap(noinline onFulfilled: (T) -> R): Pending<R> {
     val pending = ControlledPending<R>()
-    this@flatMap.then(onResolved = { p ->
+    this@unwrap.then(onResolved = { p ->
         p.then {
             try {
                 pending.resolveWith(onFulfilled(it))

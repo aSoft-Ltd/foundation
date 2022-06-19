@@ -3,7 +3,7 @@ package kuest
 import expect.expect
 import koncurrent.pending.await
 import koncurrent.pending.then
-import koncurrent.pending.flatMap
+import koncurrent.pending.unwrap
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -29,7 +29,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
         val res = client.get("https://jsonplaceholder.typicode.com/todos/1")
         val body = res.then {
             it.text()
-        }.flatMap {
+        }.unwrap {
             it
         }
 

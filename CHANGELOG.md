@@ -1,13 +1,15 @@
 # Roadmap
 
+## Koncurrent
+
+- [ ] Test cascaded Pending object and make sure that the behaviour is predictable on all platform
+
 ## Kuest
 
-- [x] Migrate away from old koncurrent dependencies into new ones
-    - [x] change import coordinates from old packages into new ones
+- [ ] Fix failing mock tests
 
 ## Koncurrent
 
-- Test cascaded Pending object and make sure that the behaviour is predictable on all platform
 - [ ] Clean up build.gradle.kts for koncurrent-pending core & coroutines modules
 - [ ] clean up commented out dependencies on all new koncurrent modules
 - Create a reliable bodyAsText method after a get request
@@ -32,6 +34,7 @@
 # 1.5.1
 
 ## Kuest
+
 - [x] Migrate away from old koncurrent dependencies into new ones
     - [x] change import coordinates from old packages into new ones
 

@@ -1,10 +1,13 @@
+@file:Suppress("FunctionName", "NOTHING_TO_INLINE")
+
 package koncurrent
 
 import koncurrent.pending.internal.rejectFn
 import koncurrent.pending.internal.resolveFn
 import koncurrent.pending.internal.state
 
-actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = Promise<T> { resolve, reject ->
+@PublishedApi
+internal inline fun <T> pendingCreator(resolve: (T) -> Unit, reject: (Throwable) -> Unit, block: () -> T) {
     try {
         resolve(block())
     } catch (err: Throwable) {
@@ -12,13 +15,17 @@ actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = Pr
     }
 }
 
-actual inline fun <T> pending(noinline block: () -> T): Pending<T> = Promise { resolve, reject ->
-    try {
-        resolve(block())
-    } catch (err: Throwable) {
-        reject(err)
-    }
+actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = Promise<T> { resolve, reject ->
+    pendingCreator(resolve, reject, block)
 }
+
+actual inline fun <T> pending(noinline block: () -> T): Pending<T> = Promise { resolve, reject ->
+    pendingCreator(resolve, reject, block)
+}
+
+actual inline fun <T> ResolvedPending(value: T): Pending<T> = Promise.resolve(value)
+
+actual inline fun <T> RejectedPending(error: Throwable): Pending<T> = Promise.reject(error) as Pending<T>
 
 actual inline fun <T> ControlledPending(): Pending<T> {
     var resolveFn: ((T) -> Unit)? = null

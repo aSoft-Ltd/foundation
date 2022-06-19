@@ -43,7 +43,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     companion object {
         @JvmStatic
         @JvmOverloads
-        fun <T> resolve(value: T, executor: Executor = Executors.default()): Later<out T> {
+        fun <T> resolve(value: T, executor: Executor = Executors.default()): Later<T> {
             val l = Later<T>(executor)
             l.resolveWith(value)
             return l
@@ -51,7 +51,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
 
         @JvmStatic
         @JvmOverloads
-        fun reject(error: Throwable, executor: Executor = Executors.default()): Later<out Nothing> {
+        fun reject(error: Throwable, executor: Executor = Executors.default()): Later<Nothing> {
             val l = Later<Nothing>(executor)
             l.rejectWith(error)
             return l
