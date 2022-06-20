@@ -1,14 +1,9 @@
 package expect
 
-import kotlinx.coroutines.flow.StateFlow
+import expect.internal.SuspendLambdaExpectationImpl
 
-inline fun <E> expect(sf: StateFlow<E>) = StateFlowAssertion(sf)
-
-fun expectLambda(lambda: suspend () -> Unit) = SuspendLambdaAssertion(lambda)
+fun expectLambda(lambda: suspend () -> Unit): SuspendLambdaExpectation = SuspendLambdaExpectationImpl(lambda)
 
 suspend fun expectFailure(lambda: suspend () -> Unit) = expectLambda(lambda).toFail()
 
-inline fun <E> expectState(
-    sf: StateFlow<E>,
-    builder: StateFlowAssertion<E>.() -> Unit
-) = StateFlowAssertion(sf).apply(builder)
+suspend inline fun <reified T : Throwable> expectFailureWith(noinline lambda: () -> Unit) = expectLambda(lambda).toFailWith<T>()

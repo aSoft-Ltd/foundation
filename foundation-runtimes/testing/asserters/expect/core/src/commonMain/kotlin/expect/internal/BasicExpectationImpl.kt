@@ -1,11 +1,11 @@
-package expect
+package expect.internal
 
+import expect.BasicExpectation
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-@PublishedApi
-internal class BasicExpectationImpl<E>(override val value: E) : BasicExpectation<E> {
+class BasicExpectationImpl<E>(override val value: E) : BasicExpectation<E> {
     override fun toBeNonNull(message: String) {
         assertNotNull(value, message)
     }

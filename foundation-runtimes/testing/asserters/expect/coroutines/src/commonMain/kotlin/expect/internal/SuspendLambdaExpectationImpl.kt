@@ -1,9 +1,13 @@
-package expect
+package expect.internal
 
-internal class LambdaExpectationImpl(
-    override val value: () -> Unit
-) : LambdaExpectation, BasicExpectation<() -> Unit> by BasicExpectationImpl(value) {
-    override fun toFail(): Throwable {
+import expect.BasicExpectation
+import expect.SuspendLambdaExpectation
+
+@PublishedApi
+internal class SuspendLambdaExpectationImpl(
+    override val value: suspend () -> Unit
+) : SuspendLambdaExpectation, BasicExpectation<suspend () -> Unit> by BasicExpectationImpl(value) {
+    override suspend fun toFail(): Throwable {
         var throwable: Throwable? = null
         try {
             value()
@@ -16,13 +20,13 @@ internal class LambdaExpectationImpl(
     }
 
 
-    override fun toPass() {
+    override suspend fun toPass() {
         var passed = false
-        passed = try {
+        try {
             value()
-            true
+            passed = true
         } catch (_: Throwable) {
-            false
+            passed = false
         } finally {
             if (passed) return
             throw AssertionError("Expected lambda to pass, but did not")

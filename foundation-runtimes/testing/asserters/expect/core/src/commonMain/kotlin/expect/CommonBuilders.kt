@@ -3,6 +3,9 @@
 
 package expect
 
+import expect.internal.BasicExpectationImpl
+import expect.internal.CollectionExpectationImpl
+import expect.internal.LambdaExpectationImpl
 import functions.Runnable
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmSynthetic

@@ -1,5 +1,7 @@
-package expect
+package expect.internal
 
+import expect.BasicExpectation
+import expect.CollectionExpectation
 import kotlin.test.assertTrue
 
 /**
