@@ -1,5 +1,10 @@
 # Roadmap
 
+## Koncurrent
+
+- Add tide. A multiplatform coroutine free reactive monad
+    - [ ] create gradle submodules for core and coroutines
+
 ## Cache
 
 - TODO: Centralize common cache test

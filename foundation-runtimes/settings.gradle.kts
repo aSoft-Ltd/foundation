@@ -53,6 +53,7 @@ includeRoot("functions", "functions")
 includeSubs("koncurrent-primitives", "koncurrent/primitives", "core", "coroutines")
 includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines")
 includeSubs("koncurrent-pending", "koncurrent/pending", "core", "coroutines")
+includeSubs("koncurrent-tide", "koncurrent/tide", "core", "coroutines")
 
 includeSubs("kuest", "kuest", "http", "core", "coroutines", /* "mock", */ "test")
 includeSubs("kuest-fetch", "kuest/fetch", "core", "browser", "node")

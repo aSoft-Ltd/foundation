@@ -8,19 +8,32 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-    nativeTargets(true)
+
+    val nativeTargets = nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentLaterCore)
-                api(projects.koncurrentPrimitivesCoroutines)
+                api(projects.koncurrentPrimitivesCore)
             }
         }
 
         val commonTest by getting {
             dependencies {
                 implementation(projects.expectCoroutines)
+                implementation(projects.koncurrentLaterCoroutines)
+            }
+        }
+
+
+        val nativeMain by creating {
+            dependsOn(commonMain)
+        }
+
+        (nativeTargets).forEach {
+            val main by it.compilations.getting {}
+            main.defaultSourceSet {
+                dependsOn(nativeMain)
             }
         }
     }
