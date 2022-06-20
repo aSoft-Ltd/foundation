@@ -1,11 +1,5 @@
 # Roadmap
 
-## Kuest
-
-- [x] Add kuest-http module for reusable kuest objects
-- [x] Fix failing js tests
-    - [x] Ditch expect actual for the HttpResponse and provide wrappers on each platform
-
 ## Koncurrent
 
 - [ ] clean up commented out dependencies on all new koncurrent modules
