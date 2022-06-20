@@ -1,7 +1,6 @@
 package kuest
 
 import expect.expect
-import expect.toBe
 import koncurrent.pending.await
 import koncurrent.pending.then
 import koncurrent.pending.unwrap

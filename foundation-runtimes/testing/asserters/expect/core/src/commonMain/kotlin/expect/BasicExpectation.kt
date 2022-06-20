@@ -1,23 +1,23 @@
 package expect
 
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-
 /**
  * @param E Expected Type
  *
  * Samples
  *
  */
-interface BasicExpectation<E> {
+expect interface BasicExpectation<out E> {
     val value: E
 
-    fun toBeNonNull() {
-        assertNotNull(value)
-    }
+    fun toBeNonNull(message: String)
 
-    fun toBeNull() = assertNull(value)
+    fun toBeNonNull()
 
-    fun toBe(expected: E) = assertEquals(expected, value)
+    fun toBeNull(message: String)
+
+    fun toBeNull()
+
+    fun toBe(expected: @UnsafeVariance E, message: String)
+
+    fun toBe(expected: @UnsafeVariance E)
 }

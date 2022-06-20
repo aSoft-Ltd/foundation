@@ -1,4 +1,5 @@
 import expect.expect
+import expect.expectCollection
 import expect.expectMany
 import expect.toBe
 import kotlin.test.Test
@@ -6,7 +7,7 @@ import kotlin.test.Test
 class CollectionsApiTest {
     @Test
     fun should_have_a_killer_api() {
-        expect(listOf(1, 2, 3, 4)).toContain(2, 3, 4)
+        expectCollection(listOf(1, 2, 3, 4)).toContain(2, 3, 4)
     }
 
     @Test

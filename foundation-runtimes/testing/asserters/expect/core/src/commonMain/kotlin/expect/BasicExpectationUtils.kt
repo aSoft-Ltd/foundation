@@ -1,22 +1,16 @@
 package expect
 
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 
-inline fun <reified T> BasicExpectation<*>.toBeInstanceOf() = assertTrue(
-    """
-        
-    Expected : ${T::class.simpleName}
-    Actual   : $value
-    =================================
-    
-    """.trimIndent()
-) {
-    value is T
+inline fun <reified E> BasicExpectation<*>.toBeInstanceOf(message: String? = null): BasicExpectation<E> {
+    assertIs<E>(value, message)
+    return this as BasicExpectation<E>
 }
 
-inline fun <reified T> BasicExpectation<*>.toBe() = toBeInstanceOf<T>()
+inline fun <reified E> BasicExpectation<*>.toBe(): E = toBeInstanceOf<E>().value
 
-infix fun <T> BasicExpectation<T>.toBeEqualTo(expected: T) = toBe(expected)
+inline fun <E> BasicExpectation<E>.toBeEqualTo(expected: E, message: String? = null) = assertEquals(expected, value, message)
 
-infix fun <T> BasicExpectation<T>.toBeUnequalTo(expected: T) = assertNotEquals(expected, value)
+inline fun <T> BasicExpectation<T>.toBeUnequalTo(expected: T, message: String? = null) = assertNotEquals(expected, value, message)

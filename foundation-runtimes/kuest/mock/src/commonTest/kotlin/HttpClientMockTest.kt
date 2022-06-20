@@ -1,11 +1,4 @@
 import expect.expect
-import koncurrent.CoroutineExecutor
-import koncurrent.Executor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
 import kuest.*
 import kotlin.test.Test
 

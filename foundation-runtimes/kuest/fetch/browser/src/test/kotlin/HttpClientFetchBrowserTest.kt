@@ -1,6 +1,5 @@
 import expect.expect
 import kuest.AbstractHttpClientTest
-import kuest.HttpClientFetch
 import kuest.HttpClientFetchBrowser
 import kotlin.test.Test
 

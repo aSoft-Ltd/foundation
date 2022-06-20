@@ -1,12 +1,10 @@
 import cache.BrowserCache
 import cache.BrowserCacheConfig
-import cache.Cache
 import cache.exceptions.CacheLoadException
 import expect.expect
 import expect.expectFailure
 import expect.toBe
 import kotlinx.browser.sessionStorage
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import later.await

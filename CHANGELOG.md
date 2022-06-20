@@ -1,5 +1,10 @@
 # Roadmap
 
+## Expect
+
+- [ ] Refine the expect API
+- [ ] toBe<T>() should smart cast the object to its underlying type
+
 ## kuest
 
 ## Koncurrent
