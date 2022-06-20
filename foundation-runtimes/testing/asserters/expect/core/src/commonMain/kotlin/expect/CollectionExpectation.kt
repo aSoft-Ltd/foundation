@@ -1,7 +1,5 @@
 package expect
 
-import kotlin.test.assertTrue
-
 /**
  * @param E Expected Type
  *

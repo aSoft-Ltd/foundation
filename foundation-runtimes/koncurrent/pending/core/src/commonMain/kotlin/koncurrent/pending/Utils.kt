@@ -31,5 +31,5 @@ expect inline fun <T, R> Pending<Pending<T>>.unwrap(noinline onFulfilled: (T) ->
 
 inline fun <T> Pending<Pending<T>>.unwrap(): Pending<T> = unwrap { it }
 
-//@JvmName("unchain")
+
 //fun <T, R> Pending<Pending<T>>.then(onFulfilled: (T) -> R): Pending<R> = unwrap(onFulfilled)

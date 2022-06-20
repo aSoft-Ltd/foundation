@@ -1,11 +1,13 @@
 # Roadmap
 
-## Expect
+## Cache
 
-- [ ] Refine the expect API
-- [ ] toBe<T>() should smart cast the object to its underlying type
+- TODO: Centralize common cache test
+  HINT: At the moment every cache has almost an identical copy of tests. have a cache-test lib and let all tests inherit from it
 
 ## kuest
+
+- Re include mock kuest client taking another jab at the HttpResponse class
 
 ## Koncurrent
 
@@ -29,6 +31,19 @@
 ```
 
 # 1.5.1
+
+## Logger
+
+- Added a Log type
+
+## Kotlinx Collections Interoperable
+
+- Added iListOf, iMutableListOf and iEmptyListOf methods
+
+## Expect
+
+- [x] Refined the expect API
+- [x] toBe<T>() now smart casts the object to its underlying type
 
 ## Kuest
 

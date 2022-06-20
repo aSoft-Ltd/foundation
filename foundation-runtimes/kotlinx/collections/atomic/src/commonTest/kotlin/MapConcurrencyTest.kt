@@ -22,7 +22,7 @@ class MapConcurrencyTest {
         withContext(Dispatchers.Unconfined) {
             chars["C"] = 'C'
         }
-        expect(chars.values).toContain('A', 'B', 'C')
+        expectCollection(chars.values).toContain('A', 'B', 'C')
     }
 
     @Test
@@ -34,7 +34,7 @@ class MapConcurrencyTest {
         withContext(Dispatchers.Unconfined) {
             chars.putAll(listOf("C" to 'C'))
         }
-        expect(chars.values).toContain('A', 'B', 'C')
+        expectCollection(chars.values).toContain('A', 'B', 'C')
     }
 
     @Test
@@ -46,7 +46,7 @@ class MapConcurrencyTest {
         withContext(Dispatchers.Unconfined) {
             chars.remove("C")
         }
-        expect(chars.values).toContain('A')
-        expect(chars.values).toBeOfSize(1)
+        expectCollection(chars.values).toContain('A')
+        expectCollection(chars.values).toBeOfSize(1)
     }
 }

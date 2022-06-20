@@ -1,6 +1,7 @@
 import cache.MockCache
 import cache.exceptions.CacheLoadException
 import expect.expect
+import expect.expectCollection
 import expect.expectFailure
 import expect.toBe
 import kotlinx.coroutines.test.runTest
@@ -68,6 +69,6 @@ class MockCacheTest {
 
         cache.clear()
         expect(cache.loadOrNull<Int?>("two").await()).toBe(null)
-        expect(cache.keys().await()).toBeEmpty()
+        expectCollection(cache.keys().await()).toBeEmpty()
     }
 }

@@ -22,7 +22,7 @@ class ListConcurrencyTest {
         withContext(Dispatchers.Unconfined) {
             chars.add('C')
         }
-        expect(chars).toContain('A', 'B', 'C')
+        expectCollection(chars).toContain('A', 'B', 'C')
     }
 
     @Test
@@ -34,7 +34,7 @@ class ListConcurrencyTest {
         withContext(Dispatchers.Unconfined) {
             chars.addAll(listOf('C'))
         }
-        expect(chars).toContain('A', 'B', 'C')
+        expectCollection(chars).toContain('A', 'B', 'C')
     }
 
     @Test
@@ -46,6 +46,6 @@ class ListConcurrencyTest {
         withContext(Dispatchers.Unconfined) {
             chars.remove('C')
         }
-        expect(chars).toContain('A')
+        expectCollection(chars).toContain('A')
     }
 }

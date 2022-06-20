@@ -17,6 +17,7 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
+@Deprecated("In favour of koncurrent.Later", replaceWith = ReplaceWith("Later", "koncurrent.Later"))
 class Later<out T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
 
     @JsName("fromExecutor")
@@ -27,7 +28,7 @@ class Later<out T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Uni
 
     private val innerState: AtomicRef<LaterState<T>> = atomic(PENDING())
 
-    internal val state get() = innerState.value
+    val state get() = innerState.value
 
     init {
         loadToNextEventLoop {
@@ -66,6 +67,7 @@ class Later<out T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Uni
         when (val s = state) {
             is FULFILLED -> propagateFulfilled(s.value)
             is REJECTED -> propagateRejected(s.cause)
+            else -> {}
         }
         return controlledLater
     }

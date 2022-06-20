@@ -54,11 +54,10 @@ includeSubs("koncurrent-primitives", "koncurrent/primitives", "core", "coroutine
 includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines")
 includeSubs("koncurrent-pending", "koncurrent/pending", "core", "coroutines")
 
-includeSubs("kuest", "kuest", "http", "core", "coroutines", "mock", "test")
+includeSubs("kuest", "kuest", "http", "core", "coroutines", /* "mock", */ "test")
 includeSubs("kuest-fetch", "kuest/fetch", "core", "browser", "node")
 
 includeSubs("later", "later", "core", "ktx")
-includeRoot("later-test-expect", "later/test/expect")
 
 includeSubs("logging", "logging", "core", "console", "file")
 includeRoot("logging-test-android", "logging/test/android")
