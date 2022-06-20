@@ -1,9 +1,11 @@
+import expect.NativeIgnore
 import koncurrent.*
 import koncurrent.pending.await
 import koncurrent.pending.catch
 import koncurrent.pending.then
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -54,6 +56,7 @@ class CoroutinesCanAwait {
     }
 
     @Test
+    @NativeIgnore
     fun should_be_able_to_recover_from_an_error_mid_pipeline(): TestResult {
         var zero = -1
         val result = pending {
