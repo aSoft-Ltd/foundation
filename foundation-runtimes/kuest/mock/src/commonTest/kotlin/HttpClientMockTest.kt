@@ -6,18 +6,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
-import kuest.AbstractHttpClientTest
-import kuest.HttpClientMock
-import kuest.HttpClientMockConfig
-import kuest.MockHttpResponse
+import kuest.*
 import kotlin.test.Test
 
 class HttpClientMockTest : AbstractHttpClientTest(client) {
 
     companion object {
-        private val config = HttpClientMockConfig(
-            executor = CoroutineExecutor(CoroutineScope(Dispatchers.Default + SupervisorJob())),
-            interceptor = {
+        private val config = HttpClientMockConfig { req ->
+            if (req.method == HttpMethod.Post) {
+                """
+                {
+                  "id": 101
+                }
+                """.trimIndent()
+            } else {
                 """
                 {
                   "userId": 1,
@@ -27,7 +29,7 @@ class HttpClientMockTest : AbstractHttpClientTest(client) {
                 }
                 """.trimIndent()
             }
-        )
+        }
         private val client = HttpClientMock(config)
     }
 

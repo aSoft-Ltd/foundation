@@ -33,12 +33,7 @@ public class HeadersBuilder(size: Int = 8) : StringValuesBuilderImpl(true, size)
     }
 }
 
-@Deprecated(
-    "Empty headers is internal",
-    replaceWith = ReplaceWith("Headers.Empty"),
-    level = DeprecationLevel.ERROR
-)
-public object EmptyHeaders : Headers {
+internal object EmptyHeaders : Headers {
     override val caseInsensitiveName: Boolean get() = true
     override fun getAll(name: String): List<String>? = null
     override fun names(): Set<String> = emptySet()

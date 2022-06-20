@@ -1,9 +1,10 @@
 # Roadmap
 
+## kuest
+
 ## Koncurrent
 
 - [ ] clean up commented out dependencies on all new koncurrent modules
-- Create a reliable bodyAsText method after a get request
 - Add `ExecutorService` in koncurrent-primitives-core to support ExecutorService shutdown and termination
 
 ```

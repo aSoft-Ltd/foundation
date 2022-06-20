@@ -11,6 +11,19 @@ import kotlin.test.Test
 abstract class AbstractHttpClientTest(open val client: HttpClient) {
 
     @Test
+    fun client_should_be_able_to_perform_post_requests() = runTest {
+        val body = JsonRequestBody("""{"name":"John"}""")
+        val res = client.post("https://jsonplaceholder.typicode.com/posts", body).bodyAsText()
+        expect(res.await()).toBe(
+            """
+            {
+              "id": 101
+            }
+        """.trimIndent()
+        )
+    }
+
+    @Test
     fun client_get_should_not_fail() = runTest {
         val res = client.get("https://jsonplaceholder.typicode.com/todos/1").then {
             it.text()
