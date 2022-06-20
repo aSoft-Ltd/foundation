@@ -7,12 +7,7 @@ plugins {
 
 kotlin {
     js(IR) {
-        library()
-        browser {
-            testTask {
-                useKarma { useChromiumHeadless() }
-            }
-        }
+        browserLib()
     }
 
     sourceSets {

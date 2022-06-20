@@ -7,7 +7,7 @@ plugins {
 
 kotlin {
     js(IR) {
-        library()
+        nodeLib()
     }
 
     sourceSets {

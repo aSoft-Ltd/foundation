@@ -6,14 +6,14 @@ import kotlin.jvm.JvmStatic
 
 interface HttpClientMockConfig {
     val executor: Executor
-    val interceptor: (String) -> Any
+    val interceptor: (HttpRequest<*>) -> Any
 
     companion object {
         @JvmStatic
         @JvmName("create")
         operator fun invoke(
             executor: Executor,
-            interceptor: (String) -> Any
+            interceptor: (HttpRequest<*>) -> Any
         ): HttpClientMockConfig = HttpClientMockConfigImpl(executor, interceptor)
     }
 }

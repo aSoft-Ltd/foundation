@@ -2,9 +2,9 @@
 
 ## Kuest
 
-- [ ] Add kuest-http module for reusable kuest objects
-- [ ] Fix failing js tests
-    - [ ] Ditch expect actual for the HttpResponse and provide wrappers on each platform
+- [x] Add kuest-http module for reusable kuest objects
+- [x] Fix failing js tests
+    - [x] Ditch expect actual for the HttpResponse and provide wrappers on each platform
 
 ## Koncurrent
 

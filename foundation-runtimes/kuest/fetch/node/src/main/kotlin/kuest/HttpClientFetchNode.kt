@@ -6,6 +6,8 @@ import org.w3c.fetch.RequestInit
 
 class HttpClientFetchNode : HttpClientFetch() {
 
+    override val mapper = FetchRequestInitBodyMapper()
+
     override fun fetch(input: dynamic, init: RequestInit?): Promise<HttpResponse> {
         return if (init != null && init != undefined) {
             nodeFetch(input, init)

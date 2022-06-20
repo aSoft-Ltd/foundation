@@ -9,12 +9,28 @@ kotlin {
     jvm { library() }
     js(IR) { library() }
 
-    nativeTargets(true)
+    val nativeTargets = nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentPendingCore)
+            }
+        }
+
+
+        val jsMain by getting {
+
+        }
+
+        val nativeMain by creating {
+            dependsOn(commonMain)
+        }
+
+        (nativeTargets).forEach {
+            val main by it.compilations.getting {}
+            main.defaultSourceSet {
+                dependsOn(nativeMain)
             }
         }
     }

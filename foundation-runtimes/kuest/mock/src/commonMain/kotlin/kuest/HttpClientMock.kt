@@ -1,11 +1,11 @@
 package kuest
 
-import koncurrent.Pending
 import koncurrent.pending
 
-class HttpClientMock(val config: HttpClientMockConfig) : HttpClient {
-    override fun get(url: String): Pending<HttpResponse> = config.executor.pending {
-        MockHttpResponse(config.interceptor(url))
+class HttpClientMock(private val config: HttpClientMockConfig) : AbstractHttpClient() {
+
+    override fun execute(req: HttpRequest<*>) = config.executor.pending {
+        MockHttpResponse(config.interceptor(req))
     }
 
     override fun toString(): String = "HttpClientMock"

@@ -4,5 +4,5 @@ import koncurrent.Executor
 
 internal class HttpClientMockConfigImpl(
     override val executor: Executor,
-    override val interceptor: (String) -> Any
+    override val interceptor: (HttpRequest<*>) -> Any
 ) : HttpClientMockConfig

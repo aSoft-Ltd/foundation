@@ -18,6 +18,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentPendingCore)
+                api(projects.kuestHttp)
             }
         }
 
