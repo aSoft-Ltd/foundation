@@ -160,9 +160,9 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     fun toPending(executor: Executor): PlatformConcurrentMonad<T> = toPlatformConcurrentMonad(executor)
 
     fun resolveWith(value: @UnsafeVariance T): Boolean {
-        if (this.state is PendingState) {
+        if (state is PendingState) {
             try {
-                this.state = Fulfilled(value as T)
+                state = Fulfilled(value)
                 propagateFulfilled(value)
             } catch (err: Throwable) {
                 rejectWith(err)
@@ -188,14 +188,15 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
             try {
                 val valueOrLater =
                     fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
-                when {
-                    valueOrLater.isThenable() -> valueOrLater.then(
-                        executor = executor,
-                        onResolved = { v -> controlledLater.resolveWith(v) },
-                        onRejected = { error -> controlledLater.rejectWith(error) }
-                    )
-                    else -> controlledLater.resolveWith(valueOrLater)
-                }
+//                when {
+//                    valueOrLater.isThenable() -> valueOrLater.then(
+//                        executor = executor,
+//                        onResolved = { v -> controlledLater.resolveWith(v) },
+//                        onRejected = { error -> controlledLater.rejectWith(error) }
+//                    )
+//                    else -> controlledLater.resolveWith(valueOrLater)
+//                }
+                controlledLater.resolveWith(valueOrLater)
             } catch (err: Throwable) {
 //                controlledLater.resolveWith(value)
                 propagateRejected(err)
@@ -218,14 +219,15 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
             try {
                 val rejectedFn = it.rejectedFn ?: throw RuntimeException("No catch function")
                 val valueOrLater = rejectedFn(error)
-                when {
-                    valueOrLater.isThenable() -> valueOrLater.then(
-                        executor = executor,
-                        onResolved = { v -> controlledLater.resolveWith(v) },
-                        onRejected = { err -> controlledLater.rejectWith(err) }
-                    )
-                    else -> controlledLater.resolveWith(valueOrLater)
-                }
+//                when {
+//                    valueOrLater.isThenable() -> valueOrLater.then(
+//                        executor = executor,
+//                        onResolved = { v -> controlledLater.resolveWith(v) },
+//                        onRejected = { err -> controlledLater.rejectWith(err) }
+//                    )
+//                    else -> controlledLater.resolveWith(valueOrLater)
+//                }
+                controlledLater.resolveWith(valueOrLater)
             } catch (err: Throwable) {
                 controlledLater.rejectWith(err)
             }

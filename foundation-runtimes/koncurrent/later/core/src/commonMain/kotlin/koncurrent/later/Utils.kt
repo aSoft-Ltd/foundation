@@ -56,3 +56,5 @@ fun <T, R> Later<Later<T>>.unwrap(executor: Executor = this.executor, onFulfille
         later
     }
 }
+
+inline fun <T> Later<Later<T>>.unwrap(executor: Executor = this.executor): Later<T> = unwrap(executor) { it }

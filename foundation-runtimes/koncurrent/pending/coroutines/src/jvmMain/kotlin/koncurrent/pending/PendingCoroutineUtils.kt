@@ -5,7 +5,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-actual suspend inline fun <T> Pending<T>.await(): T {
+actual suspend fun <T> Pending<T>.await(): T {
     if (isDone) return get() as T
 
     return suspendCancellableCoroutine { cont ->

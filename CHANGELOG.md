@@ -1,16 +1,13 @@
 # Roadmap
 
-## Koncurrent
-
-- [ ] Thoroughly test `unwrap` function for `Later` it is causing problems to the mock implementation
-
 ## Kuest
 
-- [ ] Fix failing mock tests
+- [ ] Add kuest-http module for reusable kuest objects
+- [ ] Fix failing js tests
+    - [ ] Ditch expect actual for the HttpResponse and provide wrappers on each platform
 
 ## Koncurrent
 
-- [ ] Clean up build.gradle.kts for koncurrent-pending core & coroutines modules
 - [ ] clean up commented out dependencies on all new koncurrent modules
 - Create a reliable bodyAsText method after a get request
 - Add `ExecutorService` in koncurrent-primitives-core to support ExecutorService shutdown and termination
@@ -35,11 +32,13 @@
 
 ## Kuest
 
+- [x] Fix failing mock tests
 - [x] Migrate away from old koncurrent dependencies into new ones
     - [x] change import coordinates from old packages into new ones
 
 ## Koncurrent
 
+- [x] Thoroughly test `unwrap` function for `Later` it is causing problems to the mock implementation
 - [x] Test cascaded Pending object and make sure that the behaviour is predictable on all platform
 - Added a koncurrent module family
 - [x] Split up concurrent-core into multi modules

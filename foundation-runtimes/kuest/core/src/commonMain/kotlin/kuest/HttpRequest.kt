@@ -1,0 +1,5 @@
+package kuest
+
+interface HttpRequest {
+
+}

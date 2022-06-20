@@ -14,8 +14,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentPrimitivesCore)
-                api(kotlinx.coroutines.core)
+                api(projects.koncurrentPendingCore)
             }
         }
     }
@@ -23,5 +22,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = asoft.versions.foundation.get(),
-    description = "A coroutine extension of the primary building blocks needed for running concurrent multiplatform code"
+    description = "A kotlin multiplatform http toolset"
 )

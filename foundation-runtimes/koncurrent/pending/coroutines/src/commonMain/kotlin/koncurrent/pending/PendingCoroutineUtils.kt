@@ -5,7 +5,7 @@ package koncurrent.pending
 import koncurrent.*
 import kotlin.jvm.JvmName
 
-expect suspend inline fun <T> Pending<T>.await(): T
+expect suspend fun <T> Pending<T>.await(): T
 
 expect suspend inline fun <T> Pending<Pending<T>>.awaitChain(): T
 
