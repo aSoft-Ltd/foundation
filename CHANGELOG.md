@@ -32,22 +32,11 @@
 
 ## Kuest
 
-- [x] Fix failing mock tests
-- [x] Migrate away from old koncurrent dependencies into new ones
-    - [x] change import coordinates from old packages into new ones
+Added Kuest. A coroutine free http client built on top of koncurrent-pending monad
 
 ## Koncurrent
 
-- [x] Thoroughly test `unwrap` function for `Later` it is causing problems to the mock implementation
-- [x] Test cascaded Pending object and make sure that the behaviour is predictable on all platform
-- Added a koncurrent module family
-- [x] Split up concurrent-core into multi modules
-    - [x] koncurrent primitives (containing Executors & Executor)
-    - [x] koncurrent later      (containing Later implementation) { depends on koncurrent-primitives }
-        - [x] Move all later extension functions into package koncurrent.later
-    - [x] koncurrent pending    (containing the pending abstraction) { depends on koncurrent-later }
-        - [x] Move all pending extension function into package koncurrent.pending
-        - [x] Fix failing tests after module split
+Added Koncurrent library to be used in non coroutine friendly environments
 
 # 1.4.61
 
