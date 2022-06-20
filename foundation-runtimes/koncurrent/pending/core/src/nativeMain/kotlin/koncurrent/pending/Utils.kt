@@ -1,9 +1,9 @@
 package koncurrent.pending
 
-import koncurrent.ControlledPending
 import koncurrent.Executor
 import koncurrent.Pending
 import koncurrent.Settled
+import koncurrent.later.unwrap as laterUnwrap
 
 actual inline fun <T, R> Pending<T>.then(executor: Executor, noinline onResolved: ((T) -> R)) = then(executor, onResolved = onResolved, onRejected = null)
 
@@ -27,16 +27,4 @@ actual inline fun <T> Pending<T>.resolveWith(value: T) = resolveWith(value)
 
 actual inline fun <T> Pending<T>.rejectWith(exception: Throwable) = rejectWith(exception)
 
-actual inline fun <T, R> Pending<Pending<T>>.unwrap(noinline onFulfilled: (T) -> R): Pending<R> {
-    val pending = ControlledPending<R>()
-    then(onResolved = { p ->
-        p.then {
-            try {
-                pending.resolveWith(onFulfilled(it))
-            } catch (err: Throwable) {
-                pending.rejectWith(err)
-            }
-        }
-    })
-    return pending
-}
+actual inline fun <T, R> Pending<Pending<T>>.unwrap(noinline onFulfilled: (T) -> R): Pending<R> = laterUnwrap(onFulfilled = onFulfilled)

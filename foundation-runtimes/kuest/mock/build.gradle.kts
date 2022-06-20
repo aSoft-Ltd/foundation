@@ -18,6 +18,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.kuestCore)
+                implementation(projects.koncurrentPrimitivesCoroutines)
             }
         }
 

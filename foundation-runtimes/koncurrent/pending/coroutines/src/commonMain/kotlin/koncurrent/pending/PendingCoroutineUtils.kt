@@ -1,21 +1,11 @@
 @file:JvmName("PendingCoroutineUtilsCommon")
+
 package koncurrent.pending
 
 import koncurrent.*
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.jvm.JvmName
 
-suspend inline fun <T> Pending<T>.await(): T = suspendCancellableCoroutine { cont ->
-    complete { state ->
-        when (state) {
-            is Fulfilled -> cont.resume(state.value)
-            is Rejected -> cont.resumeWithException(state.cause)
-        }
-    }
-}
+expect suspend inline fun <T> Pending<T>.await(): T
 
 expect suspend inline fun <T> Pending<Pending<T>>.awaitChain(): T
 

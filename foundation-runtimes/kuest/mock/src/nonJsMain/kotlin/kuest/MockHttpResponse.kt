@@ -10,4 +10,6 @@ actual inline fun <reified T> MockHttpResponse(body: T): HttpResponse = object :
             else -> TODO()
         }
     }
+
+    override fun toString(): String = "MockHttpResponse(body=$body)"
 }

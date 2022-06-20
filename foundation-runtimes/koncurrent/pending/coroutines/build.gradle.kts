@@ -17,7 +17,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentPendingCore)
-                api(kotlinx.coroutines.core)
+                api(projects.koncurrentPrimitivesCoroutines)
             }
         }
 
@@ -56,5 +56,6 @@ kotlin {
 }
 
 aSoftOSSLibrary(
-    version = asoft.versions.foundation.get(), description = "An multiplatform representation of a Promised based api"
+    version = asoft.versions.foundation.get(),
+    description = "An multiplatform representation of a Promised based api"
 )
