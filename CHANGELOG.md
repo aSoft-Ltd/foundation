@@ -32,11 +32,6 @@
 
 # Next
 
-## Koncurrent
-
-- [x] Add Few. A multiplatform coroutine free reactive monad
-- [x] Added a mock executor to primitives to aid with testing
-
 # 1.5.1
 
 ## Logger
@@ -59,6 +54,8 @@ Added Kuest. A coroutine free http client built on top of koncurrent-pending mon
 ## Koncurrent
 
 Added Koncurrent library to be used in non coroutine friendly environments
+Add Few. A multiplatform coroutine free reactive monad
+Added a mock executor to primitives to aid with testing
 
 # 1.4.61
 
