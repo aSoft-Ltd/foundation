@@ -2,6 +2,8 @@ import expect.expect
 import koncurrent.MockExecutor
 import koncurrent.few
 import koncurrent.few.executeOn
+import koncurrent.few.onEach
+import koncurrent.few.map
 import koncurrent.fewOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -21,7 +23,7 @@ class FewApiTest {
 
     @Test
     fun should_be_able_to_collect_multiple_few() = runTest {
-        val name = few {
+        val name = few(on = mockExecutor) {
             println("Emitting A")
             emit("A")
             println("Emitting N")
@@ -31,8 +33,26 @@ class FewApiTest {
             println("Emitting Y")
             emit("Y")
             println("Finished emitting")
-        }.executeOn(mockExecutor)
+        }
         println("Haven't began collection, so this should run first")
+        var collectedName = ""
+        name.collect {
+            println("Collecting $it")
+            collectedName += it
+        }
+        println("Collected: $collectedName")
+    }
+
+    @Test
+    fun should_be_able_to_interpect_intermediate_values() = runTest {
+        val name = few(on = mockExecutor) {
+            emit("A")
+            emit("N")
+            emit("D")
+            emit("Y")
+        }.onEach {
+            println("Seeing $it")
+        }.map { "'$it'" }
         var collectedName = ""
         name.collect {
             println("Collecting $it")

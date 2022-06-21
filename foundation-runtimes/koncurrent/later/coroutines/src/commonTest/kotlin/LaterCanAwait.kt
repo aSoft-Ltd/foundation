@@ -1,5 +1,7 @@
 import koncurrent.*
 import koncurrent.later.await
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -21,6 +23,8 @@ class LaterCanAwait {
         }.then {
             it + 1
         }
+
+        flow { emit(0) }.onEach {  }
         return runTest {
             assertEquals(1, result.await())
         }

@@ -1,10 +1,8 @@
 import expect.expect
 import koncurrent.Later
 import koncurrent.MockExecutor
-import koncurrent.later.await
 import koncurrent.later.then
 import koncurrent.later.unwrap
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class NestedValuesTest {
@@ -37,6 +35,24 @@ class NestedValuesTest {
             expect(it).toBe(2)
             1 / (it - 2)
         }.catch(e2) {
+            0
+        }.finally {
+            println("Finished processing later")
+        }
+    }
+
+    @Test
+    fun should_keep_execution_on_first_executor() {
+        Later.resolve(0, MockExecutor("Mock Executor 1")).then {
+            expect(it).toBe(0)
+            it + 1
+        }.then {
+            expect(it).toBe(1)
+            it * 2
+        }.then {
+            expect(it).toBe(2)
+            1 / (it - 2)
+        }.catch {
             0
         }.finally {
             println("Finished processing later")
