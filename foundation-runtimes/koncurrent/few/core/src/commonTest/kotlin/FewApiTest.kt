@@ -1,9 +1,6 @@
 import expect.expect
 import koncurrent.MockExecutor
 import koncurrent.few
-import koncurrent.few.executeOn
-import koncurrent.few.onEach
-import koncurrent.few.map
 import koncurrent.fewOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -13,7 +10,7 @@ class FewApiTest {
     private val mockExecutor = MockExecutor()
 
     @Test
-    fun should_be_able_to_create_a_few() = runTest {
+    fun should_be_able_to_create_a_few() {
         fewOf(0).executeOn(mockExecutor).collect {
             println("Collecting $it")
             expect(it).toBe(0)
@@ -22,7 +19,7 @@ class FewApiTest {
     }
 
     @Test
-    fun should_be_able_to_collect_multiple_few() = runTest {
+    fun should_be_able_to_collect_multiple_few() {
         val name = few(on = mockExecutor) {
             println("Emitting A")
             emit("A")
@@ -44,7 +41,7 @@ class FewApiTest {
     }
 
     @Test
-    fun should_be_able_to_interpect_intermediate_values() = runTest {
+    fun should_be_able_to_interpect_intermediate_values() {
         val name = few(on = mockExecutor) {
             emit("A")
             emit("N")

@@ -1,3 +1,5 @@
+@file:Suppress("NON_EXPORTABLE_TYPE")
+
 package functions
 
 import kotlin.js.JsExport

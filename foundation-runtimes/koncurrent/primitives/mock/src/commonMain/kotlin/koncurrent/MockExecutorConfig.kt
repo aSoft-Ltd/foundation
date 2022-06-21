@@ -11,12 +11,15 @@ interface MockExecutorConfig {
 
     companion object {
         @JvmField
+        val DEFAULT_NAME = "Mock Exector"
+
+        @JvmField
         val DEFAULT_LOG_ON_EXECUTE = true
 
         @JvmStatic
         @JvmName("create")
         operator fun invoke(
-            name: String = "Mock Executor",
+            name: String = DEFAULT_NAME,
             logOnExecute: Boolean = DEFAULT_LOG_ON_EXECUTE
         ): MockExecutorConfig = MockExecutorConfigImpl(name, logOnExecute)
     }
