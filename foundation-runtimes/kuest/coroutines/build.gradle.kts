@@ -12,7 +12,7 @@ kotlin {
     }
     js(IR) { library() }
 
-    val nativeTargets = nativeTargets(true)
+    nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {
@@ -25,25 +25,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(projects.kuestTest)
-            }
-        }
-
-//        val nonJvmMain by creating {
-//            dependsOn(commonMain)
-//        }
-
-//        val jsMain by getting {
-//            dependsOn(nonJvmMain)
-//        }
-
-        val nativeMain by creating {
-//            dependsOn(nonJvmMain)
-        }
-
-        (nativeTargets).forEach {
-            val main by it.compilations.getting {}
-            main.defaultSourceSet {
-                dependsOn(nativeMain)
             }
         }
     }
