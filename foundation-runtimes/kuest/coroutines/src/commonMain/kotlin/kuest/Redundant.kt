@@ -1,0 +1,4 @@
+package kuest
+
+class Redundant {
+}

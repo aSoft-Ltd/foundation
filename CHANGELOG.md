@@ -1,36 +1,12 @@
 # Roadmap
 
-## Cache
+- [cache-test] Centralize common cache test
 
-- TODO: Centralize common cache test
   HINT: At the moment every cache has almost an identical copy of tests. have a cache-test lib and let all tests inherit from it
-
-## kuest
-
-- Re include mock kuest client taking another jab at the HttpResponse class
-
-## Koncurrent
-
-- [ ] clean up commented out dependencies on all new koncurrent modules
-- Add `ExecutorService` in koncurrent-primitives-core to support ExecutorService shutdown and termination
-
-```
-      _ _ _ _ _ _   _ _ _ _ _ _ _ 
-   .              |
- .                !
-.                 |
-.                 !
- .                !
-    _ _ _ _ _ _ _ | - - - -
-  .               !
-.                 |
-.                 !
-.                 |
- .                !
-    _ _ _ _ _ _ _ | 
-```
-
-# Next
+- [cache-file] add cache-file multiplatform implementation by depending on okio
+- [kuest-mock] Re include mock kuest client taking another jab at the HttpResponse class
+- [koncurrent] clean up commented out dependencies on all new koncurrent modules
+- [koncurrent-primitives-core] Add `ExecutorService` in koncurrent-primitives-core to support ExecutorService shutdown and termination
 
 # 1.5.1
 
