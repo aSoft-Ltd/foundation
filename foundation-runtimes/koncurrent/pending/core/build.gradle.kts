@@ -22,6 +22,7 @@ kotlin {
             dependencies {
                 implementation(projects.expectCoroutines)
                 implementation(projects.koncurrentPendingCoroutines)
+                implementation(projects.koncurrentPrimitivesMock)
             }
         }
 

@@ -24,6 +24,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 api(projects.expectCoroutines)
+                implementation(projects.koncurrentPrimitivesMock)
             }
         }
 

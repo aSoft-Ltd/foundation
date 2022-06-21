@@ -10,6 +10,7 @@ import koncurrent.later.internal.LaterQueueComponent
 import koncurrent.later.internal.PlatformConcurrentMonad
 import koncurrent.later.isThenable
 import koncurrent.later.toPlatformConcurrentMonad
+import kotlinx.collections.atomic.mutableAtomicListOf
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmName
@@ -23,8 +24,8 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     @JvmOverloads
     constructor(handler: LaterHandler<T>, executor: Executor = Executors.default()) : this(executor, { resolve, reject -> handler.execute(resolve, reject) })
 
-    private val thenQueue = mutableListOf<LaterQueueComponent<*>>()
-    private val finallyQueue = mutableListOf<LaterQueueComponent<*>>()
+    private val thenQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
+    private val finallyQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
 
     @JvmSynthetic
     @JsName("_ignore_state")

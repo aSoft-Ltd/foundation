@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentPrimitivesCore)
+                api(projects.koncurrentPendingCore)
             }
         }
 
@@ -22,6 +23,7 @@ kotlin {
             dependencies {
                 implementation(projects.expectCoroutines)
                 implementation(projects.koncurrentLaterCoroutines)
+                implementation(projects.koncurrentPrimitivesMock)
             }
         }
 
@@ -41,5 +43,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = asoft.versions.foundation.get(),
-    description = "An multiplatform implementation of a Promised based api"
+    description = "A multiplatform coroutine free reactive Monad"
 )

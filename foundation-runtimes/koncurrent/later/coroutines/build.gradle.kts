@@ -15,6 +15,7 @@ kotlin {
             dependencies {
                 api(projects.koncurrentLaterCore)
                 api(projects.koncurrentPrimitivesCoroutines)
+                implementation(projects.koncurrentPrimitivesMock)
             }
         }
 

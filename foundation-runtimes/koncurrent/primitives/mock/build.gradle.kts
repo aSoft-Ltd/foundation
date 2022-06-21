@@ -8,19 +8,13 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
+
     nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentLaterCore)
-                api(projects.koncurrentPrimitivesCoroutines)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(projects.expectCoroutines)
+                api(projects.koncurrentPrimitivesCore)
             }
         }
     }
@@ -28,5 +22,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = asoft.versions.foundation.get(),
-    description = "An multiplatform implementation of a Promised based api"
+    description = "A mock implementation of primitives to be used in testing environments"
 )

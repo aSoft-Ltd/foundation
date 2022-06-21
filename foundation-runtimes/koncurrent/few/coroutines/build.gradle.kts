@@ -8,34 +8,20 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-
-    val nativeTargets = nativeTargets(true)
+    nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentPrimitivesCore)
-                api(projects.kotlinxCollectionsAtomic)
+                api(projects.koncurrentFewCore)
+                api(projects.koncurrentPendingCoroutines)
             }
         }
 
         val commonTest by getting {
             dependencies {
                 implementation(projects.expectCoroutines)
-                implementation(projects.koncurrentLaterCoroutines)
                 implementation(projects.koncurrentPrimitivesMock)
-            }
-        }
-
-
-        val nativeMain by creating {
-            dependsOn(commonMain)
-        }
-
-        (nativeTargets).forEach {
-            val main by it.compilations.getting {}
-            main.defaultSourceSet {
-                dependsOn(nativeMain)
             }
         }
     }
@@ -43,5 +29,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = asoft.versions.foundation.get(),
-    description = "An multiplatform implementation of a Promised based api"
+    description = "An extension of the reactive monad to use it in a coroutine contex"
 )

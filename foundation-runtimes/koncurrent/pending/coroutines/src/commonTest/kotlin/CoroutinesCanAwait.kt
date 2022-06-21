@@ -3,9 +3,12 @@ import koncurrent.*
 import koncurrent.pending.await
 import koncurrent.pending.catch
 import koncurrent.pending.then
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -50,6 +53,9 @@ class CoroutinesCanAwait {
             it + 1
         }
 
+        flow {
+            emit(0)
+        }.flowOn()
         return runTest {
             assertEquals(3, result.await())
         }
