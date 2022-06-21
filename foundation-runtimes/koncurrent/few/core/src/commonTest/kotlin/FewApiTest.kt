@@ -2,7 +2,6 @@ import expect.expect
 import koncurrent.MockExecutor
 import koncurrent.few
 import koncurrent.fewOf
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class FewApiTest {
@@ -56,5 +55,21 @@ class FewApiTest {
             collectedName += it
         }
         println("Collected: $collectedName")
+    }
+
+    @Test
+    fun should_be_able_to_catch_upstream_errors() {
+        few(mockExecutor) {
+            emit(1)
+            emit(2)
+            throw IllegalStateException("For fun")
+        }.catch {
+            println("Caught a nasty error: ${it.message}")
+            emit(3)
+            emit(4)
+            emit(5)
+        }.collect {
+            println("Collecting $it")
+        }
     }
 }

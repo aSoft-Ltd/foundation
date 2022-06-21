@@ -1,3 +1,5 @@
+@file:JsExport
+
 package koncurrent
 
 actual object Executors {

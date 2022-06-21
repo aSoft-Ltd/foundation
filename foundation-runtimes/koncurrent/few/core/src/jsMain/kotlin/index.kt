@@ -17,3 +17,7 @@ fun <T> few(
 ): Few<T> = simpleFew(executor) {
     block(this)
 }
+
+fun <T> catch(handler: (Throwable) -> T) {
+    console.log("Nyeee")
+}

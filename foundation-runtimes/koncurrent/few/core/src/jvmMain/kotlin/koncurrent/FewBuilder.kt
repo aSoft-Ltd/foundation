@@ -5,13 +5,17 @@ import java.util.function.Consumer
 
 object FewBuilder {
     @JvmStatic
-    fun <T> fewOf(value: T): Few<T> = simpleFew {
+    @JvmOverloads
+    fun <T> build(
+        value: T,
+        executor: Executor = Executors.default()
+    ): Few<T> = simpleFew(executor) {
         emit(value)
     }
 
     @JvmOverloads
     @JvmStatic
-    fun <T> few(
+    fun <T> build(
         block: Consumer<FewCollector<T>>,
         executor: Executor = Executors.default(),
     ): Few<T> = simpleFew(executor, block::accept)
