@@ -1,27 +1,21 @@
 plugins {
-    kotlin("multiplatform")
+    kotlin("js")
     id("tz.co.asoft.library")
     id("io.codearte.nexus-staging")
     signing
 }
 
 kotlin {
-    jvm {
-        library()
-        withJava()
-    }
     js(IR) { library() }
 
-    val nativeTargets = nativeTargets(true)
-
     sourceSets {
-        val commonMain by getting {
+        val main by getting {
             dependencies {
                 api(projects.kuestCore)
             }
         }
 
-        val commonTest by getting {
+        val test by getting {
             dependencies {
                 implementation(projects.kuestTest)
             }
