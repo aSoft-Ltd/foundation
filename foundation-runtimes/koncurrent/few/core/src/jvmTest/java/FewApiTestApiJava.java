@@ -72,7 +72,7 @@ public class FewApiTestApiJava {
             it.emit(1);
             it.emit(2);
             it.emit(3);
-            throw new RuntimeException("Piecewise");
+//            throw new RuntimeException("Piecewise");
         }, executor).map(it -> {
             System.out.println("Emitting " + it);
             return it.toString() + "A";
