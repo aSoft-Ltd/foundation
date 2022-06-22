@@ -76,14 +76,18 @@ public class FewApiTestApiJava {
         }, executor).map(it -> {
             System.out.println("Emitting " + it);
             return it.toString() + "A";
-        }).error((col, err) -> {
-            System.out.println("Caught: " + err.getMessage());
-            col.emit(4);
-            col.emit(5);
-            col.emit(6);
-            System.out.println("Inside error block");
         }).collect(it -> {
             System.out.println("Collecting " + it);
         });
+
+//        .error((col, err) -> {
+//            System.out.println("Caught: " + err.getMessage());
+//            col.emit(4);
+//            col.emit(5);
+//            col.emit(6);
+//            System.out.println("Inside error block");
+//        }).collect(it -> {
+//            System.out.println("Collecting " + it);
+//        });
     }
 }
