@@ -1,6 +1,8 @@
 plugins {
     kotlin("multiplatform")
     id("tz.co.asoft.library")
+    id("io.codearte.nexus-staging")
+    signing
 }
 
 kotlin {
@@ -22,3 +24,8 @@ kotlin {
         }
     }
 }
+
+aSoftOSSLibrary(
+    version = asoft.versions.foundation.get(),
+    description = "Helps with testing kuest"
+)

@@ -69,23 +69,21 @@ public class FewApiTestApiJava {
     @Test
     void should_be_able_to_catch_upstream_errors() {
         FewBuilder.<Integer>build(it -> {
-                    it.emit(1);
-                    it.emit(2);
-                    it.emit(3);
-//                    throw new RuntimeException("Piecewise");
-                }, executor).map(it -> {
-                    System.out.println("Emitting " + it);
-                    return it.toString() + "A";
-                })
-//                .error((col, err) -> {
-//            System.out.println("Caught: " + err.getMessage());
-//            col.emit(4);
-//            col.emit(5);
-//            col.emit(6);
-//            System.out.println("Inside error block");
-//        })
-                .collect(it -> {
-                    System.out.println("Collecting " + it);
-                });
+            it.emit(1);
+            it.emit(2);
+            it.emit(3);
+            throw new RuntimeException("Piecewise");
+        }, executor).map(it -> {
+            System.out.println("Emitting " + it);
+            return it.toString() + "A";
+        }).error((col, err) -> {
+            System.out.println("Caught: " + err.getMessage());
+            col.emit(4);
+            col.emit(5);
+            col.emit(6);
+            System.out.println("Inside error block");
+        }).collect(it -> {
+            System.out.println("Collecting " + it);
+        });
     }
 }
