@@ -1,12 +1,11 @@
 import cache.BrowserCache
 import cache.BrowserCacheConfig
-import cache.Cache
 import cache.exceptions.CacheLoadException
 import expect.expect
+import expect.expectCollection
 import expect.expectFailure
 import expect.toBe
 import kotlinx.browser.sessionStorage
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import later.await
@@ -73,6 +72,6 @@ class BrowserCacheTest {
 
         cache.clear()
         expect(cache.loadOrNull<Int?>("two").await()).toBe(null)
-        expect(cache.keys().await()).toBeEmpty()
+        expectCollection(cache.keys().await()).toBeEmpty()
     }
 }

@@ -1,13 +1,5 @@
 pluginManagement {
     enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-    enableFeaturePreview("VERSION_CATALOGS")
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.namespace == "com.android") {
-                useModule("com.android.tools.build:gradle:${requested.version}")
-            }
-        }
-    }
 
     repositories {
         google()
@@ -17,12 +9,10 @@ pluginManagement {
 
     dependencyResolutionManagement {
         versionCatalogs {
-            create("asoft") {
-                from(files("gradle/asoft.versions.toml"))
-            }
-
-            create("plugs") {
-                from(files("gradle/plugs.versions.toml"))
+            file("gradle/versions").listFiles().map {
+                it.nameWithoutExtension to it.absolutePath
+            }.forEach { (name, path) ->
+                create(name) { from(files(path)) }
             }
         }
     }

@@ -7,13 +7,13 @@ class Logger(vararg appenders: Appender) : Appender {
 
     private val extra = mutableMapOf<String, Any?>()
 
-    @JsName("__withExtraPair")
+//    @JsName("_ignore_withExtraPair")
     fun with(vararg data: Pair<String, Any?>): Logger = Logger(*appenders.toTypedArray()).apply {
         extra.putAll(this@Logger.extra)
         extra.putAll(data.toMap())
     }
 
-    @JsName("__withExtraMap")
+//    @JsName("_ignore_withExtraMap")
     fun with(map: Map<String, Any?>): Logger = with(*map.toList().toTypedArray())
 
     override fun append(level: LogLevel, msg: String, vararg data: Pair<String, Any?>) {

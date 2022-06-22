@@ -13,14 +13,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":later-core"))
+                api(projects.laterCore)
                 api(kotlinx.coroutines.core)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(project(":expect-coroutines"))
+                implementation(projects.expectCoroutines)
             }
         }
 

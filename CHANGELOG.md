@@ -1,5 +1,42 @@
+# Roadmap
+
+- [cache-test] Centralize common cache test
+
+  HINT: At the moment every cache has almost an identical copy of tests. have a cache-test lib and let all tests inherit from it
+- [cache-file] add cache-file multiplatform implementation by depending on okio
+- [kuest-mock] Re include mock kuest client taking another jab at the HttpResponse class
+- [koncurrent] clean up commented out dependencies on all new koncurrent modules
+- [koncurrent-primitives-core] Add `ExecutorService` in koncurrent-primitives-core to support ExecutorService shutdown and termination
+
+# 1.5.1
+
+## Logger
+
+- Added a Log type
+
+## Kotlinx Collections Interoperable
+
+- Added iListOf, iMutableListOf and iEmptyListOf methods
+
+## Expect
+
+- [x] Refined the expect API
+- [x] toBe<T>() now smart casts the object to its underlying type
+
+## Kuest
+
+Added Kuest. A coroutine free http client built on top of koncurrent-pending monad
+
+## Koncurrent
+
+Added Koncurrent library to be used in non coroutine friendly environments
+Add Few. A multiplatform coroutine free reactive monad
+Added a mock executor to primitives to aid with testing
+
 # 1.4.61
+
 ## Cache API
+
 - Added remove(key: String) method to cache
 - Added clear() method to cache
 - Added namespace to CacheConfiguration

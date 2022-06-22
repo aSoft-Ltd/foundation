@@ -1,4 +1,4 @@
-plugins {
+@Suppress("DSL_SCOPE_VIOLATION") plugins {
     `kotlin-dsl`
     `java-gradle-plugin`
     `maven-publish`
@@ -152,7 +152,7 @@ artifacts {
 dependencies {
     implementation(plugs.android)
     implementation(plugs.kotlin.core)
-    implementation(plugs.kotlin.serialization)
+//    implementation(plugs.kotlin.serialization)
     implementation(plugs.nexus.staging)
     implementation(plugs.nexus.publish)
 }

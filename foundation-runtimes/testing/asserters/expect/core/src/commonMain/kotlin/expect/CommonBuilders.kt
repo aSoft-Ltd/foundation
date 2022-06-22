@@ -1,27 +1,31 @@
+@file:JvmName("Expect")
 @file:JvmSynthetic
 
 package expect
 
+import expect.internal.BasicExpectationImpl
+import expect.internal.CollectionExpectationImpl
+import expect.internal.LambdaExpectationImpl
+import functions.Runnable
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmSynthetic
 
-inline fun <E> expect(value: E) = BasicAssertion(value)
+fun <E> expect(value: E): BasicExpectation<E> = BasicExpectationImpl(value)
 
-inline fun <E> expect(vararg value: E) = CollectionAssertion(value.asList())
+fun <E> expect(vararg value: E): CollectionExpectation<E> = CollectionExpectationImpl(value.asList())
 
-@JvmName("expectArray")
-fun <E> expect(array: Array<E>) = expect(*array)
+fun <E> expectArray(array: Array<E>) = expect(*array)
 
-inline fun <E> expect(collection: Collection<E>) = CollectionAssertion(collection)
+fun <E> expectCollection(collection: Collection<E>): CollectionExpectation<E> = CollectionExpectationImpl(collection)
 
 inline fun <E> expect(
     value: E,
     builder: BasicExpectation<E>.() -> Unit
-): BasicExpectation<out E> = expect(value).apply(builder)
+): BasicExpectation<E> = expect(value).apply(builder)
 
-fun expectFunction(lambda: () -> Unit) = LambdaAssertion(lambda)
+fun expectFunction(lambda: Runnable): LambdaExpectation = LambdaExpectationImpl(lambda::run)
 
 inline fun <E> expectMany(
     value: Collection<E>,
     builder: CollectionExpectation<E>.() -> Unit
-): CollectionExpectation<out E> = expect(value).apply(builder)
+): CollectionExpectation<E> = expectCollection(value).apply(builder)

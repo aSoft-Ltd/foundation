@@ -1,6 +1,5 @@
 pluginManagement {
     enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-    enableFeaturePreview("VERSION_CATALOGS")
     resolutionStrategy {
         eachPlugin {
             if (requested.id.namespace == "com.android") {
@@ -17,8 +16,10 @@ pluginManagement {
 
     dependencyResolutionManagement {
         versionCatalogs {
-            file("../gradle/versions").listFiles().map { it.nameWithoutExtension }.forEach {
-                create(it) { from(files("../gradle/versions/$it.toml")) }
+            file("../gradle/versions").listFiles().map {
+                it.nameWithoutExtension to it.absolutePath
+            }.forEach { (name, path) ->
+                create(name) { from(files(path)) }
             }
         }
     }
@@ -47,8 +48,17 @@ includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
 includeRoot("kotlinx-browser", "kotlinx/browser")
 includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
 
+includeRoot("functions", "functions")
+
+includeSubs("koncurrent-primitives", "koncurrent/primitives", "core", "coroutines", "mock")
+includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines")
+includeSubs("koncurrent-pending", "koncurrent/pending", "core", "coroutines")
+includeSubs("koncurrent-few", "koncurrent/few", "core", "coroutines")
+
+includeSubs("kuest", "kuest", "http", "core", "coroutines", /* "mock", */ "test")
+includeSubs("kuest-fetch", "kuest/fetch", "core", "browser", "node")
+
 includeSubs("later", "later", "core", "ktx")
-includeRoot("later-test-expect", "later/test/expect")
 
 includeSubs("logging", "logging", "core", "console", "file")
 includeRoot("logging-test-android", "logging/test/android")

@@ -15,10 +15,10 @@ jobs:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 17
+      - name: Set up JDK 18
         uses: actions/setup-java@v1
         with:
-          java-version: 17
+          java-version: 18
       - name: Cache Gradle
         uses: actions/cache@v2
         with:
@@ -51,32 +51,32 @@ jobs:
           ./gradlew build
         working-directory: ./foundation-plugins
 
-      - name: Building runtimes
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
         working-directory: ./foundation-runtimes
 
-      - name: Building samples
-        run: |
-          chmod +x ./gradlew
-          ./gradlew build
-        working-directory: ./foundation-samples
+      - name: test jvm runtimes
+        run: ./gradlew jvmTest
+        working-directory: ./foundation-runtimes
+
+      - name: Building runtimes
+        run: ./gradlew build
+        working-directory: ./foundation-runtimes
+
+      #      - name: Building samples
+      #        run: |
+      #          chmod +x ./gradlew
+      #          ./gradlew build
+      #        working-directory: ./foundation-samples
 
       - name: Publish & Release Runtimes
-        run: |
-          chmod +x ./gradlew
-          ./gradlew publishToSonatype closeAndReleaseStagingRepository
+        run: ./gradlew publishToSonatype closeAndReleaseStagingRepository
         working-directory: ./foundation-runtimes
 
       - name: Publishing plugins to sonatype
-        run: |
-          chmod +x ./gradlew
-          ./gradlew publishToSonatype closeAndReleaseStagingRepository
+        run: ./gradlew publishToSonatype closeAndReleaseStagingRepository
         working-directory: ./foundation-plugins
 
       - name: Publishing plugins to gradle plugin portal
-        run: |
-          chmod +x ./gradlew
-          ./gradlew :publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
+        run: ./gradlew :publishPlugins -Dgradle.publish.key=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_KEY }} -Dgradle.publish.secret=${{ secrets.ASOFT_GRADLE_PLUGIN_PORTAL_SECRET }}
         working-directory: ./foundation-plugins

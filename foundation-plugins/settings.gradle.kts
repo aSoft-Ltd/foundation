@@ -3,15 +3,16 @@ pluginManagement {
 
     repositories {
         google()
-        jcenter()
         gradlePluginPortal()
         mavenCentral()
     }
 
     dependencyResolutionManagement {
         versionCatalogs {
-            file("../gradle/versions").listFiles().map { it.nameWithoutExtension }.forEach {
-                create(it) { from(files("../gradle/versions/$it.toml")) }
+            file("../gradle/versions").listFiles().map {
+                it.nameWithoutExtension to it.absolutePath
+            }.forEach { (name, path) ->
+                create(name) { from(files(path)) }
             }
         }
     }

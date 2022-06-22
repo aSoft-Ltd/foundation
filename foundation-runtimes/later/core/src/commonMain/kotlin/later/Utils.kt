@@ -8,9 +8,9 @@ expect fun loadToNextEventLoop(body: () -> Unit)
 @OptIn(ExperimentalContracts::class)
 internal fun Any?.isThenable(): Boolean {
     contract {
-        returns(true) implies (this@isThenable is BaseLater<*>)
+        returns(true) implies (this@isThenable is Later<*>)
     }
     if (this == null) return false
-    if (this is BaseLater<*>) return true
+    if (this is Later<*>) return true
     return false
 }

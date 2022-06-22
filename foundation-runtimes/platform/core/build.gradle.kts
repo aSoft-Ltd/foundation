@@ -35,8 +35,6 @@ kotlin {
             tvosX64()
         ),
         "linux" to listOf(
-            linuxArm64(),
-            linuxArm32Hfp(),
             linuxX64()
         )
     )
@@ -51,7 +49,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 api(kotlinx.serialization.json)
-                implementation(project(":expect-core"))
+                implementation(projects.expectCore)
             }
         }
 

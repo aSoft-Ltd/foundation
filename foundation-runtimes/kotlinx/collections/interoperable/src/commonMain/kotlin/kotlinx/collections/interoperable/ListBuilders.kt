@@ -4,13 +4,23 @@ import kotlin.collections.mutableListOf as kMutableListOf
 
 inline fun <E> mutableListOf(): MutableList<E> = MutableListWrapper(kMutableListOf())
 
+inline fun <E> iMutableListOf(): MutableList<E> = MutableListWrapper(kMutableListOf())
+
 inline fun <E> mutableListOf(vararg elements: E): MutableList<E> = MutableListWrapper(kMutableListOf(*elements))
+
+inline fun <E> iMutableListOf(vararg elements: E): MutableList<E> = MutableListWrapper(kMutableListOf(*elements))
 
 inline fun <E> listOf(): List<E> = EmptyList
 
+inline fun <E> iListOf(): List<E> = EmptyList
+
 inline fun emptyList(): List<Nothing> = EmptyList
 
+inline fun iEmptyList(): List<Nothing> = EmptyList
+
 inline fun <E> listOf(vararg elements: E): List<E> = mutableListOf(*elements)
+
+inline fun <E> iListOf(vararg elements: E): List<E> = mutableListOf(*elements)
 
 
 inline fun <E> interoperableListOf(): List<E> = EmptyList

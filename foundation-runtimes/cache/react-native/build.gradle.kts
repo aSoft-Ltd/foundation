@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
-                api(project(":cache-api"))
+                api(projects.cacheApi)
                 api(kotlinx.serialization.json)
                 api(npm("@react-native-async-storage/async-storage", npm.versions.asyncStorage.get()))
             }
@@ -20,7 +20,7 @@ kotlin {
 
         val test by getting {
             dependencies {
-                implementation(project(":expect-coroutines"))
+                implementation(projects.expectCoroutines)
             }
         }
     }

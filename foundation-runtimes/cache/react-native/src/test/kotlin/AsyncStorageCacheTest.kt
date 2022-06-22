@@ -2,6 +2,7 @@ import cache.AsyncStorageCache
 import cache.Cache
 import cache.exceptions.CacheLoadException
 import expect.expect
+import expect.expectCollection
 import expect.expectFailure
 import expect.toBe
 import kotlinx.coroutines.test.runTest
@@ -66,6 +67,6 @@ class AsyncStorageCacheTest {
         cache.save("three", 3).await()
         cache.clear()
         expect(cache.loadOrNull<Int?>("two").await()).toBe(null)
-        expect(cache.keys().await()).toBeEmpty()
+        expectCollection(cache.keys().await()).toBeEmpty()
     }
 }

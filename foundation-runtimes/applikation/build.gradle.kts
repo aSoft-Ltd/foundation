@@ -14,16 +14,11 @@ kotlin {
     android { library() }
     jvm { library() }
     js(IR) { library() }
-    macosX64()
-    ios()
-    tvos()
-    linuxX64()
-    linuxArm64()
-    linuxArm32Hfp()
+    nativeTargets(true)
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":kotlinx-serialization-mapper"))
+                api(projects.kotlinxSerializationMapper)
             }
         }
     }

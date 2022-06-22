@@ -1,7 +1,6 @@
 import kotlinx.coroutines.test.runTest
-import later.BaseLater
+import later.Later
 import later.later
-import later.then
 import kotlin.js.Promise
 import kotlin.test.Test
 
@@ -27,7 +26,7 @@ class LaterTestJS {
 
     @Test
     fun should_have_a_good_api(): dynamic {
-        val later = BaseLater<Int> { resolve, reject ->
+        val later = Later<Int> { resolve, reject ->
             console.log("Started executing")
             later.setTimeout(
                 {
@@ -43,7 +42,7 @@ class LaterTestJS {
             0
         }.then {
             console.log("Recovered to $it")
-            BaseLater.resolve(it + 1)
+            Later.resolve(it + 1)
         }.later {
             console.log("Got $it")
             it
@@ -57,12 +56,12 @@ class LaterTestJS {
         return firstThen
     }
 
-    fun later(value: Int) = BaseLater<Int> { resolve, reject ->
+    fun later(value: Int) = Later<Int> { resolve, reject ->
         if (value < 5) reject(Exception("Number($value) is less than 5"))
         else resolve(value)
     }
 
-    fun BaseLater<Int>.process() = error {
+    fun Later<Int>.process() = error {
         console.log("Error: ${it.message}")
         5
     }.then {
