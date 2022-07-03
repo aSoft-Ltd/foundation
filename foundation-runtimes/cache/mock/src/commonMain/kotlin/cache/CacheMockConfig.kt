@@ -7,8 +7,7 @@ import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmSynthetic
 
-@Deprecated("In favour of CacheMockConfig")
-interface MockCacheConfig : CacheConfig {
+interface CacheMockConfig : CacheConfig {
     val initialCache: MutableMap<String, Any?>
 
     companion object {
@@ -26,7 +25,7 @@ interface MockCacheConfig : CacheConfig {
             namespace: String = CacheConfig.DEFAULT_NAMESPACE,
             initialCache: MutableMap<String, Any?> = DEFAULT_MAP,
             executor: Executor = DEFAULT_EXECUTOR
-        ): MockCacheConfig = object : MockCacheConfig {
+        ): CacheMockConfig = object : CacheMockConfig {
             override val namespace = namespace
             override val initialCache = initialCache
             override val executor = executor

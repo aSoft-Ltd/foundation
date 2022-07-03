@@ -22,7 +22,7 @@ fun <T> Later<out T>.finally(
 
 fun <T, R> Later<out T>.flatten(
     executor: Executor = this.executor,
-    onResolved: (T) -> Later<R>
+    onResolved: (T) -> Later<out R>
 ): Later<out R> = flatten(onResolved, executor)
 
 inline fun <T> Later<out Later<out T>>.flatten(executor: Executor = this.executor): Later<out T> = flatten(executor) { it }

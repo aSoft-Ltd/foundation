@@ -18,6 +18,12 @@ kotlin {
                 api(squareup.okio.core)
             }
         }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(projects.cacheTest)
+            }
+        }
     }
 }
 

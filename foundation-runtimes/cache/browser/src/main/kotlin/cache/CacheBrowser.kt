@@ -1,13 +1,12 @@
 package cache
 
+import cache.exceptions.CacheLoadException
 import cache.exceptions.CacheMissException
 import kotlinx.serialization.KSerializer
 import koncurrent.Later
 import koncurrent.later
 
-class BrowserCache(
-    val config: BrowserCacheConfig = BrowserCacheConfig()
-) : Cache {
+class CacheBrowser(val config: CacheBrowserConfig = CacheBrowserConfig()) : Cache {
     private val storage get() = config.storage
 
     private val executor get() = config.executor
@@ -29,9 +28,18 @@ class BrowserCache(
         obj
     }
 
-    override fun <T> load(key: String, serializer: KSerializer<T>): Later<out T> = executor.later {
-        val js = storage.getItem("${namespace}:${key}") ?: throw CacheMissException(key)
-        json.decodeFromString(serializer, js)
+//    override fun <T> load(key: String, serializer: KSerializer<T>): Later<out T> = executor.later {
+//        val js = storage.getItem("${namespace}:${key}") ?: throw CacheMissException(key)
+//        json.decodeFromString(serializer, js)
+//    }
+
+    override fun <T> load(key: String, serializer: KSerializer<T>): Later<out T> = Later(executor) { res, rej ->
+        val js = storage.getItem("${namespace}:${key}")
+        if (js != null) try {
+            res(json.decodeFromString(serializer, js))
+        } catch (err: Throwable) {
+            rej(CacheLoadException(key, cause = err))
+        } else rej(CacheMissException(key))
     }
 
     override fun remove(key: String): Later<out Unit?> = executor.later {
@@ -43,4 +51,6 @@ class BrowserCache(
     override fun clear(): Later<out Unit> = executor.later {
         storage.clear()
     }
+
+    override fun toString(): String = "CacheBrowser(namespace=$namespace)"
 }

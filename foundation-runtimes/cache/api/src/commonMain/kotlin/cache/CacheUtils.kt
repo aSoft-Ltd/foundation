@@ -33,9 +33,7 @@ inline fun <reified T> Cache.save(key: String, obj: T): Later<out T> = try {
  * - on failure: resolves with a null
  */
 inline fun <reified T> Cache.saveOrNull(
-    key: String,
-    obj: T,
-    serializer: KSerializer<T>? = null
+    key: String, obj: T, serializer: KSerializer<T>? = null
 ): Later<out T?> = try {
     save(key, obj, serializer ?: serializer())
 } catch (e: Throwable) {
@@ -53,8 +51,21 @@ inline fun <reified T> Cache.saveOrNull(
  * - on success: resolves the saved object as it was cached
  * - on failure: resolves with a null
  */
+//inline fun <reified T> Cache.load(key: String): Later<out T> {
+//    val later = Later<T>()
+//    try {
+//        println("Loading $key")
+//        load(key, serializer<T>()).then(onResolved = { later.resolveWith(it) }, onRejected = { later.rejectWith(it) })
+//        println("Loaded $key")
+//    } catch (e: Throwable) {
+//        println("oopsing $key")
+//        later.rejectWith(CacheLoadException(key, cause = e))
+//        println("oopsed $key")
+//    }
+//    return later
+//}
 inline fun <reified T> Cache.load(key: String): Later<out T> = try {
-    load(key, serializer())
+    load(key, serializer<T>())
 } catch (e: Throwable) {
     Later.reject(CacheLoadException(key, cause = e))
 }
@@ -69,14 +80,9 @@ inline fun <reified T> Cache.load(key: String): Later<out T> = try {
  * - on failure: resolves with a null
  */
 inline fun <reified T> Cache.loadOrNull(
-    key: String,
-    serializer: KSerializer<T>? = null
+    key: String, serializer: KSerializer<T>? = null
 ): Later<out T?> = try {
     load(key, serializer ?: serializer())
 } catch (e: Throwable) {
     Later.reject(CacheLoadException(key, cause = e))
-}.then {
-    it as? T
-}.catch {
-    null
-}
+}.then { it as? T }.catch { null }

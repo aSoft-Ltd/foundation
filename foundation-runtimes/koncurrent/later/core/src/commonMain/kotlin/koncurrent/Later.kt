@@ -64,7 +64,7 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
      */
     @JvmSynthetic
     @JsName("_ignore_thenWithExecutor")
-    fun <R> then(onResolved: ((T) -> R)?, onRejected: ((Throwable) -> R)? = null, executor: Executor): Later<out R> {
+    fun <R> then(onResolved: ((T) -> R)?, onRejected: ((Throwable) -> R)? = null, executor: Executor = this.executor): Later<out R> {
         val controlledLater = Later<R>(executor = executor)
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> R, onRejected))
         when (val s = state) {

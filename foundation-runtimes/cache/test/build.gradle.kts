@@ -20,12 +20,6 @@ kotlin {
                 api(projects.expectCoroutines)
             }
         }
-
-        val commonTest by getting {
-            dependencies {
-
-            }
-        }
     }
 }
 

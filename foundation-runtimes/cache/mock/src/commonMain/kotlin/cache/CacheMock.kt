@@ -5,9 +5,8 @@ import kotlinx.serialization.KSerializer
 import koncurrent.Later
 import koncurrent.later
 
-@Deprecated("In favour of CacheMock")
-class MockCache(
-    val config: MockCacheConfig = MockCacheConfig()
+class CacheMock(
+    val config: CacheMockConfig = CacheMockConfig()
 ) : Cache {
     private val cache = config.initialCache
 
@@ -35,4 +34,6 @@ class MockCache(
     }
 
     override fun clear() = executor.later { cache.clear() }
+
+    override fun toString(): String = "CacheMock(namespace=$namespace)"
 }

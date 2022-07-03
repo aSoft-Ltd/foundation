@@ -7,9 +7,7 @@ import koncurrent.later.asLater
 import koncurrent.later.flatten
 import koncurrent.later.then
 
-class AsyncStorageCache(
-    val config: AsyncStorageCacheConfig = AsyncStorageCacheConfig()
-) : Cache {
+class CacheAsyncStorage(val config: CacheAsyncStorageConfig = CacheAsyncStorageConfig()) : Cache {
 
     private val namespace get() = config.namespace
 
@@ -50,4 +48,6 @@ class AsyncStorageCache(
             }
         }
     }
+
+    override fun toString(): String = "CacheAsyncStorage(namespace=$namespace)"
 }

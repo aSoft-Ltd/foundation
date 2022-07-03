@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    js(IR) { browserLib() }
+    js(IR) { library() }
 
     sourceSets {
         val main by getting {
@@ -20,7 +20,7 @@ kotlin {
 
         val test by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
+                implementation(projects.cacheTest)
             }
         }
     }
