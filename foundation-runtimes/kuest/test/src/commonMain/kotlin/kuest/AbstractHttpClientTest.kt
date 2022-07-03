@@ -3,7 +3,7 @@ package kuest
 import expect.expect
 import koncurrent.pending.await
 import koncurrent.pending.then
-import koncurrent.pending.unwrap
+import koncurrent.pending.flatten
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
@@ -26,7 +26,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
     fun client_get_should_not_fail() = runTest {
         val res = client.get("https://jsonplaceholder.typicode.com/todos/1").then {
             it.text()
-        }.unwrap()
+        }.flatten()
 
         expect<Any>(res.await()).toBe(
             """
@@ -60,7 +60,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
         val res = client.get("https://jsonplaceholder.typicode.com/todos/1")
         val body = res.then {
             it.text()
-        }.unwrap()
+        }.flatten()
 
         expect(body.await()).toBe(
             """

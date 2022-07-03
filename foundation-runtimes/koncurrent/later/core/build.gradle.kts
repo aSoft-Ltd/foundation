@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    jvm { library() }
+    jvm { library(); withJava() }
     js(IR) { library() }
 
     val nativeTargets = nativeTargets(true)

@@ -1,42 +1,35 @@
 package cache
 
-import kotlinx.coroutines.CoroutineScope
+import koncurrent.Executor
+import koncurrent.MockExecutor
 import kotlin.jvm.JvmField
+import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
-import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
-interface MockCacheConfig : CacheConfiguration {
+interface MockCacheConfig : CacheConfig {
     val initialCache: MutableMap<String, Any?>
-    val simulationTime: Long
+    val executor: Executor
 
     companion object {
-        @JvmField
-        val DEFAULT_SIMULATION_TIME = 0L
 
         @JvmField
         val DEFAULT_MAP = mutableMapOf<String, Any?>()
 
+        @JvmField
+        val DEFAULT_EXECUTOR = MockExecutor(name = "Mock Cache Executor")
+
+        @JvmName("create")
+        @JvmOverloads
         @JvmSynthetic
         operator fun invoke(
-            namespace: String = CacheConfiguration.DEFAULT_NAMESPACE,
+            namespace: String = CacheConfig.DEFAULT_NAMESPACE,
             initialCache: MutableMap<String, Any?> = DEFAULT_MAP,
-            simulationTime: Long = DEFAULT_SIMULATION_TIME,
-            scope: CoroutineScope = CacheConfiguration.DEFAULT_SCOPE
-        ) = object : MockCacheConfig {
+            executor: Executor = DEFAULT_EXECUTOR
+        ): MockCacheConfig = object : MockCacheConfig {
             override val namespace = namespace
             override val initialCache = initialCache
-            override val simulationTime: Long = simulationTime
-            override val scope: CoroutineScope = scope
+            override val executor = executor
         }
-
-        @JvmStatic
-        @JvmOverloads
-        fun create(
-            namespace: String = CacheConfiguration.DEFAULT_NAMESPACE,
-            initialCache: MutableMap<String, Any?> = DEFAULT_MAP,
-            simulationTime: Long = DEFAULT_SIMULATION_TIME,
-            scope: CoroutineScope = CacheConfiguration.DEFAULT_SCOPE
-        ) = invoke(namespace, initialCache, simulationTime, scope)
     }
 }

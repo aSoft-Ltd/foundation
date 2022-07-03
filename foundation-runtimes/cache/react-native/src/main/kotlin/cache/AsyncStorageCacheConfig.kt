@@ -1,13 +1,13 @@
 package cache
 
-import cache.CacheConfiguration.Companion.DEFAULT_NAMESPACE
-import cache.CacheConfiguration.Companion.DEFAULT_SCOPE
+import cache.CacheConfig.Companion.DEFAULT_NAMESPACE
+import cache.CacheConfig.Companion.DEFAULT_SCOPE
 import cache.npm.AsyncStorage
 import cache.npm.ReactNativeAsyncStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.Json
 
-interface AsyncStorageCacheConfig : CacheConfiguration {
+interface AsyncStorageCacheConfig : CacheConfig {
     val storage: ReactNativeAsyncStorage
     val json: Json
 

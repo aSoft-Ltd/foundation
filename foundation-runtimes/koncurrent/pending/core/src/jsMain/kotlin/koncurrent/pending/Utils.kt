@@ -55,4 +55,6 @@ actual inline fun <T> Pending<T>.rejectWith(exception: Throwable): Boolean {
     return false
 }
 
-actual inline fun <T, R> Pending<Pending<T>>.unwrap(noinline onFulfilled: (T) -> R): Pending<R> = unsafeCast<Pending<T>>().then(onFulfilled)
+actual inline fun <T, R> Pending<T>.flatten(
+    noinline onFulfilled: (T) -> Pending<R>
+): Pending<R> = then(onFulfilled = onFulfilled).unsafeCast<Pending<R>>()

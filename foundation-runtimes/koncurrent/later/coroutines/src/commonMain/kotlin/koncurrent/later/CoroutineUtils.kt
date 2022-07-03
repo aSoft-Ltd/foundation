@@ -22,7 +22,7 @@ suspend fun <T> Later<T>.await(): T = when (val s = state) {
         is Rejected -> throw s.cause
     }
     is PendingState -> suspendCancellableCoroutine { cont ->
-        then({ value -> cont.resume(value) }, { err -> cont.resumeWithException(err) })
+        then({ value -> cont.resume(value) }, { err -> cont.resumeWithException(err) }, executor)
     }
 }
 
@@ -30,10 +30,10 @@ suspend fun <T> Later<T>.await(): T = when (val s = state) {
  * Convert's this [Deferred] into a [Later]
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-fun <T> Deferred<T>.asLater(): Later<T> = if (isCompleted) when (val exp = getCompletionExceptionOrNull()) {
+fun <T> Deferred<T>.asLater(): Later<out T> = if (isCompleted) when (val exp = getCompletionExceptionOrNull()) {
     is Throwable -> Later.reject(exp)
     else -> Later.resolve(getCompleted())
-} as Later<T> else Later<T> { resolve, reject ->
+} else Later<T> { resolve, reject ->
     invokeOnCompletion {
         when (val e = getCompletionExceptionOrNull()) {
             null -> resolve(getCompleted())

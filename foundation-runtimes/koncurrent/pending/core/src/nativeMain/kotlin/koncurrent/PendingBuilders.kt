@@ -13,11 +13,11 @@ internal inline fun <T> laterBuilder(resolve: (T) -> Unit, reject: (Throwable) -
 
 actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = Later(this) { resolve, reject ->
     laterBuilder(resolve, reject, block)
-}
+} as Later<T>
 
 actual inline fun <T> pending(noinline block: () -> T): Pending<T> = Later { resolve, reject ->
     laterBuilder(resolve, reject, block)
-}
+} as Later<T>
 
 actual inline fun <T> ResolvedPending(value: T): Pending<T> = Later.resolve(value) as Pending<T>
 

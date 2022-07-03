@@ -38,16 +38,4 @@ actual inline fun <T> Pending<T>.resolveWith(value: T) = complete(value)
 
 actual inline fun <T> Pending<T>.rejectWith(exception: Throwable) = completeExceptionally(exception)
 
-actual inline fun <T, R> Pending<Pending<T>>.unwrap(noinline onFulfilled: (T) -> R): Pending<R> {
-    val pending = ControlledPending<R>()
-    this@unwrap.then(onResolved = { p ->
-        p.then {
-            try {
-                pending.resolveWith(onFulfilled(it))
-            } catch (err: Throwable) {
-                pending.rejectWith(err)
-            }
-        }
-    })
-    return pending
-}
+actual inline fun <T, R> Pending<T>.flatten(noinline onFulfilled: (T) -> Pending<R>): Pending<R> = thenCompose { onFulfilled(it) }

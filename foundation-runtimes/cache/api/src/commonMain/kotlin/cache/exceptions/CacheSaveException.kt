@@ -1,6 +1,6 @@
 package cache.exceptions
 
 class CacheSaveException(
-    override val message: String = "Failed to save to the cache",
+    val key: String,
     override val cause: Throwable
-) : CacheException(message, cause)
+) : CacheException("Failed to save object with key `$key` to the cache", cause)

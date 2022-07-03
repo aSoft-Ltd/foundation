@@ -1,5 +1,5 @@
 import koncurrent.*
-import koncurrent.later.await
+import koncurrent.later.*
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.TestResult

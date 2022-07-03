@@ -19,22 +19,10 @@ private inline fun <T> completeConsumer(
     }
 }
 
-fun <T> CompletableFuture<T>.toLater(): Later<T> = Later { resolve, reject ->
+fun <T> CompletableFuture<T>.toLater(): Later<out T> = Later { resolve, reject ->
     whenComplete(completeConsumer(resolve, reject))
 }
 
-fun <T> CompletableFuture<T>.toLater(executor: Executor): Later<T> = Later { resolve, reject ->
+fun <T> CompletableFuture<T>.toLater(executor: Executor): Later<out T> = Later { resolve, reject ->
     whenCompleteAsync(completeConsumer(resolve, reject), executor)
 }
-
-internal actual fun <T> Later<T>.toPlatformConcurrentMonad(executor: Executor): PlatformConcurrentMonad<T> {
-    val future = CompletableFuture<T>()
-    then(
-        executor = executor,
-        onResolved = { future.complete(it) },
-        onRejected = { future.completeExceptionally(it) }
-    )
-    return future
-}
-
-internal actual fun <T> Later<T>.toPlatformConcurrentMonad(): PlatformConcurrentMonad<T> = toPlatformConcurrentMonad(executor)

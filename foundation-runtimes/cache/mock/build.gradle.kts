@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.cacheApi)
+                api(projects.koncurrentPrimitivesMock)
                 api(projects.kotlinxCollectionsAtomic)
             }
         }

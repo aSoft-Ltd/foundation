@@ -1,47 +1,32 @@
 import cache.MockCache
 import cache.exceptions.CacheLoadException
-import cache.save
-import cache.load
-import expect.*
-import koncurrent.later.then
+import expect.expect
+import expect.expectCollection
+import expect.expectFailure
+import expect.toBe
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
 import kotlin.test.Test
 
-class MockCacheTest {
+class MockCacheCorutinesTest {
 
-    private val cache = MockCache()
-
-    inline fun <T> loudExpect(message: String, e: T): BasicExpectation<T> {
-        println(message)
-        val res = expect(e)
-        println("Finished $message")
-        return res
-    }
-
-    @Test
-    fun should_be_able_to_load_and_save_primitively_easily() {
-        cache.save("int", 1).then {
-            loudExpect("Saving", it).toBe(1)
-        }
-        cache.load<Int>("int").then {
-            loudExpect("Loading", it).toBe(1)
-        }
-    }
-
-    @Serializable
-    data class Person(val name: String)
-
-    @Test
-    fun should_be_able_to_load_and_save_custom_classes_easily() = runTest {
-        cache.save("john", Person("John")).then {
-            loudExpect("Saving", it.name).toBe("John")
-        }
-        cache.load<Person>("john").then {
-            loudExpect("Loading", it).toBe(Person("John"))
-        }
-    }
-
+//    private val cache = MockCache()
+//
+//    @Test
+//    fun should_be_able_to_load_and_save_primitively_easily() = runTest {
+//        cache.save("int", 1).await()
+//        expect(cache.load<Int>("int").await()).toBe(1)
+//    }
+//
+//    @Serializable
+//    data class Person(val name: String)
+//
+//    @Test
+//    fun should_be_able_to_load_and_save_custom_classes_easily() = runTest {
+//        cache.save("john", Person("John")).await()
+//        expect(cache.load<Person>("john").await()).toBe(Person("John"))
+//    }
+//
 //    @Test
 //    fun should_throw_cache_load_exception() = runTest {
 //        val failure = expectFailure {
@@ -50,7 +35,7 @@ class MockCacheTest {
 //        expect(failure).toBe<CacheLoadException>()
 //        failure.printStackTrace()
 //    }
-
+//
 //    @Test
 //    fun should_throw_a_cache_load_exception_with_a_serialization_cause() = runTest {
 //        val failure = expectFailure {

@@ -17,7 +17,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentPendingCore)
+                api(projects.koncurrentLaterCore)
                 api(projects.kuestHttp)
             }
         }

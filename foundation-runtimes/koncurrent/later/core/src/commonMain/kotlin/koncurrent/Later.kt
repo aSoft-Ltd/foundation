@@ -8,8 +8,7 @@ import functions.Function
 import koncurrent.later.internal.LaterHandler
 import koncurrent.later.internal.LaterQueueComponent
 import koncurrent.later.internal.PlatformConcurrentMonad
-import koncurrent.later.isThenable
-import koncurrent.later.toPlatformConcurrentMonad
+import koncurrent.later.internal.toPlatformConcurrentMonad
 import kotlinx.collections.atomic.mutableAtomicListOf
 import kotlin.js.JsExport
 import kotlin.js.JsName
@@ -18,11 +17,11 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
-class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
+class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null, val executor: Executor = Executors.default()) {
 
     @JsName("_ignore_fromHandler")
     @JvmOverloads
-    constructor(handler: LaterHandler<T>, executor: Executor = Executors.default()) : this(executor, { resolve, reject -> handler.execute(resolve, reject) })
+    constructor(handler: LaterHandler<T>, executor: Executor = Executors.default()) : this({ resolve, reject -> handler.execute(resolve, reject) }, executor)
 
     private val thenQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
     private val finallyQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
@@ -44,26 +43,30 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
     companion object {
         @JvmStatic
         @JvmOverloads
-        fun <T> resolve(value: T, executor: Executor = Executors.default()): Later<T> {
-            val l = Later<T>(executor)
+        fun <T> resolve(value: T, executor: Executor = Executors.default()): Later<out T> {
+            val l = Later<T>(executor = executor)
             l.resolveWith(value)
             return l
         }
 
         @JvmStatic
         @JvmOverloads
-        fun reject(error: Throwable, executor: Executor = Executors.default()): Later<Nothing> {
-            val l = Later<Nothing>(executor)
+        fun reject(error: Throwable, executor: Executor = Executors.default()): Later<out Nothing> {
+            val l = Later<Nothing>(executor = executor)
             l.rejectWith(error)
             return l
         }
     }
 
+    /**
+     * Schedules a code block to be executed after this [Later] resolves
+     * This Method should be called from Kotlin only
+     */
     @JvmSynthetic
     @JsName("_ignore_thenWithExecutor")
-    fun <S> then(executor: Executor, onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)? = null): Later<S> {
-        val controlledLater = Later<S>(executor)
-        thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> S, onRejected))
+    fun <R> then(onResolved: ((T) -> R)?, onRejected: ((Throwable) -> R)? = null, executor: Executor): Later<out R> {
+        val controlledLater = Later<R>(executor = executor)
+        thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> R, onRejected))
         when (val s = state) {
             is Fulfilled -> propagateFulfilled(s.value)
             is Rejected -> propagateRejected(s.cause)
@@ -72,40 +75,61 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
         return controlledLater
     }
 
-    fun <S> then(onResolved: (T) -> S): Later<S> = then(executor, onResolved, null)
-
-    @JsName("_ignore_errorWithExecutor")
+    /**
+     * Schedules a code block to be executed after this [Later] resolves
+     * This Method should be called from Javascript
+     */
     @JvmSynthetic
-    fun error(executor: Executor, handler: (Throwable) -> T) = then(executor, null, handler)
+    fun <S> then(onResolved: (T) -> S, executor: Executor = this.executor): Later<out S> = then(onResolved, null, executor)
 
-    fun error(handler: (Throwable) -> T): Later<T> = then(executor, null, handler)
-
-    @JvmSynthetic
-    @JsName("_ignore_catchWithExecutor")
-    fun catch(executor: Executor = this.executor, handler: (Throwable) -> T) = then(executor, null, handler)
-
+    /**
+     * Schedules a code block to be executed after this [Later] resolves
+     * This Method should be called from java
+     */
     @JvmOverloads
     @JsName("_ignore_then")
-    fun <S> then(onResolve: Function<T, S>, executor: Executor = this.executor): Later<S> = then(
+    fun <S> then(onResolved: Function<T, S>, executor: Executor = this.executor): Later<out S> = then(
         executor = executor,
-        onResolved = { value -> onResolve.invoke(value) },
+        onResolved = { value -> onResolved.invoke(value) },
         onRejected = null
     )
 
+    fun <S> flatten(onResolved: (T) -> Later<out S>, executor: Executor = this.executor): Later<out S> = when (val s = state) {
+        is Fulfilled -> try {
+            onResolved(s.value)
+        } catch (err: Throwable) {
+            Later.reject(err, executor)
+        }
+        is Rejected -> Later.reject(s.cause, executor)
+        else -> {
+            val later = Later<S>(executor = executor)
+            then(
+                executor = executor,
+                onResolved = { res ->
+                    onResolved(res).then(
+                        executor = executor,
+                        onResolved = { later.resolveWith(it) },
+                        onRejected = { later.rejectWith(it) }
+                    )
+                },
+                onRejected = { later.rejectWith(it) }
+            )
+            later
+        }
+    }
+
     @JvmOverloads
-    @JsName("_ignore_thenResolveOrReject")
-    fun <S> then(onResolve: Function<T, S>, onReject: Function<Throwable, S>, executor: Executor = this.executor): Later<S> = then(
-        executor = executor,
-        onResolved = { value -> onResolve.invoke(value) },
-        onRejected = { error -> onReject.invoke(error) }
-    )
+    @JsName("_ignore_flatten")
+    fun <R> flatten(onResolved: Function<T, Later<out R>>, executor: Executor = this.executor) = flatten(onResolved::invoke, executor)
+
+    fun error(handler: (Throwable) -> T, executor: Executor = this.executor): Later<out T> = then(null, handler, executor)
 
     /**
      * Same as calling catch on javascript or kotlin
      */
     @JsName("_ignore_error")
     @JvmOverloads
-    fun <T> error(handler: Function<Throwable, T>, executor: Executor = this.executor): Later<T> = then(
+    fun <T> error(handler: Function<Throwable, T>, executor: Executor = this.executor): Later<out T> = then(
         executor = executor,
         onResolved = null,
         onRejected = { err -> handler.invoke(err) }
@@ -116,9 +140,12 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
      */
     @JsName("_ignore_complete")
     @JvmOverloads
-    fun complete(handler: Consumer<Settled<T>>, executor: Executor = this.executor) = complete(executor, cleanUp = { state -> handler.accept(state) })
+    fun complete(handler: Consumer<in Settled<T>>, executor: Executor = this.executor) = cleanUp(executor, cleanUp = { state -> handler.accept(state) })
 
-    private fun cleanUp(executor: Executor, cleanUp: (state: Settled<T>) -> Any?): Later<T> {
+    @JvmSynthetic
+    fun complete(cleanUp: (state: Settled<T>) -> Any?, executor: Executor = this.executor) = cleanUp(executor, cleanUp)
+
+    internal fun cleanUp(executor: Executor, cleanUp: (state: Settled<T>) -> Any?): Later<out T> {
         val s = this.state
         if (s is Settled) {
             cleanUp(s)
@@ -128,7 +155,7 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
             }
         }
 
-        val controlledLater = Later<T>(executor)
+        val controlledLater = Later<T>(executor = executor)
         val resolve = { value: T ->
             cleanUp(Fulfilled(value))
             value
@@ -141,24 +168,13 @@ class Later<T>(val executor: Executor = Executors.default(), handler: ((resolve:
         return controlledLater
     }
 
-    @JvmSynthetic
-    @JsName("_ignore_completeWithExecutor")
-    fun complete(executor: Executor, cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
-
-    @JvmSynthetic
-    fun complete(cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
-
-    @JvmSynthetic
-    @JsName("_ignore_finally")
-    fun finally(executor: Executor = this.executor, cleanUp: (state: Settled<T>) -> Any?) = cleanUp(executor, cleanUp)
-
     @JvmName("toCompletableFuture")
     @JsName("toPromise")
-    fun toPending(): PlatformConcurrentMonad<T> = toPlatformConcurrentMonad()
+    fun toPending(): PlatformConcurrentMonad<out T> = toPlatformConcurrentMonad()
 
     @JvmName("toCompletableFuture")
     @JsName("_ignore_toPromise")
-    fun toPending(executor: Executor): PlatformConcurrentMonad<T> = toPlatformConcurrentMonad(executor)
+    fun toPending(executor: Executor): PlatformConcurrentMonad<out T> = toPlatformConcurrentMonad(executor)
 
     fun resolveWith(value: @UnsafeVariance T): Boolean {
         if (state is PendingState) {
