@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.cacheApi)
+                api(kotlinx.serialization.json)
                 api(squareup.okio.core)
             }
         }

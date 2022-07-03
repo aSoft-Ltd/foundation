@@ -231,8 +231,9 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
 //                }
                 controlledLater.resolveWith(valueOrLater)
             } catch (err: Throwable) {
-                err.addSuppressed(error)
-                controlledLater.rejectWith(err)
+                error.addSuppressed(err)
+//                err.addSuppressed(error)
+                controlledLater.rejectWith(error)
             }
         }
 
