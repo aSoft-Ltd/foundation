@@ -1,6 +1,3 @@
 package cache.exceptions
 
-open class CacheMissException(
-    override val key: String,
-    override val cause: Throwable? = null
-) : CacheLoadException(key)
+open class CacheMissException(key: String, cause: Throwable? = null) : CacheLoadException(key, cause = cause)

@@ -1,6 +1,7 @@
 package cache.exceptions
 
 sealed class CacheException(
-    override val message: String,
-    override val cause: Throwable? = null
+    open val key: String,
+    message: String,
+    cause: Throwable? = null
 ) : RuntimeException(message, cause)

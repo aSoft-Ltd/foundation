@@ -43,16 +43,17 @@ abstract class AbstractCacheTest(val cache: Cache) {
 
     @Test
     fun should_throw_cache_load_exception() = cache.load<Int>("jane").catch {
+        println(it::class.simpleName)
+        it.printStackTrace()
         val exp = expect(it).toBe<CacheLoadException>()
         expect(exp.message).toBe("Failed to load object with key=jane from the cache")
         0
-    }.then {
-        expect(it).toBe(0)
     }.test()
 
     @Test
     fun should_throw_a_cache_load_exception_with_a_serialization_cause() = cache.load<Any>("jane").catch {
         val exp = expect(it).toBe<CacheLoadException>()
+        println("failed and caught")
         expect(exp.key).toBe("jane")
     }.test()
 

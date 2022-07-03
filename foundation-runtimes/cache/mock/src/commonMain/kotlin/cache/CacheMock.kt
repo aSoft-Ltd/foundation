@@ -5,9 +5,7 @@ import kotlinx.serialization.KSerializer
 import koncurrent.Later
 import koncurrent.later
 
-class CacheMock(
-    val config: CacheMockConfig = CacheMockConfig()
-) : Cache {
+class CacheMock(val config: CacheMockConfig = CacheMockConfig()) : Cache {
     private val cache = config.initialCache
 
     private val executor get() = config.executor
@@ -18,14 +16,14 @@ class CacheMock(
 
     override fun size(): Later<out Int> = executor.later { cache.size }
 
-    override fun <T> save(key: String, obj: T, serializer: KSerializer<T>) = executor.later {
+    override fun <T> save(key: String, obj: T, serializer: KSerializer<T>) = Later(executor) { resolve, _ ->
         cache["$namespace:$key"] = obj
-        obj
+        resolve(obj)
     }
 
-    override fun <T> load(key: String, serializer: KSerializer<T>) = executor.later {
-        val obj = cache["$namespace:$key"] ?: throw CacheMissException(key)
-        obj as T
+    override fun <T> load(key: String, serializer: KSerializer<T>) = Later(executor) { resolve, reject ->
+        val obj = cache["$namespace:$key"]
+        if (obj != null) resolve(obj as T) else reject(CacheMissException(key))
     }
 
     override fun remove(key: String) = executor.later {
