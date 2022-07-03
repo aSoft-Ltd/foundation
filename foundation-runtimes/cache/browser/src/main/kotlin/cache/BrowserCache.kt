@@ -2,45 +2,45 @@ package cache
 
 import cache.exceptions.CacheMissException
 import kotlinx.serialization.KSerializer
-import later.Later
-import later.later
-import org.w3c.dom.get
+import koncurrent.Later
+import koncurrent.later
 
 class BrowserCache(
-    override val config: BrowserCacheConfig = BrowserCacheConfig()
-) : Cache(config) {
+    val config: BrowserCacheConfig = BrowserCacheConfig()
+) : Cache {
     private val storage get() = config.storage
 
-    private val scope get() = config.scope
+    private val executor get() = config.executor
 
-    private val json get() = config.json
+    private val json get() = config.codec
 
-    override fun size() = scope.later { storage.length }
+    private val namespace get() = config.namespace
 
-    @OptIn(ExperimentalStdlibApi::class)
-    override fun keys() = scope.later {
+    override fun size() = executor.later { storage.length }
+
+    override fun keys() = executor.later {
         buildSet {
             for (i in 0 until storage.length) add(storage.key(i) as String)
         }
     }
 
-    override fun <T> save(key: String, obj: T, serializer: KSerializer<T>) = scope.later {
+    override fun <T> save(key: String, obj: T, serializer: KSerializer<T>) = executor.later {
         storage.setItem("${namespace}:${key}", json.encodeToString(serializer, obj))
         obj
     }
 
-    override fun <T> load(key: String, serializer: KSerializer<T>): Later<T> = scope.later {
+    override fun <T> load(key: String, serializer: KSerializer<T>): Later<out T> = executor.later {
         val js = storage.getItem("${namespace}:${key}") ?: throw CacheMissException(key)
         json.decodeFromString(serializer, js)
     }
 
-    override fun remove(key: String): Later<Unit?> = scope.later {
+    override fun remove(key: String): Later<out Unit?> = executor.later {
         val item = storage.getItem("${namespace}:${key}")
         storage.removeItem("${namespace}:${key}")
         if (item != null) Unit else null
     }
 
-    override fun clear(): Later<Unit> = scope.later {
+    override fun clear(): Later<out Unit> = executor.later {
         storage.clear()
     }
 }

@@ -1,13 +1,14 @@
 package cache
 
+import koncurrent.Executor
 import kotlinx.browser.localStorage
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.serialization.StringFormat
 import kotlinx.serialization.json.Json
 import org.w3c.dom.Storage
 
 interface BrowserCacheConfig : CacheConfig {
     val storage: Storage
-    val json: Json
+    val codec: StringFormat
 
     companion object {
         val DEFAULT_STORAGE: Storage = localStorage
@@ -16,13 +17,13 @@ interface BrowserCacheConfig : CacheConfig {
         operator fun invoke(
             namespace: String = CacheConfig.DEFAULT_NAMESPACE,
             storage: Storage = DEFAULT_STORAGE,
-            json: Json = DEFAULT_JSON,
-            scope: CoroutineScope = CacheConfig.DEFAULT_SCOPE,
+            executor: Executor = CacheConfig.DEFAULT_EXECUTOR,
+            codec: StringFormat = DEFAULT_JSON,
         ) = object : BrowserCacheConfig {
             override val storage: Storage = storage
-            override val json: Json = json
+            override val codec: StringFormat = codec
+            override val executor: Executor = executor
             override val namespace: String = namespace
-            override val scope: CoroutineScope = scope
         }
     }
 }

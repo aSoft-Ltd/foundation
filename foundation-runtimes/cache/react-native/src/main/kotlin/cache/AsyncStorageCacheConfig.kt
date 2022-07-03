@@ -1,31 +1,30 @@
 package cache
 
-import cache.CacheConfig.Companion.DEFAULT_NAMESPACE
-import cache.CacheConfig.Companion.DEFAULT_SCOPE
 import cache.npm.AsyncStorage
 import cache.npm.ReactNativeAsyncStorage
-import kotlinx.coroutines.CoroutineScope
+import koncurrent.Executor
+import kotlinx.serialization.StringFormat
 import kotlinx.serialization.json.Json
 
 interface AsyncStorageCacheConfig : CacheConfig {
     val storage: ReactNativeAsyncStorage
-    val json: Json
+    val codec: StringFormat
 
     companion object {
-        val DEFAULT_JSON = Json { }
+        val DEFAULT_CODEC = Json { }
 
         val DEFAULT_STORAGE: ReactNativeAsyncStorage = AsyncStorage
 
         operator fun invoke(
-            namespace: String = DEFAULT_NAMESPACE,
+            namespace: String = CacheConfig.DEFAULT_NAMESPACE,
             storage: ReactNativeAsyncStorage = AsyncStorage,
-            json: Json = DEFAULT_JSON,
-            scope: CoroutineScope = DEFAULT_SCOPE
+            codec: StringFormat = DEFAULT_CODEC,
+            executor: Executor = CacheConfig.DEFAULT_EXECUTOR
         ) = object : AsyncStorageCacheConfig {
             override val namespace = namespace
             override val storage = storage
-            override val json = json
-            override val scope = scope
+            override val codec = codec
+            override val executor: Executor = executor
         }
     }
 }

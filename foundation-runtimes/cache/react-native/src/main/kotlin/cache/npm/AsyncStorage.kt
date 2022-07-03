@@ -3,7 +3,7 @@
 
 package cache.npm
 
-import kotlin.js.Promise
+import koncurrent.Promise
 
 /*
 Types can be found here: https://github.com/react-native-async-storage/async-storage/blob/master/types/index.d.ts

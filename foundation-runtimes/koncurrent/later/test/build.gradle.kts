@@ -10,17 +10,28 @@ kotlin {
     js(IR) { library() }
     nativeTargets(true)
 
+    val nativeTargets = nativeTargets(true)
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentLaterCore)
-                api(projects.koncurrentPrimitivesCoroutines)
+                api(projects.expectCoroutines)
+                api(projects.koncurrentPrimitivesMock)
             }
         }
 
-        val commonTest by getting {
+        val nativeMain by creating {
+            dependsOn(commonMain)
             dependencies {
-                implementation(projects.expectCoroutines)
+                api(projects.koncurrentLaterCoroutines)
+            }
+        }
+
+        (nativeTargets).forEach {
+            val main by it.compilations.getting {}
+            main.defaultSourceSet {
+                dependsOn(nativeMain)
             }
         }
     }

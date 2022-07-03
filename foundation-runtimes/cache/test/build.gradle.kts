@@ -14,17 +14,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.cacheApi)
-                api(projects.cacheFile)
-                api(squareup.okio.fake)
-                api(projects.koncurrentPrimitivesMock)
-                api(projects.kotlinxCollectionsAtomic)
+                api(projects.cacheMock)
+                api(projects.koncurrentLaterTest)
+                api(projects.koncurrentLaterCoroutines)
+                api(projects.expectCoroutines)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
+
             }
         }
     }

@@ -1,46 +1,53 @@
 package cache
 
 import cache.exceptions.CacheMissException
-import kotlinx.coroutines.await
 import kotlinx.serialization.KSerializer
-import later.Later
-import later.asLater
-import later.later
+import koncurrent.Later
+import koncurrent.later.asLater
+import koncurrent.later.flatten
+import koncurrent.later.then
 
 class AsyncStorageCache(
-    override val config: AsyncStorageCacheConfig = AsyncStorageCacheConfig()
-) : Cache(config) {
+    val config: AsyncStorageCacheConfig = AsyncStorageCacheConfig()
+) : Cache {
 
-    private val storage = config.storage
+    private val namespace get() = config.namespace
 
-    private val scope = config.scope
+    private val storage get() = config.storage
 
-    private val json = config.json
+    private val executor get() = config.executor
 
-    override fun <T> save(key: String, obj: T, serializer: KSerializer<T>): Later<T> = scope.later {
-        storage.setItem("$namespace:$key", json.encodeToString(serializer, obj)).await()
-        obj
+    private val codec get() = config.codec
+
+    override fun <T> save(
+        key: String, obj: T,
+        serializer: KSerializer<T>
+    ): Later<out T> = storage.setItem("$namespace:$key", codec.encodeToString(serializer, obj)).asLater().then(executor) { obj }
+
+    override fun <T> load(key: String, serializer: KSerializer<T>) = Later(executor) { resolve, reject ->
+        storage.getItem("$namespace:$key").asLater().then {
+            if (it != null) try {
+                resolve(codec.decodeFromString(serializer, it))
+            } catch (err: Throwable) {
+                reject(err)
+            } else reject(CacheMissException(key))
+        }
     }
 
-    override fun <T> load(key: String, serializer: KSerializer<T>): Later<T> = scope.later {
-        val js = storage.getItem("$namespace:$key").await() ?: throw CacheMissException(key)
-        json.decodeFromString(serializer, js)
-    }
+    override fun keys() = storage.getAllKeys().asLater().then { it.toSet() }
 
-    override fun keys(): Later<Set<String>> = scope.later {
-        storage.getAllKeys().await().toSet()
-    }
+    override fun size() = storage.getAllKeys().asLater().then { it.size }
 
-    override fun size(): Later<Int> = scope.later {
-        storage.getAllKeys().await().size
-    }
+    override fun clear() = storage.clear().asLater()
 
-    override fun clear(): Later<Unit> = storage.clear().asLater()
-
-    override fun remove(key: String): Later<Unit?> = scope.later {
+    override fun remove(key: String): Later<out Unit?> {
         val fullKey = "$namespace:$key"
-        val item = storage.getItem(fullKey).await()
-        storage.removeItem(fullKey)
-        if (item != null) Unit else null
+        return storage.getItem(fullKey).asLater().flatten {
+            if (it == null) {
+                Later.resolve<Unit?>(null)
+            } else {
+                storage.removeItem(fullKey).asLater()
+            }
+        }
     }
 }

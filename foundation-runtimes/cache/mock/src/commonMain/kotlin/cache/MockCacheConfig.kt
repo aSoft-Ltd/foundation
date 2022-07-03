@@ -9,7 +9,6 @@ import kotlin.jvm.JvmSynthetic
 
 interface MockCacheConfig : CacheConfig {
     val initialCache: MutableMap<String, Any?>
-    val executor: Executor
 
     companion object {
 

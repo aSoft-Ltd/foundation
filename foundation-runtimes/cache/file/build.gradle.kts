@@ -15,16 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(projects.cacheApi)
-                api(projects.cacheFile)
-                api(squareup.okio.fake)
-                api(projects.koncurrentPrimitivesMock)
-                api(projects.kotlinxCollectionsAtomic)
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(projects.expectCoroutines)
+                api(squareup.okio.core)
             }
         }
     }
