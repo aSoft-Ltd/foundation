@@ -1,5 +1,4 @@
-@file:JsExport
-@file:Suppress("NON_EXPORTABLE_TYPE")
+@file:JsExport @file:Suppress("NON_EXPORTABLE_TYPE")
 
 package koncurrent
 
@@ -90,9 +89,7 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
     @JvmOverloads
     @JsName("_ignore_then")
     fun <S> then(onResolved: Function<T, S>, executor: Executor = this.executor): Later<out S> = then(
-        executor = executor,
-        onResolved = { value -> onResolved.invoke(value) },
-        onRejected = null
+        executor = executor, onResolved = { value -> onResolved.invoke(value) }, onRejected = null
     )
 
     fun <S> flatten(onResolved: (T) -> Later<out S>, executor: Executor = this.executor): Later<out S> = when (val s = state) {
@@ -104,17 +101,9 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
         is Rejected -> Later.reject(s.cause, executor)
         else -> {
             val later = Later<S>(executor = executor)
-            then(
-                executor = executor,
-                onResolved = { res ->
-                    onResolved(res).then(
-                        executor = executor,
-                        onResolved = { later.resolveWith(it) },
-                        onRejected = { later.rejectWith(it) }
-                    )
-                },
-                onRejected = { later.rejectWith(it) }
-            )
+            then(executor = executor, onResolved = { res ->
+                onResolved(res).then(executor = executor, onResolved = { later.resolveWith(it) }, onRejected = { later.rejectWith(it) })
+            }, onRejected = { later.rejectWith(it) })
             later
         }
     }
@@ -130,11 +119,7 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
      */
     @JsName("_ignore_error")
     @JvmOverloads
-    fun <T> error(handler: Function<Throwable, T>, executor: Executor = this.executor): Later<out T> = then(
-        executor = executor,
-        onResolved = null,
-        onRejected = { err -> handler.invoke(err) }
-    )
+    fun <T> error(handler: Function<Throwable, T>, executor: Executor = this.executor): Later<out T> = then(executor = executor, onResolved = null, onRejected = { err -> handler.invoke(err) })
 
     /**
      * Same as calling finally on javascript or kotlin
@@ -204,8 +189,7 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
             val controlledLater = it.controlledLater as Later<Any?>
             val fulfilledFn = it.fulfilledFn
             try {
-                val valueOrLater =
-                    fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
+                val valueOrLater = fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
 //                when {
 //                    valueOrLater.isThenable() -> valueOrLater.then(
 //                        executor = executor,
@@ -247,6 +231,7 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
 //                }
                 controlledLater.resolveWith(valueOrLater)
             } catch (err: Throwable) {
+                err.addSuppressed(error)
                 controlledLater.rejectWith(err)
             }
         }
