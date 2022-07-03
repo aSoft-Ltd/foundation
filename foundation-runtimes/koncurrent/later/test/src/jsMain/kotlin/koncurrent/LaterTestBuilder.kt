@@ -5,6 +5,3 @@ actual fun <T> runLaterTest(executor: Executor, block: () -> Later<out T>): dyna
         block().then({ resolve(Unit) }, reject)
     }.unsafeCast<LaterTestResult>()
 }
-
-
-internal external fun done(cause: Throwable)

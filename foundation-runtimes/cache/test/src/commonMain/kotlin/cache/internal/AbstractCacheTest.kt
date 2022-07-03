@@ -16,19 +16,11 @@ import kotlinx.serialization.Serializable
 import kotlin.test.Test
 
 abstract class AbstractCacheTest(val cache: Cache) {
-
-    inline fun <T> loudExpect(message: String, e: T): BasicExpectation<T> {
-        println(message)
-        val res = expect(e)
-        println("Finished $message")
-        return res
-    }
-
     @Test
     fun should_be_able_to_load_and_save_primitively_easily() = cache.save("int", 1).flatten {
         cache.load<Int>("int")
     }.then {
-        loudExpect("Loading", it).toBe(1)
+        expect(it).toBe(1)
     }.test()
 
     @Serializable
@@ -38,13 +30,11 @@ abstract class AbstractCacheTest(val cache: Cache) {
     fun should_be_able_to_load_and_save_custom_classes_easily() = cache.save("john", Person("John")).flatten {
         cache.load<Person>("john")
     }.then {
-        loudExpect("Loading", it).toBe(Person("John"))
+        expect(it).toBe(Person("John"))
     }.test()
 
     @Test
     fun should_throw_cache_load_exception() = cache.load<Int>("jane").catch {
-        println(it::class.simpleName)
-        it.printStackTrace()
         val exp = expect(it).toBe<CacheLoadException>()
         expect(exp.message).toBe("Failed to load object with key=jane from the cache")
         0
@@ -53,7 +43,6 @@ abstract class AbstractCacheTest(val cache: Cache) {
     @Test
     fun should_throw_a_cache_load_exception_with_a_serialization_cause() = cache.load<Any>("jane").catch {
         val exp = expect(it).toBe<CacheLoadException>()
-        println("failed and caught")
         expect(exp.key).toBe("jane")
     }.test()
 

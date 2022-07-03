@@ -1,5 +1,6 @@
 package cache
 
+import cache.exceptions.CacheLoadException
 import cache.exceptions.CacheMissException
 import kotlinx.serialization.KSerializer
 import koncurrent.Later
@@ -27,7 +28,7 @@ class CacheAsyncStorage(val config: CacheAsyncStorageConfig = CacheAsyncStorageC
             if (it != null) try {
                 resolve(codec.decodeFromString(serializer, it))
             } catch (err: Throwable) {
-                reject(err)
+                reject(CacheLoadException(key, cause = err))
             } else reject(CacheMissException(key))
         }
     }
@@ -40,11 +41,11 @@ class CacheAsyncStorage(val config: CacheAsyncStorageConfig = CacheAsyncStorageC
 
     override fun remove(key: String): Later<out Unit?> {
         val fullKey = "$namespace:$key"
-        return storage.getItem(fullKey).asLater().flatten {
-            if (it == null) {
+        return storage.getItem(fullKey).asLater().flatten { res ->
+            if (res == null) {
                 Later.resolve<Unit?>(null)
             } else {
-                storage.removeItem(fullKey).asLater()
+                storage.removeItem(fullKey).asLater().then { it }
             }
         }
     }
