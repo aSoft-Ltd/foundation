@@ -9,7 +9,8 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-    nativeTargets(true)
+    //    nativeTargets(true) // removed because iosArm64 was not being supported by okio
+    linuxX64()
 
     sourceSets {
         val commonMain by getting {
