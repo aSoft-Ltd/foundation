@@ -16,7 +16,6 @@ kotlin {
             dependencies {
                 api(projects.cacheApi)
                 api(projects.cacheFile)
-                api(squareup.okio.fake)
                 api(projects.koncurrentPrimitivesMock)
                 api(projects.kotlinxCollectionsAtomic)
             }

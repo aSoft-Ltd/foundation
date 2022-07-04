@@ -20,6 +20,7 @@ kotlin {
                 api(projects.kuestCore)
                 api(projects.expectCoroutines)
                 api(projects.koncurrentPendingCoroutines)
+                api(projects.koncurrentLaterTest)
             }
         }
     }

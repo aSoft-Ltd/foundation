@@ -10,11 +10,10 @@ import kotlin.test.Test
 class NestedPendingValuesTest {
     @Test
     fun should_be_able_to_unwrap_nested_values_with_the_unwrap_method() = runTest {
-        val p = pending { pending { 2 } }
-
-        val r = p.flatten { it + 1 }
-
-        expect<Any>(r.await()).toBe(3)
+        val p = pending { 1 }.flatten {
+            pending { it + 2 }
+        }
+        expect(p.await()).toBe(3)
     }
 
     @Test

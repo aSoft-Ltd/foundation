@@ -1,7 +1,5 @@
 package kuest
 
-import koncurrent.Pending
-
 abstract class AbstractHttpClient : HttpClient {
 
     override fun get(url: String) = execute(HttpRequest(url))
@@ -10,7 +8,7 @@ abstract class AbstractHttpClient : HttpClient {
 
     override fun put(url: String, body: HttpRequestBody) = execute(HttpRequest(url = url, method = HttpMethod.Put, body = body))
 
-    override fun head(url: String): Pending<HttpResponse> = execute(HttpRequest(url = url, method = HttpMethod.Head))
+    override fun head(url: String) = execute(HttpRequest(url = url, method = HttpMethod.Head))
 
     override fun delete(url: String, body: HttpRequestBody) = execute(HttpRequest(url = url, method = HttpMethod.Delete, body = body))
 

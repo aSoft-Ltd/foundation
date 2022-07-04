@@ -14,7 +14,7 @@ fun <T> CoroutineScope.pending(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> T
-): Pending<T> {
+): Pending<out T> {
     val pending = ControlledPending<T>()
     launch(context, start) {
         try {

@@ -8,7 +8,7 @@ import kotlin.coroutines.resumeWithException
 /**
  * Converts and instance of this [Later] into a [Deferred]
  */
-fun <T> Later<T>.asDeferred(scope: CoroutineScope): Deferred<T> = scope.async(start = CoroutineStart.LAZY) { await() }
+fun <T> Later<out T>.asDeferred(scope: CoroutineScope): Deferred<T> = scope.async(start = CoroutineStart.LAZY) { await() }
 
 /**
  * Suspends this [Later] and resumes with the result, or exception
@@ -16,7 +16,7 @@ fun <T> Later<T>.asDeferred(scope: CoroutineScope): Deferred<T> = scope.async(st
  * If this [Later] is already in a [Settled] state,
  * it returns the [Fulfilled.value] immediately or throws the [Rejected.cause]
  */
-suspend fun <T> Later<T>.await(): T = when (val s = state) {
+suspend fun <T> Later<out T>.await(): T = when (val s = state) {
     is Settled -> when (s) {
         is Fulfilled -> s.value
         is Rejected -> throw s.cause

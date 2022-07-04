@@ -18,7 +18,7 @@ class CanConstructAFunctioningPending {
 
     @Test
     fun should_be_able_to_recover_on_a_failure() {
-        val p: Pending<Int> = executor.pending { throw RuntimeException("Wooozaaaaa") }
+        val p: Pending<out Int> = executor.pending { throw RuntimeException("Wooozaaaaa") }
         p.catch(executor) {
             println("Recovering from ${it.message}")
             43

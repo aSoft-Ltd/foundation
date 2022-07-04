@@ -16,8 +16,6 @@ kotlin {
             dependencies {
                 api(projects.cacheMock)
                 api(projects.koncurrentLaterTest)
-                api(projects.koncurrentLaterCoroutines)
-                api(projects.expectCoroutines)
             }
         }
     }
