@@ -81,15 +81,13 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
         @JvmStatic
         fun <T> all(vararg laters: Later<out T>): Later<out List<Settled<T>>> {
             val later = Later<List<Settled<T>>>()
-            val states = laters.map { it.state }.toMutableList()
-            laters.forEachIndexed { index, l ->
+            val states = laters.associateWith { it.state }.toMutableMap()
+            laters.forEach { l ->
                 l.complete({ state ->
                     lock.withLock {
-                        states[index] = state
-                    }
-                    lock.withLock {
-                        if (states.all { it is Settled }) {
-                            val stateList = states.filterIsInstance<Settled<T>>().toInteroperableList()
+                        states[l] = state
+                        if (laters.map { it.state }.all { it is Settled }) {
+                            val stateList = laters.map { it.state }.filterIsInstance<Settled<T>>().toInteroperableList()
                             later.resolveWith(stateList)
                         }
                     }
