@@ -9,7 +9,8 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-    nativeTargets(true)
+//    nativeTargets(true) // removed because iosArm64 was not being supported by okio
+    linuxX64()
 
     sourceSets {
         val commonMain by getting {
@@ -31,5 +32,6 @@ kotlin {
 }
 
 aSoftOSSLibrary(
-    version = asoft.versions.foundation.get(), description = "An implementation of the cache-api to help caching simple objects in memory"
+    version = asoft.versions.foundation.get(),
+    description = "An implementation of the cache-api to help caching simple objects in memory"
 )
