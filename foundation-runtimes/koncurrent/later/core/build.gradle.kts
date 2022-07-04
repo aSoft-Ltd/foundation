@@ -23,6 +23,7 @@ kotlin {
             dependencies {
                 implementation(projects.expectCore)
                 implementation(projects.koncurrentPrimitivesMock)
+                implementation(projects.koncurrentLaterTest)
             }
         }
 

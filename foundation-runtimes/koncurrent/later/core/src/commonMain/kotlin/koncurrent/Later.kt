@@ -4,18 +4,27 @@ package koncurrent
 
 import functions.Consumer
 import functions.Function
+import koncurrent.later.catch
+import koncurrent.later.filterFulfilled
+import koncurrent.later.filterFulfilledValues
 import koncurrent.later.internal.LaterHandler
 import koncurrent.later.internal.LaterQueueComponent
 import koncurrent.later.internal.PlatformConcurrentMonad
 import koncurrent.later.internal.toPlatformConcurrentMonad
+import koncurrent.later.then
+import kotlinx.atomicfu.locks.ReentrantLock
+import kotlinx.atomicfu.locks.reentrantLock
+import kotlinx.atomicfu.locks.synchronized
+import kotlinx.atomicfu.locks.withLock
 import kotlinx.collections.atomic.mutableAtomicListOf
+import kotlinx.collections.interoperable.List
+import kotlinx.collections.interoperable.toInteroperableList
 import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmName
 import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
-import kotlin.reflect.typeOf
 
 class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null, val executor: Executor = Executors.default()) {
 
@@ -55,6 +64,36 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
             val l = Later<Nothing>(executor = executor)
             l.rejectWith(error)
             return l
+        }
+
+        private val lock: ReentrantLock = reentrantLock()
+
+        @JvmStatic
+        fun <T> allFulfilled(vararg laters: Later<out T>): Later<out List<Fulfilled<T>>> = all(*laters).then {
+            it.filterFulfilled()
+        }
+
+        @JvmStatic
+        fun <T> allFulfilledValues(vararg laters: Later<out T>): Later<out List<T>> = allFulfilled(*laters).then { list ->
+            list.filterFulfilledValues()
+        }
+
+        @JvmStatic
+        fun <T> all(vararg laters: Later<out T>): Later<out List<Settled<T>>> {
+            val later = Later<List<Settled<T>>>()
+            val states = laters.map { it.state }.toMutableList()
+            laters.forEachIndexed { index, l ->
+                l.complete({ state ->
+                    lock.withLock {
+                        states[index] = state
+                        if (states.all { it is Settled }) {
+                            val stateList = states.filterIsInstance<Settled<T>>().toInteroperableList()
+                            later.resolveWith(stateList)
+                        }
+                    }
+                })
+            }
+            return later
         }
     }
 
