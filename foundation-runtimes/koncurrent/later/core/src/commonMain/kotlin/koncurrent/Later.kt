@@ -86,12 +86,14 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
                 l.complete({ state ->
                     lock.withLock {
                         states[index] = state
+                    }
+                    lock.withLock {
                         if (states.all { it is Settled }) {
                             val stateList = states.filterIsInstance<Settled<T>>().toInteroperableList()
                             later.resolveWith(stateList)
                         }
                     }
-                })
+                }, SynchronousExecutor)
             }
             return later
         }
