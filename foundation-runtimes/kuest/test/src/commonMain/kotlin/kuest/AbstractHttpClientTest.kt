@@ -4,7 +4,6 @@ import expect.expect
 import koncurrent.later.flatten
 import koncurrent.later.test
 import koncurrent.later.then
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 abstract class AbstractHttpClientTest(open val client: HttpClient) {
@@ -20,7 +19,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
             """
             {
               "id": 101
-            }            
+            }
         """.trimIndent()
         )
     }.test()
@@ -38,7 +37,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
               "id": 1,
               "title": "delectus aut autem",
               "completed": false
-            }            
+            }
         """.trimIndent()
         )
     }.test()
@@ -55,7 +54,7 @@ abstract class AbstractHttpClientTest(open val client: HttpClient) {
               "id": 1,
               "title": "delectus aut autem",
               "completed": false
-            }            
+            }
         """.trimIndent()
         )
     }.test()

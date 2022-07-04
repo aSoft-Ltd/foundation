@@ -55,7 +55,7 @@ includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines", "test"
 includeSubs("koncurrent-pending", "koncurrent/pending", "core", "coroutines")
 includeSubs("koncurrent-few", "koncurrent/few", "core", "coroutines")
 
-includeSubs("kuest", "kuest", "http", "core", "coroutines", /* "mock", */ "test")
+includeSubs("kuest", "kuest", "http", "core", "coroutines", "mock", "test")
 includeSubs("kuest-fetch", "kuest/fetch", "core", "browser", "node")
 
 includeSubs("later", "later", "core", "ktx")
