@@ -18,6 +18,9 @@ fun <E> expectArray(array: Array<E>) = expect(*array)
 
 fun <E> expectCollection(collection: Collection<E>): CollectionExpectation<E> = CollectionExpectationImpl(collection)
 
+
+fun <E> expect(collection: Collection<E>) = expectCollection(collection)
+
 inline fun <E> expect(
     value: E,
     builder: BasicExpectation<E>.() -> Unit

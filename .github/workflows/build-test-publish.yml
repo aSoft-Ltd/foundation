@@ -59,6 +59,10 @@ jobs:
         run: ./gradlew jvmTest
         working-directory: ./foundation-runtimes
 
+      - name: test js node runtimes
+        run: ./gradlew jsNodeTest
+        working-directory: ./foundation-runtimes
+
       - name: Building runtimes
         run: ./gradlew build
         working-directory: ./foundation-runtimes

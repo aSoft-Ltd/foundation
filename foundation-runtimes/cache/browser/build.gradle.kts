@@ -19,7 +19,7 @@ kotlin {
 
         val test by getting {
             dependencies {
-                implementation(project(":expect-coroutines"))
+                implementation(projects.cacheTest)
             }
         }
     }

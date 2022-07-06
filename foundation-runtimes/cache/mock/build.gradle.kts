@@ -9,19 +9,22 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-    nativeTargets(true)
+//    val nativeTargets = nativeTargets(true)
+    val nativeTargets = linuxTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(projects.cacheApi)
+                api(projects.cacheFile)
+                api(projects.koncurrentPrimitivesMock)
                 api(projects.kotlinxCollectionsAtomic)
             }
         }
 
         val commonTest by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
+                implementation(projects.cacheTest)
             }
         }
     }

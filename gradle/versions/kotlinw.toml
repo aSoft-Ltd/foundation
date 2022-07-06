@@ -1,5 +1,5 @@
 [versions]
-bom = "0.0.1-pre.327-kotlin-1.6.20"
+bom = "1.0.0-pre.351"
 
 [libraries]
 bom = { module = "org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom", version.ref = "bom" }

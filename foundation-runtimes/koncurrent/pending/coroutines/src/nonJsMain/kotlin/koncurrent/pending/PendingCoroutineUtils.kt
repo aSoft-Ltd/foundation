@@ -5,4 +5,4 @@ package koncurrent.pending
 import koncurrent.Pending
 import kotlin.jvm.JvmName
 
-actual suspend inline fun <T> Pending<Pending<T>>.awaitChain(): T = await().await()
+actual suspend inline fun <T> Pending<out Pending<out T>>.awaitChain(): T = await().await()

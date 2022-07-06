@@ -12,12 +12,13 @@ kotlin {
     }
     js(IR) { library() }
 
-    val nativeTargets = nativeTargets(true)
+//    val nativeTargets = nativeTargets(true)
+    val nativeTargets = linuxTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.koncurrentPendingCore)
+                api(projects.koncurrentLaterCore)
                 api(projects.kuestHttp)
             }
         }

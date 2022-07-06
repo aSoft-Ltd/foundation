@@ -8,14 +8,14 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-    nativeTargets(true)
+//    val nativeTargets = nativeTargets(true)
+    val nativeTargets = linuxTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(projects.koncurrentLaterCore)
                 api(projects.koncurrentPrimitivesCoroutines)
-                implementation(projects.koncurrentPrimitivesMock)
             }
         }
 

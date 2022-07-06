@@ -12,7 +12,7 @@ class FewApiTestJs {
     @Test
     fun can_call_collect_on_it() {
         val few: dynamic = fewOf(0, mockExecutor)
-        few.collect({ it ->
+        few.collect({ it: Int ->
             console.log("Collecting $it")
             expect(it).toBe(0)
             console.log("Collected $it")

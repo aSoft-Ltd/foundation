@@ -1,6 +1,6 @@
 package kuest.internal
 
-import koncurrent.Pending
+import koncurrent.Promise
 import org.khronos.webgl.ArrayBuffer
 import org.w3c.fetch.Headers
 import org.w3c.fetch.ResponseInit
@@ -17,14 +17,14 @@ open external class Response(body: dynamic = definedExternally, init: ResponseIn
     open val statusText: String
     open val headers: Headers
     open val body: dynamic
-    open val trailer: Pending<Headers>
+    open val trailer: Promise<Headers>
     override val bodyUsed: Boolean
     fun clone(): Response
-    override fun arrayBuffer(): Pending<ArrayBuffer>
-    override fun blob(): Pending<Blob>
-    override fun formData(): Pending<FormData>
-    override fun json(): Pending<Any?>
-    override fun text(): Pending<String>
+    override fun arrayBuffer(): Promise<ArrayBuffer>
+    override fun blob(): Promise<Blob>
+    override fun formData(): Promise<FormData>
+    override fun json(): Promise<Any?>
+    override fun text(): Promise<String>
 
     companion object {
         fun error(): Response

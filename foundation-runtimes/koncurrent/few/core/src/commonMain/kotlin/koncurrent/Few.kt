@@ -47,7 +47,6 @@ interface Few<out T> {
     @JvmSynthetic
     fun <R> map(transformer: (T) -> R): Few<R>
 
-
     /**
      * To be callable from kotlin + java
      */

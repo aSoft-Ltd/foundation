@@ -7,7 +7,10 @@ plugins {
 }
 
 kotlin {
-    js(IR) { browserLib() }
+    js(IR) {
+        browserLib()
+        // do not add node js coz async storage doesn't run in node
+    }
 
     sourceSets {
         val main by getting {
@@ -20,13 +23,12 @@ kotlin {
 
         val test by getting {
             dependencies {
-                implementation(projects.expectCoroutines)
+                implementation(projects.cacheTest)
             }
         }
     }
 }
 
 aSoftOSSLibrary(
-    version = asoft.versions.foundation.get(),
-    description = "An implementation of the cache-api to help caching simple objects on react-native-targets"
+    version = asoft.versions.foundation.get(), description = "An implementation of the cache-api to help caching simple objects on react-native-targets"
 )

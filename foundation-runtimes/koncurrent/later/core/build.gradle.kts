@@ -6,10 +6,11 @@ plugins {
 }
 
 kotlin {
-    jvm { library() }
+    jvm { library(); withJava() }
     js(IR) { library() }
 
-    val nativeTargets = nativeTargets(true)
+//    val nativeTargets = nativeTargets(true)
+    val nativeTargets = linuxTargets(true)
 
     sourceSets {
         val commonMain by getting {
@@ -23,6 +24,7 @@ kotlin {
             dependencies {
                 implementation(projects.expectCore)
                 implementation(projects.koncurrentPrimitivesMock)
+                implementation(projects.koncurrentLaterTest)
             }
         }
 

@@ -1,7 +1,6 @@
 package kuest
 
-import koncurrent.Pending
-import koncurrent.pending.unwrap
-import koncurrent.pending.then
+import koncurrent.Later
+import koncurrent.later.flatten
 
-inline fun Pending<HttpResponse>.bodyAsText(): Pending<String> = then { it.text() }.unwrap()
+inline fun Later<out HttpResponse>.bodyAsText(): Later<out String> = flatten { it.text() }

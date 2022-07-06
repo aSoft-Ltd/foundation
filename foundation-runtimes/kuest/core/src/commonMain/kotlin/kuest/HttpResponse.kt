@@ -1,7 +1,8 @@
 package kuest
 
+import koncurrent.Later
 import koncurrent.Pending
 
-expect open class HttpResponse {
-    fun text(): Pending<String>
+interface HttpResponse {
+    fun text(): Later<out String>
 }

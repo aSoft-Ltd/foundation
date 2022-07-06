@@ -24,7 +24,7 @@ class CoroutinesCanAwait {
     fun should_be_able_to_recover_from_an_error_at_the_start_of_a_pipeline(): TestResult {
         val result = executor.pending<Int> {
             throw IllegalArgumentException("Whoops")
-        }.catch {
+        }.catch<Int> {
             1
         }.then {
             it * 2
@@ -42,7 +42,7 @@ class CoroutinesCanAwait {
             throw IllegalArgumentException("Whoops")
         }.then {
             it + 1
-        }.catch {
+        }.catch<Int> {
             1
         }.then {
             it * 2
@@ -65,7 +65,7 @@ class CoroutinesCanAwait {
             1 / zero // so that it fails
         }.then {
             it * 2
-        }.catch {
+        }.catch<Int> {
             zero
         }.then {
             it + 1

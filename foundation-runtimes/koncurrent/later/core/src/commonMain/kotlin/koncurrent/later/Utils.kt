@@ -2,61 +2,48 @@
 
 package koncurrent.later
 
+import kotlinx.collections.interoperable.List
 import koncurrent.*
-import koncurrent.later.internal.PlatformConcurrentMonad
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
+import kotlinx.collections.interoperable.toInteroperableList
 import kotlin.jvm.JvmName
+import kotlin.jvm.JvmSynthetic
 
-@OptIn(ExperimentalContracts::class)
-internal fun Any?.isThenable(): Boolean {
-    contract {
-        returns(true) implies (this@isThenable is Later<*>)
-    }
-    if (this == null) return false
-    if (this is Later<*>) return true
-    return false
-}
+inline fun <T, R> Later<out T>.then(
+    executor: Executor = this.executor,
+    noinline onFulfilled: (T) -> R
+): Later<out R> = then(onFulfilled, null, executor)
 
-internal expect fun <T> Later<T>.toPlatformConcurrentMonad(executor: Executor): PlatformConcurrentMonad<T>
+inline fun <T> Later<out T>.catch(
+    executor: Executor = this.executor,
+    noinline handler: (Throwable) -> T
+): Later<out T> = then(null, handler, executor)
 
-internal expect fun <T> Later<T>.toPlatformConcurrentMonad(): PlatformConcurrentMonad<T>
+fun <T> Later<out T>.finally(
+    executor: Executor = this.executor,
+    cleanUp: (state: Settled<T>) -> Any?
+) = cleanUp(executor = executor, cleanUp = cleanUp)
 
-fun <T, R> Later<Later<T>>.unwrap(executor: Executor = this.executor, onFulfilled: (T) -> R): Later<R> = when (val s1 = state) {
-    is Rejected -> Later.reject(s1.cause, executor) as Later<R>
-    is Fulfilled -> {
-        val value1 = s1.value
-        when (val s2 = value1.state) {
-            is Rejected -> Later.reject(s2.cause, executor) as Later<R>
-            is Fulfilled -> Later.resolve(onFulfilled(s2.value), executor) as Later<R>
-            PendingState -> {
-                val later = Later<R>()
-                value1.then(
-                    executor = executor,
-                    onResolved = { later.resolveWith(onFulfilled(it)) },
-                    onRejected = { later.rejectWith(it) }
-                )
-                later
-            }
-        }
-    }
-    PendingState -> {
-        val later = Later<R>(executor)
-        then(
-            executor = executor,
-            onResolved = { value1 ->
-                value1.then(
-                    executor = executor,
-                    onResolved = { later.resolveWith(onFulfilled(it)) },
-                    onRejected = { later.rejectWith(it) }
-                )
-            },
-            onRejected = { later.rejectWith(it) }
-        )
-        later
-    }
-}
+fun <T, R> Later<out T>.flatten(
+    executor: Executor = this.executor,
+    onResolved: (T) -> Later<out R>
+): Later<out R> = flatten(onResolved, executor)
 
-inline fun <T> Later<Later<T>>.unwrap(executor: Executor = this.executor): Later<T> = unwrap(executor) { it }
+inline fun <T> Later<out Later<out T>>.flatten(executor: Executor = this.executor): Later<out T> = flatten(executor) { it }
 
-inline fun <T, R> Later<T>.then(executor: Executor = this.executor, noinline onFulfilled: (T) -> R): Later<R> = then(executor, onFulfilled, null)
+@JvmName("filterFulfilledFromSettled")
+inline fun <T> List<Settled<T>>.filterFulfilled(): List<Fulfilled<T>> = filterIsInstance<Fulfilled<T>>().toInteroperableList()
+
+@JvmName("filterFulfilledValuesFromSettled")
+inline fun <T> List<Settled<T>>.filterFulfilledValues(): List<T> = filterFulfilled().filterFulfilledValues()
+
+@JvmName("filterFulfilledValuesFromFulfilled")
+inline fun <T> List<Fulfilled<T>>.filterFulfilledValues(): List<T> = map { it.value }.toInteroperableList()
+
+@JvmName("filterRejectedFromSettled")
+inline fun <T> List<Settled<T>>.filterRejected(): List<Rejected> = filterIsInstance<Rejected>().toInteroperableList()
+
+@JvmName("filterFulfilledFromLater")
+inline fun <T> Later<out List<Settled<T>>>.filterFulfilled() = then { it.filterFulfilled() }
+
+@JvmName("filterRejectedFromLater")
+inline fun <T> Later<out List<Settled<T>>>.filterRejected() = then { it.filterRejected() }

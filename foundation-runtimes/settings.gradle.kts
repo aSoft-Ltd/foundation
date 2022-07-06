@@ -43,7 +43,7 @@ includeBuild("../foundation-plugins")
 
 includeSubs("expect", "testing/asserters/expect", "core", "coroutines")
 includeRoot("applikation-runtime", "applikation")
-includeSubs("cache", "cache", "api", "browser", "react-native", "mock")
+includeSubs("cache", "cache", "api", "browser", "react-native", "mock", "file", "test")
 includeRoot("kotlinx-serialization-mapper", "kotlinx/serialization/mapper")
 includeRoot("kotlinx-browser", "kotlinx/browser")
 includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperable")
@@ -51,16 +51,20 @@ includeSubs("kotlinx-collections", "kotlinx/collections", "atomic", "interoperab
 includeRoot("functions", "functions")
 
 includeSubs("koncurrent-primitives", "koncurrent/primitives", "core", "coroutines", "mock")
-includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines")
+includeSubs("koncurrent-later", "koncurrent/later", "core", "coroutines", "test")
 includeSubs("koncurrent-pending", "koncurrent/pending", "core", "coroutines")
 includeSubs("koncurrent-few", "koncurrent/few", "core", "coroutines")
 
-includeSubs("kuest", "kuest", "http", "core", "coroutines", /* "mock", */ "test")
+includeSubs("kuest", "kuest", "http", "core", "coroutines", "mock", "test")
 includeSubs("kuest-fetch", "kuest/fetch", "core", "browser", "node")
 
 includeSubs("later", "later", "core", "ktx")
 
 includeSubs("logging", "logging", "core", "console", "file")
 includeRoot("logging-test-android", "logging/test/android")
+
+includeSubs("live", "mvivm/live", "core", "react", "coroutines")// "compose")
+includeSubs("viewmodel", "mvivm/viewmodel", "core", "react", "coroutines")// "compose")
+includeSubs("viewmodel-test", "mvivm/viewmodel/test", "core", "expect")
 
 includeSubs("platform", "platform", "core")

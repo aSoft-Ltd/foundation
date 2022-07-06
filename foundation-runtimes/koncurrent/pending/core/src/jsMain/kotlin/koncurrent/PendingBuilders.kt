@@ -15,19 +15,19 @@ internal inline fun <T> pendingCreator(resolve: (T) -> Unit, reject: (Throwable)
     }
 }
 
-actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<T> = Promise<T> { resolve, reject ->
+actual inline fun <T> Executor.pending(noinline block: () -> T): Pending<out T> = Promise<T> { resolve, reject ->
     pendingCreator(resolve, reject, block)
 }
 
-actual inline fun <T> pending(noinline block: () -> T): Pending<T> = Promise { resolve, reject ->
+actual inline fun <T> pending(noinline block: () -> T): Pending<out T> = Promise { resolve, reject ->
     pendingCreator(resolve, reject, block)
 }
 
-actual inline fun <T> ResolvedPending(value: T): Pending<T> = Promise.resolve(value)
+actual inline fun <T> ResolvedPending(value: T): Pending<out T> = Promise.resolve(value)
 
-actual inline fun <T> RejectedPending(error: Throwable): Pending<T> = Promise.reject(error) as Pending<T>
+actual inline fun <T> RejectedPending(error: Throwable): Pending<out T> = Promise.reject(error) as Pending<out T>
 
-actual inline fun <T> ControlledPending(): Pending<T> {
+actual inline fun <T> ControlledPending(): Pending<out T> {
     var resolveFn: ((T) -> Unit)? = null
     var rejectFn: ((Throwable) -> Unit)? = null
     val promise = Promise<T> { resolve, reject ->
