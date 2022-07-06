@@ -8,7 +8,6 @@ plugins {
 kotlin {
     jvm { library() }
     js(IR) { library() }
-    nativeTargets(true)
 
 //    val nativeTargets = nativeTargets(true)
     val nativeTargets = linuxTargets(true)
