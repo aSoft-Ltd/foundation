@@ -63,4 +63,8 @@ includeSubs("later", "later", "core", "ktx")
 includeSubs("logging", "logging", "core", "console", "file")
 includeRoot("logging-test-android", "logging/test/android")
 
+includeSubs("live", "mvivm/live", "core", "react", "coroutines")// "compose")
+includeSubs("viewmodel", "mvivm/viewmodel", "core", "react", "coroutines")// "compose")
+includeSubs("viewmodel-test", "mvivm/viewmodel/test", "core", "expect")
+
 includeSubs("platform", "platform", "core")

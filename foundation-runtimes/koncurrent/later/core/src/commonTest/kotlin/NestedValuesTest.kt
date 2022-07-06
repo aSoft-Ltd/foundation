@@ -12,26 +12,32 @@ class NestedValuesTest {
     @Test
     fun should_be_able_to_unwrap_cascaded_values_without_a_callback() {
         val executor = MockExecutor()
-        Later.resolve(Later.resolve(2), executor).flatten().then {
+        var resolved = false
+        Later.resolve(Later.resolve(2, executor), executor).flatten().then {
             println("Comparing")
             expect(it).toBe(2)
             println("Finished comparing")
+            resolved = true
         }
         println("Done here")
+        expect(resolved).toBe(true, "Expected then block to be resolved but it wasn't")
     }
 
     @Test
     fun should_be_able_to_unwrap_cascaded_values_with_a_callback() {
         val executor = MockExecutor()
-        Later.resolve(0, executor).flatten {
+        var resolved = false
+        Later.resolve(1, executor).flatten {
             println("Flattening")
-            Later.resolve(2 + it)
+            Later.resolve(2 + it, executor)
         }.then {
-            println("Comparing")
-            expect(it).toBe(2)
+            println("Comparing $it")
+            expect(it).toBe(3)
             println("Finished comparing")
+            resolved = true
         }
         println("Done here")
+        expect(resolved).toBe(true, "Expected then block to be executed but it wasn't")
     }
 
     @Test
@@ -41,6 +47,8 @@ class NestedValuesTest {
         val e2 = MockExecutor("Mock Executor 2")
 
         val e3 = MockExecutor("Mock Executor 3")
+        var recovered = false
+        var result = -1
         Later.resolve(0, e1).then(e2) {
             expect(it).toBe(0)
             it + 1
@@ -49,12 +57,16 @@ class NestedValuesTest {
             it * 2
         }.then(e1) {
             expect(it).toBe(2)
-            1 / (it - 2)
+            1 divide (it - 2)
         }.catch(e2) {
+            recovered = true
             0
         }.finally {
+            result = 1
             println("Finished processing later")
         }
+        expect(recovered).toBe(true, "Expected Later to be recovered at this point but it wasn't")
+        expect(result).toBe(1, "Finally block didn't execute")
     }
 
     @Test
@@ -67,7 +79,7 @@ class NestedValuesTest {
             it * 2
         }.then {
             expect(it).toBe(2)
-            1 / (it - 2)
+            1 divide (it - 2)
         }.catch {
             0
         }.finally {

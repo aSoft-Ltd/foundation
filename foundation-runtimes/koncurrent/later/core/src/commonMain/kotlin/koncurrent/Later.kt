@@ -4,17 +4,15 @@ package koncurrent
 
 import functions.Consumer
 import functions.Function
-import koncurrent.later.catch
 import koncurrent.later.filterFulfilled
 import koncurrent.later.filterFulfilledValues
 import koncurrent.later.internal.LaterHandler
-import koncurrent.later.internal.LaterQueueComponent
+import koncurrent.later.internal.LaterQueueItem
 import koncurrent.later.internal.PlatformConcurrentMonad
 import koncurrent.later.internal.toPlatformConcurrentMonad
 import koncurrent.later.then
 import kotlinx.atomicfu.locks.ReentrantLock
 import kotlinx.atomicfu.locks.reentrantLock
-import kotlinx.atomicfu.locks.synchronized
 import kotlinx.atomicfu.locks.withLock
 import kotlinx.collections.atomic.mutableAtomicListOf
 import kotlinx.collections.interoperable.List
@@ -32,8 +30,8 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
     @JvmOverloads
     constructor(handler: LaterHandler<T>, executor: Executor = Executors.default()) : this({ resolve, reject -> handler.execute(resolve, reject) }, executor)
 
-    private val thenQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
-    private val finallyQueue = mutableAtomicListOf<LaterQueueComponent<*>>()
+    private val thenQueue = mutableAtomicListOf<LaterQueueItem<T, *>>()
+    private val finallyQueue = mutableAtomicListOf<LaterQueueItem<T, *>>()
 
     @JvmSynthetic
     @JsName("_ignore_state")
@@ -104,14 +102,15 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
     @JvmSynthetic
     @JsName("_ignore_thenWithExecutor")
     fun <R> then(onResolved: ((T) -> R)?, onRejected: ((Throwable) -> R)? = null, executor: Executor = this.executor): Later<out R> {
-        val controlledLater = Later<R>(executor = executor)
-        thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> R, onRejected))
+        val later = Later<R>(executor = executor)
+        val item = LaterQueueItem(later = later, resolver = onResolved, rejecter = onRejected)
+        thenQueue.add(item)
         when (val s = state) {
             is Fulfilled -> propagateFulfilled(s.value)
             is Rejected -> propagateRejected(s.cause)
             else -> {}
         }
-        return controlledLater
+        return later
     }
 
     /**
@@ -131,20 +130,40 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
         executor = executor, onResolved = { value -> onResolved.invoke(value) }, onRejected = null
     )
 
-    fun <S> flatten(onResolved: (T) -> Later<out S>, executor: Executor = this.executor): Later<out S> = when (val s = state) {
-        is Fulfilled -> try {
-            onResolved(s.value)
-        } catch (err: Throwable) {
-            Later.reject(err, executor)
-        }
-        is Rejected -> Later.reject(s.cause, executor)
-        else -> {
-            val later = Later<S>(executor = executor)
-            then(executor = executor, onResolved = { res ->
-                onResolved(res).then(executor = executor, onResolved = { later.resolveWith(it) }, onRejected = { later.rejectWith(it) })
-            }, onRejected = { later.rejectWith(it) })
-            later
-        }
+//    fun <S> flatten(onResolved: (T) -> Later<out S>, executor: Executor = this.executor): Later<out S> = when (val s = state) {
+//        is Fulfilled -> try {
+//            onResolved(s.value)
+//        } catch (err: Throwable) {
+//            Later.reject(err, executor)
+//        }
+//        is Rejected -> Later.reject(s.cause, executor)
+//        else -> {
+//            val later = Later<S>(executor = executor)
+//            then(executor = executor, onResolved = { res ->
+//                onResolved(res).then(executor = executor, onResolved = { later.resolveWith(it) }, onRejected = { later.rejectWith(it) })
+//            }, onRejected = { later.rejectWith(it) })
+//            later
+//        }
+//    }
+
+    fun <S> flatten(onResolved: (T) -> Later<out S>, executor: Executor = this.executor): Later<out S> {
+        val later = Later<S>(executor = executor)
+        then(
+            executor = executor,
+            onResolved = { res ->
+                onResolved(res).then(
+                    executor = executor,
+                    onResolved = {
+                        later.resolveWith(it)
+                    }, onRejected = {
+                        later.rejectWith(it)
+                    }
+                )
+            },
+            onRejected = {
+                later.rejectWith(it)
+            })
+        return later
     }
 
     @JvmOverloads
@@ -180,7 +199,7 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
             }
         }
 
-        val controlledLater = Later<T>(executor = executor)
+        val later = Later<T>(executor = executor)
         val resolve = { value: T ->
             cleanUp(Fulfilled(value))
             value
@@ -189,8 +208,8 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
             cleanUp(Rejected(err))
             err as T
         }
-        finallyQueue.add(LaterQueueComponent(controlledLater, resolve as? (Any?) -> T, rejected))
-        return controlledLater
+        finallyQueue.add(LaterQueueItem(later, resolve, rejected))
+        return later
     }
 
     @JvmName("toCompletableFuture")
@@ -223,32 +242,38 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
         return false
     }
 
-    private fun propagateFulfilled(value: Any?) {
+    private fun propagateFulfilled(value: T) {
         thenQueue.forEach {
-            val controlledLater = it.controlledLater as Later<Any?>
-            val fulfilledFn = it.fulfilledFn
-            try {
-                val valueOrLater = fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
-//                when {
-//                    valueOrLater.isThenable() -> valueOrLater.then(
-//                        executor = executor,
-//                        onResolved = { v -> controlledLater.resolveWith(v) },
-//                        onRejected = { error -> controlledLater.rejectWith(error) }
-//                    )
-//                    else -> controlledLater.resolveWith(valueOrLater)
-//                }
-                controlledLater.resolveWith(valueOrLater)
-            } catch (err: Throwable) {
-//                controlledLater.resolveWith(value)
-                propagateRejected(err)
+            executor.execute {
+                val later = it.later
+                try {
+                    val resolver = it.resolver
+                    if (resolver != null) {
+                        later.resolveWith(resolver(value))
+                    } else {
+                        later.resolveWith(value)
+                    }
+                } catch (err: Throwable) {
+                    later.rejectWith(err)
+                }
             }
         }
-
         finallyQueue.forEach {
-            val controlledLater = it.controlledLater as Later<Any?>
-            val fulfilledFn = it.fulfilledFn
-            fulfilledFn?.invoke(value)
-            controlledLater.resolveWith(value)
+            executor.execute {
+                val later = it.later
+                try {
+                    val resolver = it.resolver
+                    if (resolver != null) later.resolveWith(resolver(value))
+                } catch (err: Throwable) {
+                    try {
+                        val rejecter = it.rejecter
+                        if (rejecter != null) later.resolveWith(rejecter(err))
+                    } catch (error: Throwable) {
+                        err.addSuppressed(error)
+                        later.rejectWith(err)
+                    }
+                }
+            }
         }
         thenQueue.clear()
         finallyQueue.clear()
@@ -256,31 +281,29 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
 
     private fun propagateRejected(error: Throwable) {
         thenQueue.forEach {
-            val controlledLater = it.controlledLater as Later<Any?>
-            try {
-                val rejectedFn = it.rejectedFn ?: throw RuntimeException("No catch function")
-                val valueOrLater = rejectedFn(error)
-//                when {
-//                    valueOrLater.isThenable() -> valueOrLater.then(
-//                        executor = executor,
-//                        onResolved = { v -> controlledLater.resolveWith(v) },
-//                        onRejected = { err -> controlledLater.rejectWith(err) }
-//                    )
-//                    else -> controlledLater.resolveWith(valueOrLater)
-//                }
-                controlledLater.resolveWith(valueOrLater)
-            } catch (err: Throwable) {
-                error.addSuppressed(err)
-//                err.addSuppressed(error)
-                controlledLater.rejectWith(error)
+            val later = it.later
+            executor.execute {
+                try {
+                    val rejecter = it.rejecter
+                    if (rejecter != null) later.resolveWith(rejecter(error))
+                } catch (err: Throwable) {
+                    error.addSuppressed(err)
+                    later.rejectWith(error)
+                }
             }
         }
 
         finallyQueue.forEach {
-            val controlledLater = it.controlledLater
-            val rejectedFn = it.rejectedFn
-            rejectedFn?.invoke(error)
-            controlledLater.rejectWith(error)
+            val later = it.later
+            executor.execute {
+                try {
+                    val rejecter = it.rejecter
+                    if (rejecter != null) later.resolveWith(rejecter(error))
+                } catch (err: Throwable) {
+                    error.addSuppressed(err)
+                    later.rejectWith(error)
+                }
+            }
         }
         thenQueue.clear()
         finallyQueue.clear()
