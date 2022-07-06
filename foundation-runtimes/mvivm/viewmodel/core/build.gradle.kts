@@ -15,6 +15,7 @@ kotlin {
             dependencies {
                 api(projects.loggingConsole)
                 api(projects.liveCore)
+                api(kotlinx.serialization.json)
             }
         }
 
