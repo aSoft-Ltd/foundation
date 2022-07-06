@@ -72,4 +72,4 @@ inline fun <reified T> Cache.loadOrNull(
     load(key, serializer ?: serializer())
 } catch (e: Throwable) {
     Later.reject(CacheLoadException(key, cause = e))
-}.then { it as? T }.catch { null }
+}.catch { null }

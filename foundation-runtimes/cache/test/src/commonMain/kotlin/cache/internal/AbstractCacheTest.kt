@@ -61,17 +61,23 @@ abstract class AbstractCacheTest(val cache: Cache) {
 
     @Test
     fun should_clear_the_whole_cache() = cache.save("one", 1).flatten {
+        println("one")
         cache.save("two", 2)
     }.flatten {
+        println("two")
         cache.save("three", 3)
     }.flatten {
+        println("three")
         cache.clear()
     }.flatten {
+        println("four")
         cache.loadOrNull<Int>("two")
     }.flatten {
+        println("five")
         expect(it).toBe(null)
         cache.keys()
     }.then { keys ->
+        println("six")
         expect(collection = keys).toBeEmpty()
     }.test()
 }

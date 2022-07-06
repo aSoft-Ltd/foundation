@@ -151,18 +151,27 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
         then(
             executor = executor,
             onResolved = { res ->
-                onResolved(res).then(
-                    executor = executor,
-                    onResolved = {
-                        later.resolveWith(it)
-                    }, onRejected = {
-                        later.rejectWith(it)
+                executor.execute {
+                    try {
+                        val resolved = onResolved(res)
+                        resolved.then(
+                            executor = executor,
+                            onResolved = {
+                                later.resolveWith(it)
+                            },
+                            onRejected = {
+                                later.rejectWith(it)
+                            }
+                        )
+                    } catch (err: Throwable) {
+                        later.rejectWith(err)
                     }
-                )
+                }
             },
             onRejected = {
                 later.rejectWith(it)
-            })
+            }
+        )
         return later
     }
 
