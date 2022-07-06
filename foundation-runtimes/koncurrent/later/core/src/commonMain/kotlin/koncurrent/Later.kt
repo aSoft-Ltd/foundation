@@ -294,7 +294,11 @@ class Later<T>(handler: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -
             executor.execute {
                 try {
                     val rejecter = it.rejecter
-                    if (rejecter != null) later.resolveWith(rejecter(error))
+                    if (rejecter != null) {
+                        later.resolveWith(rejecter(error))
+                    } else {
+                        later.rejectWith(error)
+                    }
                 } catch (err: Throwable) {
                     error.addSuppressed(err)
                     later.rejectWith(error)

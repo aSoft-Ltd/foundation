@@ -10,6 +10,37 @@ class ErrorHandlingTestCase {
     val executor = MockExecutor()
 
     @Test
+    fun should_propagate_errors_down_stream() {
+        var blockcount = 0
+        var result = -1
+        var zero = -1
+        Later(executor) { res, _ ->
+            blockcount++
+            zero = 0
+            res(25)
+        }.then {
+            blockcount++
+            println("danger here")
+            1 divide zero // so that it fails
+        }.then {
+            blockcount++
+            println("danger cont...")
+            it * 2
+        }.catch {
+            blockcount++
+            println("Recovering")
+            zero
+        }.then {
+            blockcount++
+            println("Recovered")
+            it + 1
+            result = it + 1
+        }
+        expect(blockcount).toBe(4, "Chained code blocks where not executed as expected")
+        expect(result).toBe(1)
+    }
+
+    @Test
     fun should_execute_catch_when_it_encounters_an_error() {
         var blockcount = 0
         var result = 0

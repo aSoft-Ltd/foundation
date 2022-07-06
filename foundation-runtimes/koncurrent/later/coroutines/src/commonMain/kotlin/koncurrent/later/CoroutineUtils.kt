@@ -16,15 +16,31 @@ fun <T> Later<out T>.asDeferred(scope: CoroutineScope): Deferred<T> = scope.asyn
  * If this [Later] is already in a [Settled] state,
  * it returns the [Fulfilled.value] immediately or throws the [Rejected.cause]
  */
-suspend fun <T> Later<out T>.await(): T = when (val s = state) {
-    is Settled -> when (s) {
-        is Fulfilled -> s.value
-        is Rejected -> throw s.cause
-    }
-    is PendingState -> suspendCancellableCoroutine { cont ->
-        then({ value -> cont.resume(value) }, { err -> cont.resumeWithException(err) }, executor)
+suspend fun <T> Later<out T>.await(): T = suspendCancellableCoroutine<T> { cont ->
+    finally {
+        when (it) {
+            is Fulfilled -> cont.resume(it.value)
+            is Rejected -> cont.resumeWithException(it.cause)
+        }
     }
 }
+//suspend fun <T> Later<out T>.await(): T = when (val s = state) {
+////    is Settled -> when (s) {
+////        is Fulfilled -> s.value
+////        is Rejected -> throw s.cause
+////    }
+////    is PendingState -> suspendCancellableCoroutine { cont ->
+////        then({ value -> cont.resume(value) }, { err -> cont.resumeWithException(err) }, executor)
+////    }
+//    suspendCancellableCoroutine<T> { cont->
+//        finally {
+//            when(it) {
+//                is Fulfilled -> cont.resume(it.value)
+//                is Rejected -> cont.resumeWithException(it.cause)
+//            }
+//        }
+//    }
+//}
 
 /**
  * Convert's this [Deferred] into a [Later]
