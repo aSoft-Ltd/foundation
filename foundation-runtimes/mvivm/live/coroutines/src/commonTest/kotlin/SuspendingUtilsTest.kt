@@ -4,6 +4,7 @@ import kotlinx.coroutines.test.runTest
 import live.WatchMode
 import live.mutableLiveOf
 import live.watch
+import live.watchIn
 import kotlin.test.Test
 
 class SuspendingUtilsTest {
@@ -14,7 +15,7 @@ class SuspendingUtilsTest {
     fun can_watch_eagerly_while_suspending() = runTest {
         val live = mutableLiveOf("Stuff 1")
         var stuff = ""
-        val watcher = live.watch(this, WatchMode.Eagerly) {
+        val watcher = live.watchIn(this, WatchMode.Eagerly) {
             stuff = it
         }
         delay(delayTime)
@@ -35,7 +36,7 @@ class SuspendingUtilsTest {
     fun can_watch_casually_while_suspending() = runTest {
         val live = mutableLiveOf("Stuff 1")
         var stuff = ""
-        val watcher = live.watch(this, WatchMode.Casually) {
+        val watcher = live.watchIn(this, WatchMode.Casually) {
             stuff = it
             delay(delayTime)
         }

@@ -4,13 +4,13 @@ import koncurrent.Executor
 import live.Live
 import live.WatchMode
 import live.watch
-import react.useEffectOnce
+import react.useEffect
 import react.useState
 
 @JsExport
 fun <S> useLive(live: Live<S>, executor: Executor? = null): S {
     var state by useState(live.value)
-    useEffectOnce {
+    useEffect(live) {
         val watcher = if (executor != null) {
             live.watch(mode = WatchMode.Casually, executor) { state = it }
         } else {
